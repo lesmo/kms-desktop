@@ -1,0 +1,144 @@
+; KMS Device Driver
+; Copyright (c) 2013, Sharp Dynamics S de RL de CV
+
+[Version]
+Signature   = "$Windows NT$"
+Class       = USBDevice
+ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
+Provider    = %KmsProvider%
+CatalogFile = kmsdevice.cat
+DriverVer   = 02/04/2014, 1.0.0.5
+
+; ========== Manufacturer/Models sections ===========
+[Manufacturer]
+%KmsProvider% = KMS_WinUSB,NTx86,NTamd64,NTia64,NTx86.6.1,NTamd64.6.1,NTia64.6.1
+
+[KMS_WinUSB.NTx86]
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+
+[KMS_WinUSB.NTamd64]
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+
+[KMS_WinUSB.NTia64]
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+
+[KMS_WinUSB.NTx86.6.1]
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+
+[KMS_WinUSB.NTamd64.6.1]
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+
+[KMS_WinUSB.NTia64.6.1]
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+
+; =================== Class definition ===================
+[ClassInstall32]
+AddReg      = ClassInstall32_AddReg
+AddProperty = KMS_DeviceModel, KMS_DeviceVendorWebsite, KMS_DeviceDetailedDescription
+
+[ClassInstall32_AddReg]
+HKR,,,,%KmsClassName%
+HKR,,NoInstallClass,,1
+HKR,,IconPath,0x00010000,"%systemroot%\system32\setupapi.dll,-20"
+HKR,,LowerLogoVersion,,5.2
+
+[KMS_DeviceModel]
+DeviceModel,,,,"%KmsDevice% RC1"
+
+[KMS_DeviceVendorWebsite]
+DeviceVendorWebsite,,,,"http://www.kms.me"
+
+[KMS_DeviceDetailedDescription]
+DeviceDetailedDescription,,,,"%DevDescription%"
+
+; =================== Installation ===================
+[USB_Install]
+Include   = winusb.inf
+Needs     = WINUSB.NT
+
+[USB_Install.Services]
+Include    = winusb.inf
+AddService = WinUSB,0x00000002,WinUSB_ServiceInstall
+
+[WinUSB_ServiceInstall]
+DisplayName     = %KmsWinUSB%
+ServiceType     = 1
+StartType       = 3
+ErrorControl    = 1
+ServiceBinary   = %12%\winusb.sys
+
+[USB_Install.Wdf]
+KmdfService = WINUSB, WinUsb_Install
+
+[WinUSB_Install]
+KmdfLibraryVersion = 1.9
+
+[USB_Install.HW]
+AddReg = Dev_AddReg
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{3C5E1462-5695-4e18-876B-F3F3D08AAF18}"
+;HKR,,DeviceInterfaceGUIDs,0x10000,"{6b6d736d-0f03-439b-a842-3921144fc13b}"
+
+[USB_Install.CoInstallers]
+AddReg    = CoInstallers_AddReg
+CopyFiles = CoInstallers_CopyFiles
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WdfCoInstaller01009.dll,WdfCoInstaller","WinUSBCoInstaller2.dll"
+
+[CoInstallers_CopyFiles]
+WinUSBCoInstaller2.dll
+WdfCoInstaller01009.dll
+
+[DestinationDirs]
+CoInstallers_CopyFiles = 11
+
+; ================= Source Media Section =====================
+[SourceDisksNames]
+1 = %KmsDisk%,,,\x86
+2 = %KmsDisk%,,,\amd64
+3 = %KmsDisk%,,,\ia64
+4 = %KmsDisk%,,,\meta
+
+[SourceDisksFiles.x86]
+WinUSBCoInstaller2.dll  = 1
+WdfCoInstaller01009.dll = 1
+
+[SourceDisksFiles.amd64]
+WinUSBCoInstaller2.dll  = 2
+WdfCoInstaller01009.dll = 2
+
+[SourceDisksFiles.ia64]
+WinUSBCoInstaller2.dll  = 3
+WdfCoInstaller01009.dll = 3
+
+; =================== Strings ===================
+[Strings]
+KmsProvider    = "KMS Mexico"
+KmsDevice      = "KMS Device Sync Cable"
+KmsClassName   = "KMS Device Sync Bus"
+KmsWinUSB      = "KMS Device Sync Bus WinUSB Service"
+KmsDisk        = "KMS Device Sync Drivers Disk"
+DevDescription = "Physical activity tracking device used by KMS Apps"
+
+; Spanish
+[Strings.0c0a]
+KmsProvider    = "KMS México"
+KmsDevice      = "Cable de Sincronización de Dispositivo KMS"
+KmsClassName   = "Bus de Sincronización de Dispositivo KMS"
+KmsWinUSB      = "Servicio WinUSB de Bus de Sincronización de Dispositivo KMS"
+KmsDisk        = "Disco de Controladores de Bus Sincronización de Dispositivo KMS"
+DevDescription = "Dispositivo de monitoreo de actividad física utilizado por las Apps de KMS"

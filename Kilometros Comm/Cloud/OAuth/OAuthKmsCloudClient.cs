@@ -10,7 +10,7 @@ using System.Text;
 namespace KMS.Comm.Cloud.OAuth {
     public class OAuthKmsCloudClient : OAuthClient {
         public OAuthKmsCloudClient(
-            OAuthClientUris clientUris,
+            OAuthKmsCloudUris clientUris,
             OAuthCryptoSet consumer,
             OAuthCryptoSet token = null
         ) : base(clientUris, consumer, token) {
@@ -156,7 +156,7 @@ namespace KMS.Comm.Cloud.OAuth {
             OAuthResponse<string> response
                 = this.RequestString(
                     HttpRequestMethod.DELETE,
-                    Settings.Default.OAuthKmsSessionUrl
+                    ((OAuthKmsCloudUris)this.ClientUris).KmsSessionResource
                 );
 
             return response.StatusCode == HttpStatusCode.NoContent;

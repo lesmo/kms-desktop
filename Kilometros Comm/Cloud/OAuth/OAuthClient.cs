@@ -11,39 +11,47 @@ using System.Collections.Specialized;
 
 namespace KMS.Comm.Cloud.OAuth {
     /// <summary>
-    /// Permite acceder a los recursos de un API que utiliza el protocolo OAuth, específicamente la Nube de KMS.
-    /// Los procesos normales de Autorización OAuth son ligeramente diferentes, pues las Consumer Keys (API-Keys
-    /// de KMS) permiten a las aplicaciones oficiales de KMS inciar sesión a través de un proceso de Inicio de
-    /// Sesión HTTP Básico (Basic HTTP Authorization), de forma que las aplicaciones oficiales pueden saltarse
-    /// el mostrar un formulario Web de Inicio de Sesión y Autorización.
+    ///     Permite acceder a los recursos de un API que utiliza el protocolo OAuth, específicamente la Nube de KMS.
+    ///     Los procesos normales de Autorización OAuth son ligeramente diferentes, pues las Consumer Keys (API-Keys
+    ///     de KMS) permiten a las aplicaciones oficiales de KMS inciar sesión a través de un proceso de Inicio de
+    ///     Sesión HTTP Básico (Basic HTTP Authorization), de forma que las aplicaciones oficiales pueden saltarse
+    ///     el mostrar un formulario Web de Inicio de Sesión y Autorización.
     /// </summary>
     public class OAuthClient {
         #region Properties
+        /// <summary>
+        ///     Información de la ubicación de diversos recursos HTTP necesarios para el flujo
+        ///     básico e inicial del protocolo OAuth.
+        /// </summary>
         public OAuthClientUris ClientUris {
             get;
             set;
         }
 
         /// <summary>
-        /// Consumer Key (API-Key de KMS) y Secret (API-Secret de KMS).
+        ///     Consumer Key y Secret.
         /// </summary>
         public OAuthCryptoSet ConsumerCredentials {
             get;
             set;
         }
         /// <summary>
-        /// Token y Token Secret. Esta propiedad almacena el Request Token y Access Token.
+        ///     Token y Token Secret. Esta propiedad almacena el Request Token y Access Token.
         /// </summary>
         public OAuthCryptoSet Token {
             get;
             set;
         }
+        /// <summary>
+        ///     Devuelve si el Token y Token Secret actualmente en ésta instancia corresponden a un
+        ///     conjunto de Access Token, que pueden acceder a todos los recursos del API.
+        /// </summary>
         public bool CurrentlyHasAccessToken {
             get;
             private set;
         }
         /// <summary>
-        /// Método de firmado de la petición. Por ahora, la librería sólo soporta HMAC-SHA1.
+        ///     Método de Firmado de la Petición. Por ahora, la librería sólo soporta HMAC-SHA1.
         /// </summary>
         public string SignatureMethod {
             get {
@@ -51,8 +59,8 @@ namespace KMS.Comm.Cloud.OAuth {
             }
         }
         /// <summary>
-        /// Versión de OAuth que utiliza el API. Por ahora, la librería sólo soporta OAuth 1.0a, y según
-        /// el protocolo debe reportarse que se espera que la petición se procese por OAuth 1.0.
+        ///     Versión de OAuth que utiliza el API. Por ahora, la librería sólo soporta OAuth 1.0a, y según
+        ///     el protocolo debe reportarse que se espera que la petición se procese por OAuth 1.0.
         /// </summary>
         public string Version {
             get {
@@ -62,7 +70,7 @@ namespace KMS.Comm.Cloud.OAuth {
         #endregion
         
         /// <summary>
-        /// Crear un nuevo cliente de OAuth vacío.
+        ///     Crear un nuevo cliente de OAuth vacío.
         /// </summary>
         public OAuthClient() {
             this.CurrentlyHasAccessToken
@@ -96,6 +104,23 @@ namespace KMS.Comm.Cloud.OAuth {
                 = oAuthToken != null;
         }
 
+        /// <summary>
+        ///     Devuelve la Signature Base, o Base de Firma, necesaria para generar la Firma de Petición OAuth.
+        /// </summary>
+        /// <param name="requestMethod">
+        ///     Método de la Petición.
+        /// </param>
+        /// <param name="requestUri">
+        ///     URI a la que se realiza la petición OAuth. Debe ser posible obtener el AbsoluteUri de éste.
+        /// </param>
+        /// <param name="oAuthSortedParameters">
+        ///     Diccionario que contiene los parámetros ordenados, incluyendo todos los necesarios por OAuth,
+        ///     para generar la Firma de Petición.
+        /// </param>
+        /// <returns>
+        ///     Devuelve los bytes que representan la Firma de Petición (listo para obtener la represetnación en
+        ///     Base 64).
+        /// </returns>
         private byte[] GetSignatureBase(
             HttpRequestMethod requestMethod,
             Uri requestUri,
@@ -228,10 +253,11 @@ namespace KMS.Comm.Cloud.OAuth {
         }
 
         /// <summary>
-        /// Obtiene la URI a través de la cual el Usuario autoriza a la Aplicación el acceso a su información
+        ///     Obtiene la URI a través de la cual el Usuario autoriza a la Aplicación el acceso a su información
         /// </summary>
-        /// <param name="oAuthRequestToken"></param>
-        /// <returns></returns>
+        /// <returns>
+        ///     Devuelve la URI a través de la cual el Usuario autoriza a la Aplicación el acceso a su información.
+        /// </returns>
         public Uri GetAuthorizationUri() {
             if ( this.Token == null && this.CurrentlyHasAccessToken )
                 throw new OAuthUnexpectedRequest();
@@ -298,6 +324,28 @@ namespace KMS.Comm.Cloud.OAuth {
             return this.Token;
         }
 
+        /// <summary>
+        ///     Realiza una nueva petición OAuth al recurso especificado, y devuleve el objeto HttpWebResponse
+        ///     generado por la petición.
+        /// </summary>
+        /// <param name="requestMethod">
+        ///     Método de Petición HTTP.
+        /// </param>
+        /// <param name="resource">
+        ///     Recurso HTTP al que llamar (parte del URI después del dominio).
+        /// </param>
+        /// <param name="parameters">
+        ///     Parámetros a enviar en la petición
+        /// </param>
+        /// <param name="oAuthExtraParameters">
+        ///     Parámetros extra a añadir en la cabecera Authorization de OAuth.
+        /// </param>
+        /// <param name="requestHeaders">
+        ///     Cabeceras HTTP a añadir a la petición.
+        /// </param>
+        /// <returns>
+        ///     Devuelve la respuesta recibida del API.
+        /// </returns>
         public HttpWebResponse Request(
             HttpRequestMethod requestMethod,
             string resource,
@@ -384,6 +432,28 @@ namespace KMS.Comm.Cloud.OAuth {
             return (HttpWebResponse)request.GetResponse();
         }
 
+        /// <summary>
+        ///     Realiza una nueva petición OAuth al recurso especificado, devolviendo la respuesta tal como viene
+        ///     en una cadena.
+        /// </summary>
+        /// <param name="requestMethod">
+        ///     Método de Petición HTTP.
+        /// </param>
+        /// <param name="resource">
+        ///     Recurso HTTP al que llamar (parte del URI después del dominio).
+        /// </param>
+        /// <param name="parameters">
+        ///     Parámetros a enviar en la petición
+        /// </param>
+        /// <param name="oAuthExtraParameters">
+        ///     Parámetros extra a añadir en la cabecera Authorization de OAuth.
+        /// </param>
+        /// <param name="requestHeaders">
+        ///     Cabeceras HTTP a añadir a la petición.
+        /// </param>
+        /// <returns>
+        ///     Devuelve la respuesta recibida del API.
+        /// </returns>
         public OAuthResponse<string> RequestString(
             HttpRequestMethod requestMethod,
             string resource,
@@ -438,6 +508,28 @@ namespace KMS.Comm.Cloud.OAuth {
             );
         }
 
+        /// <summary>
+        ///     Realiza una nueva petición OAuth al recurso especificado, deserializando la respuesta de tipo
+        ///     HTTP URL Encoded (como formulario) a una NameValueCollection
+        /// </summary>
+        /// <param name="requestMethod">
+        ///     Método de Petición HTTP.
+        /// </param>
+        /// <param name="resource">
+        ///     Recurso HTTP al que llamar (parte del URI después del dominio).
+        /// </param>
+        /// <param name="parameters">
+        ///     Parámetros a enviar en la petición
+        /// </param>
+        /// <param name="oAuthExtraParameters">
+        ///     Parámetros extra a añadir en la cabecera Authorization de OAuth.
+        /// </param>
+        /// <param name="requestHeaders">
+        ///     Cabeceras HTTP a añadir a la petición.
+        /// </param>
+        /// <returns>
+        ///     Devuelve la respuesta recibida del API.
+        /// </returns>
         public OAuthResponse<NameValueCollection> RequestSimpleNameValue(
             HttpRequestMethod requestMethod,
             string resource,
@@ -478,11 +570,35 @@ namespace KMS.Comm.Cloud.OAuth {
             );
         }
 
+        /// <summary>
+        ///     Realizar una nueva petición al recurso OAuth especificado, deserializando la respuesta en JSON.
+        /// </summary>
+        /// <typeparam name="T">
+        ///     Tipo al que se realizará la deserialización de la respuesta JSON.
+        /// </typeparam>
+        /// <param name="requestMethod">
+        ///     Método de Petición HTTP.
+        /// </param>
+        /// <param name="resource">
+        ///     Recurso HTTP al que llamar (parte del URI después del dominio).
+        /// </param>
+        /// <param name="parameters">
+        ///     Parámetros a enviar en la petición
+        /// </param>
+        /// <param name="oAuthExtraParameters">
+        ///     Parámetros extra a añadir en la cabecera Authorization de OAuth.
+        /// </param>
+        /// <param name="requestHeaders">
+        ///     Cabeceras HTTP a añadir a la petición.
+        /// </param>
+        /// <returns>
+        ///     Devuelve la respuesta recibida del API.
+        /// </returns>
         public OAuthResponse<T> RequestJson<T>(
             HttpRequestMethod requestMethod,
             string resource,
             Dictionary<string, string> parameters = null,
-            Dictionary<HttpRequestHeader, string> oAuthExtraParameters = null,
+            Dictionary<string, string> oAuthExtraParameters = null,
             Dictionary<HttpRequestHeader, string> requestHeaders = null
         ) {
             OAuthResponse<string> response

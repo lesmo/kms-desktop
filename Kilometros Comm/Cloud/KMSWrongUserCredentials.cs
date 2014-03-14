@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KMS.Comm.Cloud.OAuth {
-    public class OAuthKmsScrewYou : Exception {
+namespace KMS.Comm.Cloud {
+    public class KMSWrongUserCredentials : Exception{
     }
 }

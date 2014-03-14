@@ -1,4 +1,5 @@
-﻿using KMS.Comm.Properties;
+﻿using KMS.Comm.Cloud.OAuth;
+using KMS.Comm.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -7,10 +8,10 @@ using System.Linq;
 using System.Net;
 using System.Text;
 
-namespace KMS.Comm.Cloud.OAuth {
-    public class OAuthKmsCloudClient : OAuthClient {
-        public OAuthKmsCloudClient(
-            OAuthKmsCloudUris clientUris,
+namespace KMS.Comm.Cloud {
+    public class KMSCloudClient : OAuthClient {
+        public KMSCloudClient(
+            KMSCloudUris clientUris,
             OAuthCryptoSet consumer,
             OAuthCryptoSet token = null
         ) : base(clientUris, consumer, token) {
@@ -48,10 +49,10 @@ namespace KMS.Comm.Cloud.OAuth {
                 = (HttpWebResponse)request.GetResponse();
 
             if ( response.StatusCode == HttpStatusCode.Unauthorized )
-                throw new OAuthKmsWrongUserCredentials();
+                throw new KMSWrongUserCredentials();
 
             if ( response.StatusCode == HttpStatusCode.Forbidden )
-                throw new OAuthKmsScrewYou();
+                throw new KMSScrewYou();
 
             StringBuilder responseStringBuilder
                 = new StringBuilder();
@@ -124,7 +125,7 @@ namespace KMS.Comm.Cloud.OAuth {
                 );
 
             if ( response.StatusCode != HttpStatusCode.OK || response.StatusCode != HttpStatusCode.Created )
-                throw new OAuthKmsScrewYou();
+                throw new KMSScrewYou();
 
             string kmsOAuthToken
                 = response.Response.Get("oauth_token");
@@ -132,7 +133,7 @@ namespace KMS.Comm.Cloud.OAuth {
                 = response.Response.Get("oauth_token_secret");
 
             if ( string.IsNullOrEmpty(kmsOAuthToken) || string.IsNullOrEmpty(kmsOAuthTokenSecret) )
-                throw new OAuthKmsScrewYou();
+                throw new KMSScrewYou();
 
             this.Token
                 = new OAuthCryptoSet(
@@ -156,7 +157,7 @@ namespace KMS.Comm.Cloud.OAuth {
             OAuthResponse<string> response
                 = this.RequestString(
                     HttpRequestMethod.DELETE,
-                    ((OAuthKmsCloudUris)this.ClientUris).KmsSessionResource
+                    ((KMSCloudUris)this.ClientUris).KmsSessionResource
                 );
 
             return response.StatusCode == HttpStatusCode.NoContent;

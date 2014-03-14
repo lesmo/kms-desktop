@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace Kilometros_Desktop {
+namespace KMS.Desktop {
     public partial class Form1 : Form {
         UsbSync.DownloadAgent SyncAgent
             = new UsbSync.DownloadAgent();

@@ -1,0 +1,18 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KMS.Comm.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="OAuthBaseUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://api.kms.me/</Value>
+    </Setting>
+    <Setting Name="OAuthRequestTokenUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">oauth/request_token</Value>
+    </Setting>
+    <Setting Name="OAuthRequestAccessTokenUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">oauth/access_token</Value>
+    </Setting>
+    <Setting Name="OAuthAuthorizationUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">oauth/authorize</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

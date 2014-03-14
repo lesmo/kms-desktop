@@ -17,11 +17,17 @@ namespace Kilometros.UsbX {
                     i => int.Parse(i).ToString("X").ToLower()
                 ).ToArray();
 
+            try {
+                USBDevice.RefreshDevices();
+            } catch {
+                
+            }
+            
             USBDevice usbDevice
                 = (
-                    from d in USBDevice.DeviceList
-                    where usbPids.Contains(d.Value.PID)
-                    select d.Value
+                    from d in USBDevice.DeviceList.Values
+                    where usbPids.Contains(d.PID)
+                    select d
                 ).FirstOrDefault();
 
             if ( usbDevice == null )
@@ -122,7 +128,8 @@ namespace Kilometros.UsbX {
         }
 
         ~KmsDevice() {
-            this._usbDevice.Close();
+            if ( this._usbDevice != null )
+                this._usbDevice.Close();
         }
     }
 }

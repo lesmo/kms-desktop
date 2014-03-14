@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros_Desktop.UsbSync {
+namespace KMS.Desktop.UsbSync {
     class DownloadCompleteEventArgs : EventArgs {
         public readonly KmsDevice UsbDevice;
         public readonly Data[] Data;

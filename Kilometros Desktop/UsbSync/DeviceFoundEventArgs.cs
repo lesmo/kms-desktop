@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros_Desktop.UsbSync {
+namespace KMS.Desktop.UsbSync {
     class DeviceFoundEventArgs : EventArgs {
         public readonly KmsDevice UsbDevice;
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros.Comm.CommandResponse {
+namespace KMS.Comm.InnerCore.CommandResponse {
     public enum DataActivity {
         Invalid = 255,
         Running = 128,

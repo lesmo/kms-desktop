@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace KMS.Desktop.Properties {
+namespace KMS.Comm.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
@@ -25,37 +25,37 @@ namespace KMS.Desktop.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public short KmsUsbMaxConnectionAttempts {
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.kms.me/")]
+        public string OAuthBaseUrl {
             get {
-                return ((short)(this["KmsUsbMaxConnectionAttempts"]));
+                return ((string)(this["OAuthBaseUrl"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9999999")]
-        public int KmsUsbConnectionAttemptSpan {
+        [global::System.Configuration.DefaultSettingValueAttribute("oauth/request_token")]
+        public string OAuthRequestTokenUrl {
             get {
-                return ((int)(this["KmsUsbConnectionAttemptSpan"]));
+                return ((string)(this["OAuthRequestTokenUrl"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string KmsApiOAuthKey {
+        [global::System.Configuration.DefaultSettingValueAttribute("oauth/access_token")]
+        public string OAuthRequestAccessTokenUrl {
             get {
-                return ((string)(this["KmsApiOAuthKey"]));
+                return ((string)(this["OAuthRequestAccessTokenUrl"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string KmsApiOAuthSecret {
+        [global::System.Configuration.DefaultSettingValueAttribute("oauth/authorize")]
+        public string OAuthAuthorizationUrl {
             get {
-                return ((string)(this["KmsApiOAuthSecret"]));
+                return ((string)(this["OAuthAuthorizationUrl"]));
             }
         }
     }

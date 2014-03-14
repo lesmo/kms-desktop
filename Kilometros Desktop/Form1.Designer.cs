@@ -1,4 +1,4 @@
-﻿namespace Kilometros_Desktop {
+﻿namespace KMS.Desktop {
     partial class Form1 {
         /// <summary>
         /// Required designer variable.

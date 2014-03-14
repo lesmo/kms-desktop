@@ -1,12 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Kilometros_Desktop.Properties" GeneratedClassName="Settings">
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KMS.Desktop.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
     <Setting Name="KmsUsbMaxConnectionAttempts" Type="System.Int16" Scope="Application">
       <Value Profile="(Default)">100</Value>
     </Setting>
-    <Setting Name="KmsUsbConnectionAttemptSpan" Type="System.Int16" Scope="Application">
-      <Value Profile="(Default)">300</Value>
+    <Setting Name="KmsUsbConnectionAttemptSpan" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">9999999</Value>
     </Setting>
     <Setting Name="KmsApiOAuthKey" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />

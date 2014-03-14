@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KMS.Desktop.UsbSync {
-    class UploadCompleteEventArgs : EventArgs {
+namespace KMS.Comm.Cloud.OAuth {
+    public class OAuthUnexpectedRequest : Exception {
     }
 }

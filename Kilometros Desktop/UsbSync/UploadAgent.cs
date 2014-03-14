@@ -1,5 +1,5 @@
 ﻿using Kilometros.Comm.CommandResponse;
-using Kilometros_Desktop.Properties;
+using KMS.Desktop.Properties;
 using OAuth;
 using System;
 using System.Collections.Generic;
@@ -8,9 +8,9 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading;
-using Kilometros_Desktop.Utils.Async;
+using KMS.Desktop.Utils.Async;
 
-namespace Kilometros_Desktop.UsbSync {
+namespace KMS.Desktop.UsbSync {
     class UploadAgent {
         public delegate void OnUploadCompleteDelegate(object sender, UploadCompleteEventArgs e);
         

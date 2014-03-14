@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros.Comm {
+namespace KMS.Comm.InnerCore {
     public class CoreCommandException : Exception {
         public readonly InnerCoreCommand Command;
         public readonly byte[] Response;

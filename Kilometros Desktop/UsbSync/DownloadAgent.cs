@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.ComponentModel;
-using Kilometros_Desktop.Properties;
+using KMS.Desktop.Properties;
 using System.Windows.Forms;
-using Kilometros_Desktop.Utils.Async;
+using KMS.Desktop.Utils.Async;
 using Kilometros.UsbX;
 using Kilometros.Comm.CommandRequest;
 using Kilometros.Comm.CommandResponse;
 using Kilometros.Comm;
 
-namespace Kilometros_Desktop.UsbSync {
+namespace KMS.Desktop.UsbSync {
     class DownloadAgent {
         public delegate void OnDeviceFoundDelegate(object sender, DeviceFoundEventArgs e);
         public delegate void OnDownloadCompleteDelegate(object sender, DownloadCompleteEventArgs e);
@@ -47,8 +47,8 @@ namespace Kilometros_Desktop.UsbSync {
         /// <summary>
         /// Contiene el número de intentos hechos de buscar y encontrar un KMS Inner Core.
         /// </summary>
-        private Synchronized<short> AwaitAttempts
-            = new Synchronized<short>(0);
+        private Synchronized<int> AwaitAttempts
+            = new Synchronized<int>(0);
 
         /// <summary>
         /// Inicia el proceso de sincronización de datos del KMS Inner Core.
@@ -167,10 +167,14 @@ namespace Kilometros_Desktop.UsbSync {
 
                     ReadDataResponse commandResponse
                         = new ReadDataResponse(currentDate);
-                    commandResponse.Deserialize(commandResponseBytes);
+                    try {
+                        commandResponse.Deserialize(commandResponseBytes);
 
-                    foreach ( Data data in commandResponse.CommandContent.Content )
-                        dataRaw.Add(data);
+                        foreach ( Data data in commandResponse.CommandContent.Content )
+                            dataRaw.Add(data);
+                    } catch {
+                    }
+
                 } catch ( DeviceNotInCradleException ) {
                     MessageBox.Show(
                         "El Bloque KMS no está correctamente colocado en el cable.",

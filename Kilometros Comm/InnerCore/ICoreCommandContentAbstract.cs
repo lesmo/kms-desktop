@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros.Comm {
+namespace KMS.Comm.InnerCore {
     public abstract class ICoreCommandContent<T> : ICoreCommandContent {
         public T Content
             = default(T);

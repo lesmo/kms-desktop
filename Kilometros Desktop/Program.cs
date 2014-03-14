@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Kilometros_Desktop {
+namespace KMS.Desktop {
     static class Program {
         /// <summary>
         /// The main entry point for the application.
@@ -12,7 +12,7 @@ namespace Kilometros_Desktop {
         static void Main() {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new Main());
         }
     }
 }

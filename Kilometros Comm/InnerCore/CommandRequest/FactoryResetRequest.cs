@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros.Comm.CommandRequest {
+namespace KMS.Comm.InnerCore.CommandRequest {
     public sealed class FactoryResetRequest : ICoreCommand<object>, ICoreCommand {
         protected override InnerCoreCommand Command {
             get {

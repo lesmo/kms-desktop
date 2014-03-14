@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros.Comm {
+namespace KMS.Comm.InnerCore {
     public enum InnerCoreCommand {
         SetDateRequest
             = 0xC2,

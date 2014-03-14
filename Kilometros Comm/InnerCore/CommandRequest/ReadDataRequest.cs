@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros.Comm.CommandRequest {
+namespace KMS.Comm.InnerCore.CommandRequest {
     public sealed class DataReadTimeSpan {
         public DayOfWeek DayOfWeek
             = DayOfWeek.Monday;

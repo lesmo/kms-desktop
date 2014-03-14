@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Kilometros_Desktop.UsbSync {
+namespace KMS.Desktop.UsbSync {
     enum DeviceNotFoundReason {
         MaxAttemptsReached,
         NotFoundOnUniqueAttempt,

@@ -52,6 +52,8 @@
     <Compile Include="Cloud\OAuth\OAuthClientUris.cs" />
     <Compile Include="Cloud\OAuth\OAuthCryptoSet.cs" />
     <Compile Include="Cloud\OAuth\OAuthKmsCloudClient.cs" />
+    <Compile Include="Cloud\OAuth\OAuthKmsScrewYou.cs" />
+    <Compile Include="Cloud\OAuth\OAuthKmsWrongUserCredentials.cs" />
     <Compile Include="Cloud\OAuth\OAuthResponse.cs" />
     <Compile Include="Cloud\OAuth\OAuthUnexpectedRequest.cs" />
     <Compile Include="Cloud\OAuth\OAuthUnexpectedResponse.cs" />

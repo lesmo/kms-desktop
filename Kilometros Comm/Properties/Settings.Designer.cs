@@ -58,5 +58,47 @@ namespace KMS.Comm.Properties {
                 return ((string)(this["OAuthAuthorizationUrl"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("474de310b3574f13824e488c68bad81a")]
+        public string OAuthConsumerKey {
+            get {
+                return ((string)(this["OAuthConsumerKey"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("a276b326bef5474d91833b8b49643d47")]
+        public string OAuthConsumerSecret {
+            get {
+                return ((string)(this["OAuthConsumerSecret"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("oauth/3rd/{0}/login")]
+        public string OAuthKms3rdLoginUrl {
+            get {
+                return ((string)(this["OAuthKms3rdLoginUrl"]));
+            }
+            set {
+                this["OAuthKms3rdLoginUrl"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("oauth/session")]
+        public string OAuthKmsSessionUrl {
+            get {
+                return ((string)(this["OAuthKmsSessionUrl"]));
+            }
+            set {
+                this["OAuthKmsSessionUrl"] = value;
+            }
+        }
     }
 }

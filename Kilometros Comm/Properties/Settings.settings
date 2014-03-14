@@ -14,5 +14,17 @@
     <Setting Name="OAuthAuthorizationUrl" Type="System.String" Scope="Application">
       <Value Profile="(Default)">oauth/authorize</Value>
     </Setting>
+    <Setting Name="OAuthConsumerKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">474de310b3574f13824e488c68bad81a</Value>
+    </Setting>
+    <Setting Name="OAuthConsumerSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">a276b326bef5474d91833b8b49643d47</Value>
+    </Setting>
+    <Setting Name="OAuthKms3rdLoginUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">oauth/3rd/{0}/login</Value>
+    </Setting>
+    <Setting Name="OAuthKmsSessionUrl" Type="System.String" Scope="User">
+      <Value Profile="(Default)">oauth/session</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

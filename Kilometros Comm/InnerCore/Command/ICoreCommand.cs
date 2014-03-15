@@ -25,6 +25,11 @@ namespace KMS.Comm.InnerCore {
     }
 
     public interface ICoreCommand {
+        ICoreCommandContent CommandContent {
+            get;
+            set;
+        }
+
         byte[] Serialize();
         void Deserialize(byte[] input);
     }

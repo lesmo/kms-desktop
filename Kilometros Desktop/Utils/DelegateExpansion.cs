@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace KMS.Desktop.Utils.Async {
+namespace KMS.Desktop.Utils {
     public static class DelegateExpansion {
         // Prevent CrossThreadException by invoking delegate through target control's thread.
         public static object CrossInvoke(this Delegate delgt, object sender, EventArgs e) {

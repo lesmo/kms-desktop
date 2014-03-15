@@ -75,11 +75,6 @@ namespace Kilometros.UsbX {
             if ( writeCount == 0 )
                 throw new Exception();
 
-            readBytes
-                = new byte[512];
-            readCount
-                = 0;
-
             try {
                 readCount
                     = this._usbDevice.Read(readBytes);
@@ -101,30 +96,6 @@ namespace Kilometros.UsbX {
             }
 
             return returnBytes;
-        }
-
-        public bool Rename(string newName) {
-            if ( newName.Length > 15 )
-                throw new ArgumentException("New name must be less than 15 characters");
-            
-            byte[] writeBytes
-                = new byte[newName.Length + 9];
-
-            Encoding.ASCII.GetBytes("TTM:REN-" + newName).CopyTo(writeBytes, 0);
-            for ( int i = 0, s = 1; s < writeBytes.Length - 1; s++ ) {
-                writeBytes[writeBytes.Length - 1]
-                    = (byte)(writeBytes[i] ^ writeBytes[s]);
-            }
-
-            byte[] response
-                = this.Request(
-                    writeBytes
-                );
-            
-            string responseString
-                = Encoding.ASCII.GetString(response, 0, 7);
-
-            return responseString.StartsWith("TTM:OK");
         }
 
         ~KmsDevice() {

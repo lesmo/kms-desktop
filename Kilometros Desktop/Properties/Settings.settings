@@ -14,5 +14,8 @@
     <Setting Name="KmsApiOAuthSecret" Type="System.String" Scope="Application">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="KmsUsbPids" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">60000,60001,35148</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

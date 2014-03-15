@@ -6,11 +6,11 @@ using System.Threading;
 using System.ComponentModel;
 using KMS.Desktop.Properties;
 using System.Windows.Forms;
-using KMS.Desktop.Utils.Async;
+using KMS.Desktop.Utils;
 using Kilometros.UsbX;
-using Kilometros.Comm.CommandRequest;
-using Kilometros.Comm.CommandResponse;
-using Kilometros.Comm;
+using KMS.Comm.InnerCore.CommandRequest;
+using KMS.Comm.InnerCore.CommandResponse;
+using KMS.Comm;
 
 namespace KMS.Desktop.UsbSync {
     class DownloadAgent {

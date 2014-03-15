@@ -62,11 +62,12 @@
     <Compile Include="InnerCore\CommandRequest\ReadDataRequest.cs" />
     <Compile Include="InnerCore\CommandResponse\FactoryResetResponse.cs" />
     <Compile Include="InnerCore\CommandResponse\ReadDataResponse.cs" />
-    <Compile Include="InnerCore\CoreCommandException.cs" />
-    <Compile Include="InnerCore\ICoreCommand.cs" />
-    <Compile Include="InnerCore\ICoreCommandAbstract.cs" />
-    <Compile Include="InnerCore\ICoreCommandContent.cs" />
-    <Compile Include="InnerCore\ICoreCommandContentAbstract.cs" />
+    <Compile Include="InnerCore\Command\CoreCommandException.cs" />
+    <Compile Include="InnerCore\Command\ICoreCommand.cs" />
+    <Compile Include="InnerCore\Command\ICoreCommandAbstract.cs" />
+    <Compile Include="InnerCore\Command\ICoreCommandContent.cs" />
+    <Compile Include="InnerCore\Command\ICoreCommandContentAbstract.cs" />
+    <Compile Include="InnerCore\ICoreCommunicator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

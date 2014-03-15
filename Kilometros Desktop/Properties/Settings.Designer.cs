@@ -58,5 +58,14 @@ namespace KMS.Desktop.Properties {
                 return ((string)(this["KmsApiOAuthSecret"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("60000,60001,35148")]
+        public string KmsUsbPids {
+            get {
+                return ((string)(this["KmsUsbPids"]));
+            }
+        }
     }
 }

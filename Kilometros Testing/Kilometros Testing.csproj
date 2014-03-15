@@ -44,9 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kilometros UsbX\Kilometros UsbX.csproj">
+    <ProjectReference Include="..\Kilometros UsbX\KMS UsbX.csproj">
       <Project>{e1b82fb5-2ab4-47f2-b36c-7b0a695378cf}</Project>
-      <Name>Kilometros UsbX</Name>
+      <Name>KMS UsbX</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

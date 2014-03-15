@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30110.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilometros UsbX", "Kilometros UsbX\Kilometros UsbX.csproj", "{E1B82FB5-2AB4-47F2-B36C-7B0A695378CF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KMS UsbX", "Kilometros UsbX\KMS UsbX.csproj", "{E1B82FB5-2AB4-47F2-B36C-7B0A695378CF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kilometros Testing", "Kilometros Testing\Kilometros Testing.csproj", "{A5C190FF-BEA5-4CD9-8484-DBD788529A8F}"
 EndProject

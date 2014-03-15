@@ -20,7 +20,7 @@
  * ------------------------------------------------------------------------*/
 using System;
 
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
     /// <summary>
     /// Return Values from API

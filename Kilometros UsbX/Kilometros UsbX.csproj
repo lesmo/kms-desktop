@@ -8,8 +8,8 @@
     <ProjectGuid>{E1B82FB5-2AB4-47F2-B36C-7B0A695378CF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kilometros.UsbX</RootNamespace>
-    <AssemblyName>Kilometros.Usb</AssemblyName>
+    <RootNamespace>KMS.UsbX</RootNamespace>
+    <AssemblyName>KMS.Usb</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\Kilometros.Usb.xml</DocumentationFile>
+    <DocumentationFile>bin\Debug\KMS.Usb.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
     <NoWarn>1591</NoWarn>
     <PlatformTarget>x86</PlatformTarget>
@@ -34,45 +34,29 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Kilometros.Usb.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\KMS.Usb.xml</DocumentationFile>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Windows.Forms" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\CradleNotFoundException.cs" />
-    <Compile Include="Exceptions\DeviceNotInCradleException.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="UsbCl\UsbCl.cs" />
-    <Compile Include="UsbX\API.cs" />
-    <Compile Include="UsbX\Constants.cs" />
-    <Compile Include="UsbX\Extensions.cs" />
-    <Compile Include="UsbX\IDevice.cs" />
-    <Compile Include="UsbX\ReadWriteTimeouts.cs" />
-    <Compile Include="UsbX\ReceieveQueueStatus.cs" />
-    <Compile Include="UsbX\USBDevice.cs" />
-    <Compile Include="UsbX\Enums.cs" />
+    <Compile Include="API.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="IDevice.cs" />
+    <Compile Include="ReadWriteTimeouts.cs" />
+    <Compile Include="ReceieveQueueStatus.cs" />
+    <Compile Include="USBDevice.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UsbX\USBXpressNETException.cs" />
+    <Compile Include="USBXpressNETException.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Kilometros.Usb.Base.dll">
+    <Content Include="KMS.Usb.Base.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="app.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

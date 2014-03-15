@@ -20,9 +20,9 @@
  * ------------------------------------------------------------------------*/
 
 using System;
-using Kilometros.UsbX;
+using KMS.UsbX;
 
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
     internal interface IDevice
     {

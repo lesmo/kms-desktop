@@ -20,9 +20,9 @@
  * ------------------------------------------------------------------------*/
 
 using System;
-using Kilometros.UsbX;
+using KMS.UsbX;
 
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
     /// <summary>
     /// USBXpressNET Exception containing the ReturnValue if available from a USBXpress API call

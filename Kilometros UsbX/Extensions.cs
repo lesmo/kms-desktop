@@ -18,7 +18,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * 
  * ------------------------------------------------------------------------*/
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
     /// <summary>
     /// Helper Extensions

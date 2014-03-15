@@ -19,7 +19,7 @@
  * 
  * ------------------------------------------------------------------------*/
 
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
     /// <summary>
     /// Contains Receieve Queue Status

@@ -24,7 +24,7 @@ using System.Globalization;
 using System.Linq;
 
 
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
 	/// <summary>
 	/// USBXpress Device.

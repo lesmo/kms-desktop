@@ -19,7 +19,7 @@
  * 
  * ------------------------------------------------------------------------*/
 
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
     /// <summary>
     /// Holds Read and Write Timeout values

@@ -23,7 +23,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 
-namespace Kilometros.UsbX
+namespace KMS.UsbX
 {
     /// <summary>
     /// Direct API calls using common .NET Signatures
@@ -31,99 +31,99 @@ namespace Kilometros.UsbX
     /// </summary>
     public class API
     {
-        #region [DllImport("Kilometros.Usb.Base.dll")]
-        [DllImport("Kilometros.Usb.Base.dll")]
+        #region [DllImport("KMS.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_GetNumDevices
             (out Int32 lpdwNumDevices);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_GetProductString
             (Int32 dwDeviceNum,
             StringBuilder lpvDeviceString,
             GetProductOptions dwFlags);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_Open
             (Int32 dwDevice,
             out UInt32 cyHandle);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_Close
             (UInt32 cyHandle);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_Read
             (UInt32 cyHandle,
             ref Byte lpBuffer,
             Int32 dwBytesToRead,
             out Int32 lpdwBytesReturned,
             Int32 lpOverlapped);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_Read
             (UInt32 cyHandle,
             ref Byte lpBuffer,
             Int32 dwBytesToRead,
             out Int32 lpdwBytesReturned,
             ref NativeOverlapped lpOverlapped);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_Write
             (UInt32 cyHandle,
             ref Byte lpBuffer,
             Int32 dwBytesToWrite,
             out Int32 lpdwBytesWritten,
             Int32 lpOverlapped);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_SetTimeouts
             (Int32 dwReadTimeout,
             Int32 dwWriteTimeout);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_GetTimeouts
             (out Int32 dwReadTimeout,
             out Int32 dwWriteTimeout);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_CheckRXQueue
             (UInt32 cyHandle,
             out UInt32 lpdwNumBytesInQueue,
             out ReceieveStatusFlags lpdwQueueStatus);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_FlushBuffers
             (UInt32 cyHandle,
             bool FlushTransmit,
             bool FlushReceieve);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_SetBaudRate(uint handle, int dwBaudRate);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_SetLineControl(uint handle, short wLineControl);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_SetFlowControl(uint handle, Byte bCTS_MaskCode,
                                                            Byte bRTS_MaskCode, Byte bDTR_MaskCode, Byte bDSRMaskCode,
                                                            Byte bDCD_MaskCode, Byte bFlowXonXoff);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_GetModemStatus(uint handle, out Byte ModemStatus);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_SetBreak(uint handle, short wBreakState);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_ReadLatch(uint handle, out byte Latch);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_WriteLatch(uint handle, byte Mask, byte Latch);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_GetPartNumber(uint handle, out byte PartNum);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_DeviceIOControl(uint handle, int IOControlCode,
                                                             ref Byte InBuffer, int BytesToRead, ref Byte OutBuffer,
                                                             int BytesToWrite, out int BytesSucceded);
 
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_GetDLLVersion(out int HighVersion, out int LowVersion);
-        [DllImport("Kilometros.Usb.Base.dll")]
+        [DllImport("KMS.Usb.Base.dll")]
         private static extern ReturnValue SI_GetDriverVersion(out int HighVersion, out int LowVersion);
 
 
-        #endregion [DllImport("Kilometros.Usb.Base.dll")]
+        #endregion [DllImport("KMS.Usb.Base.dll")]
 
         #region API
 

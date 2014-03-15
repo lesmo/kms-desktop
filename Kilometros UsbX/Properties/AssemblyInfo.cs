@@ -10,7 +10,7 @@ using System.Resources;
 [assembly: AssemblyDescription("Kilometros Usb Device Interface Driver Communication Library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sharp Dynamics")]
-[assembly: AssemblyProduct("KMS for Windows Desktop")]
+[assembly: AssemblyProduct("KMS for Desktop")]
 [assembly: AssemblyCopyright("Copyright © 2014 - Sharp Dynamics S de RL de CV")]
 [assembly: AssemblyTrademark("Sharp Dynamics, KMS")]
 [assembly: AssemblyCulture("")]
@@ -33,6 +33,6 @@ using System.Resources;
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.0.0.1")]
-[assembly: AssemblyFileVersion("0.0.0.1")]
+[assembly: AssemblyVersion("1.0.1.0")]
+[assembly: AssemblyFileVersion("1.0.0.2")]
 [assembly: NeutralResourcesLanguageAttribute("en")]

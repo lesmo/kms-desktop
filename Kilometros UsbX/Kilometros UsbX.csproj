@@ -45,8 +45,6 @@
   <ItemGroup>
     <Compile Include="Exceptions\CradleNotFoundException.cs" />
     <Compile Include="Exceptions\DeviceNotInCradleException.cs" />
-    <Compile Include="IOTimeouts.cs" />
-    <Compile Include="KmsDevice.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>

@@ -34,6 +34,8 @@ namespace KMS.Comm.InnerCore.CommandResponse {
         }
         private ReadDataResponseContent _commandContent;
 
+        public ReadDataResponse() {
+        }
         public ReadDataResponse(DateTime baseDate) {
             this._commandContent
                 = new ReadDataResponseContent(baseDate);

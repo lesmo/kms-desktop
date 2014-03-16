@@ -78,11 +78,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataSync\UsbDownload\UsbCoreCableNotFound.cs" />
-    <Compile Include="DataSync\UsbDownload\UsbCoreCommandCrcInvalid.cs" />
-    <Compile Include="DataSync\UsbDownload\UsbCoreCommandWriteException.cs" />
-    <Compile Include="DataSync\UsbDownload\UsbCoreCommandWriteTimeout.cs" />
-    <Compile Include="DataSync\UsbDownload\UsbCoreCommunicator.cs" />
+    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCableNotFound.cs" />
+    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandCrcInvalid.cs" />
+    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandException.cs" />
+    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandWriteException.cs" />
+    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandWriteTimeout.cs" />
+    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommunicator.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

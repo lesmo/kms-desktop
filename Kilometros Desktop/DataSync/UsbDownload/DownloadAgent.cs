@@ -7,10 +7,11 @@ using System.ComponentModel;
 using KMS.Desktop.Properties;
 using System.Windows.Forms;
 using KMS.Desktop.Utils;
-using Kilometros.UsbX;
+using KMS.UsbX;
 using KMS.Comm.InnerCore.CommandRequest;
 using KMS.Comm.InnerCore.CommandResponse;
 using KMS.Comm;
+using KMS.Desktop.DataSync.UsbDownload.CoreComm;
 
 namespace KMS.Desktop.UsbSync {
     class DownloadAgent {
@@ -68,51 +69,34 @@ namespace KMS.Desktop.UsbSync {
         }
 
         /// <summary>
-        /// Iniciar la búsqueda de un KMS Inner Core
+        ///     Iniciar la búsqueda de un KMS Inner Core
         /// </summary>
         public void SearchDevice() {
-            // -- Verificar que no se ha llegado al límite máximo de intentos ---
-            if ( this.AwaitAttempts.Value > Settings.Default.KmsUsbMaxConnectionAttempts ) {
-                this.OnDeviceNotFound.CrossInvoke(
-                    this,
-                    new DeviceNotFoundEventArgs(
-                        DeviceNotFoundReason.MaxAttemptsReached
-                    )
-                );
+            UsbCoreCommunicator communicator
+                = null;
 
-                return;
-            } else {
-                try {
-                    KmsDevice device
-                        = new KmsDevice();
-
-                    this.OnDeviceFound.CrossInvoke(
-                        this,
-                        new DeviceFoundEventArgs(device)
-                    );
-
-                    // --- Comenzar la descarga de datos ---
-                    this.GetDeviceData(
-                        device
-                    );
-                } catch ( CradleNotFoundException ) {
-                    this.AwaitAttempts.Value++;
-
-                    // Esperar unos milisegundos y volver a buscar
-                    Thread.Sleep(
-                        Settings.Default.KmsUsbConnectionAttemptSpan
-                    );
-
-                    this.SearchDevice();
-                }
+            try {
+                communicator
+                    = new UsbCoreCommunicator();
+            } catch ( UsbCoreCableNotFound ) {
+                SearchDevice();
             }
+
+            this.OnDeviceFound.CrossInvoke(
+                this,
+                new DeviceFoundEventArgs(
+                    communicator.Device
+                )
+            );
+
+            this.GetDeviceData(communicator);
         }
 
         /// <summary>
         /// Obtiene la información del KMS Inner Core
         /// </summary>
         /// <param name="usb">Objeto que representa el KMS Inner Core</param>
-        public void GetDeviceData(KmsDevice device) {
+        public void GetDeviceData(UsbCoreCommunicator device) {
             // --- Preparar cálculos calendáricos ---
             int diff
                 = DateTime.Now.DayOfWeek - this.SyncSettings.Value.StartWeekday;
@@ -160,40 +144,30 @@ namespace KMS.Desktop.UsbSync {
                             }
                         );
 
-                    byte[] commandWriteBytes
-                        = commandRequest.Serialize();
-                    byte[] commandResponseBytes
-                        =  device.Request(commandWriteBytes);
+                    Data[] data
+                        =  device.Request<Data[]>(
+                            commandRequest,
+                            new ReadDataResponse()
+                        );
 
-                    ReadDataResponse commandResponse
-                        = new ReadDataResponse(currentDate);
-                    try {
-                        commandResponse.Deserialize(commandResponseBytes);
 
-                        foreach ( Data data in commandResponse.CommandContent.Content )
-                            dataRaw.Add(data);
-                    } catch {
-                    }
 
-                } catch ( DeviceNotInCradleException ) {
+                } catch ( UsbCoreCommandException ) {
                     MessageBox.Show(
-                        "El Bloque KMS no está correctamente colocado en el cable.",
+                        "Ocurrió algún error inesperado durante la sincronización.",
                         "Oooops!",
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Exclamation
                     );
 
                     exit = true;
-                } catch ( CoreCommandException ex ) {
-                    if ( ex.Command == InnerCoreCommand.ReadDataResponseComplete )
-                        exit = true;
                 }
 
                 if ( exit ) {
                     this.OnDownloadComplete.CrossInvoke(
                         this,
                         new DownloadCompleteEventArgs(
-                            device,
+                            device.Device,
                             dataRaw.ToArray()
                         )
                     );
@@ -206,6 +180,7 @@ namespace KMS.Desktop.UsbSync {
                         100 - ((endDate - currentDate).TotalMinutes / totalMinutes)
                         * 100
                     );
+
                 this.OnProgressChanged.CrossInvoke(
                     this,
                     new DownloadProgressChangedEventArgs(progress)
@@ -215,7 +190,7 @@ namespace KMS.Desktop.UsbSync {
             this.OnDownloadComplete.CrossInvoke(
                 this,
                 new DownloadCompleteEventArgs(
-                    device,
+                    device.Device,
                     dataRaw.ToArray()
                 )
             );

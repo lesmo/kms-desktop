@@ -104,8 +104,6 @@
     <Compile Include="DataSync\UsbDownload\DownloadCompleteEventArgs.cs" />
     <Compile Include="DataSync\UsbDownload\DownloadAgentSettings.cs" />
     <Compile Include="DataSync\UsbDownload\DownloadProgressChangedEventArgs.cs" />
-    <Compile Include="UsbSync\UploadAgent.cs" />
-    <Compile Include="UsbSync\UploadCompleteEventArgs.cs" />
     <Compile Include="UserControls\FlatProgress.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -179,7 +177,6 @@
       <DependentUpon>Welcome.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="Kilometros Desktop_TemporaryKey.pfx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

@@ -25,25 +25,7 @@ namespace KMS.Desktop.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("100")]
-        public short KmsUsbMaxConnectionAttempts {
-            get {
-                return ((short)(this["KmsUsbMaxConnectionAttempts"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("9999999")]
-        public int KmsUsbConnectionAttemptSpan {
-            get {
-                return ((int)(this["KmsUsbConnectionAttemptSpan"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("97c666e0a1f4487fb7321a7654ac4a68")]
         public string KmsApiOAuthKey {
             get {
                 return ((string)(this["KmsApiOAuthKey"]));
@@ -52,7 +34,7 @@ namespace KMS.Desktop.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("e25e5ec5fd8d476a878326524c625aac")]
         public string KmsApiOAuthSecret {
             get {
                 return ((string)(this["KmsApiOAuthSecret"]));

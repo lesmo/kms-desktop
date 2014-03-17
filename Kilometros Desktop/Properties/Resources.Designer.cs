@@ -63,9 +63,9 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap conexion {
+        public static System.Drawing.Bitmap KMSConnectDevice {
             get {
-                object obj = ResourceManager.GetObject("conexion", resourceCulture);
+                object obj = ResourceManager.GetObject("KMSConnectDevice", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -73,29 +73,9 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap fondo {
+        public static System.Drawing.Bitmap KMSLogo {
             get {
-                object obj = ResourceManager.GetObject("fondo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap fondo_pulsera {
-            get {
-                object obj = ResourceManager.GetObject("fondo_pulsera", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap KMS_logo {
-            get {
-                object obj = ResourceManager.GetObject("KMS_logo", resourceCulture);
+                object obj = ResourceManager.GetObject("KMSLogo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

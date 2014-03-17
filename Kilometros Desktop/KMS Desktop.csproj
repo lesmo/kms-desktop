@@ -48,7 +48,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Kilometros_Desktop.Program</StartupObject>
+    <StartupObject>KMS.Desktop.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>KMS Icon.ico</ApplicationIcon>
@@ -78,18 +78,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCableNotFound.cs" />
-    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandCrcInvalid.cs" />
-    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandException.cs" />
-    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandWriteException.cs" />
-    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommandWriteTimeout.cs" />
-    <Compile Include="DataSync\UsbDownload\CoreComm\UsbCoreCommunicator.cs" />
-    <Compile Include="Form1.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Controllers\IController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="DataSync\UsbCoreComm\UsbCoreCableNotFound.cs" />
+    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandCrcInvalid.cs" />
+    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandException.cs" />
+    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteException.cs" />
+    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteTimeout.cs" />
+    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommunicator.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -104,47 +101,65 @@
     <Compile Include="DataSync\UsbDownload\DownloadCompleteEventArgs.cs" />
     <Compile Include="DataSync\UsbDownload\DownloadAgentSettings.cs" />
     <Compile Include="DataSync\UsbDownload\DownloadProgressChangedEventArgs.cs" />
-    <Compile Include="UserControls\FlatProgress.cs">
+    <Compile Include="UserControls\KMSFlatProgressBar.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\FlatProgress.Designer.cs">
-      <DependentUpon>FlatProgress.cs</DependentUpon>
+    <Compile Include="UserControls\KMSFlatProgressBar.Designer.cs">
+      <DependentUpon>KMSFlatProgressBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\DelegateExpansion.cs" />
     <Compile Include="Utils\Synchronized.cs" />
-    <Compile Include="Views\DeviceLink.cs">
+    <Compile Include="Views\DeviceFirstConnect.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\DeviceLink.Designer.cs">
-      <DependentUpon>DeviceLink.cs</DependentUpon>
+    <Compile Include="Views\DeviceFirstConnect.Designer.cs">
+      <DependentUpon>DeviceFirstConnect.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\DeviceSync.cs">
+    <Compile Include="Views\DeviceSyncing.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\DeviceSync.Designer.cs">
-      <DependentUpon>DeviceSync.cs</DependentUpon>
+    <Compile Include="Views\DeviceSyncing.Designer.cs">
+      <DependentUpon>DeviceSyncing.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Login.cs">
+    <Compile Include="Views\Events\BasicLoginEventArgs.cs" />
+    <Compile Include="Views\Events\RegisterContinueEventArgs.cs" />
+    <Compile Include="Views\Events\SetPasswordEventArgs.cs" />
+    <Compile Include="Views\LoginRegister.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Login.Designer.cs">
-      <DependentUpon>Login.cs</DependentUpon>
+    <Compile Include="Views\LoginRegister.Designer.cs">
+      <DependentUpon>LoginRegister.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\RegisterProfile.cs">
+    <Compile Include="Views\Register.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\RegisterProfile.Designer.cs">
-      <DependentUpon>RegisterProfile.cs</DependentUpon>
+    <Compile Include="Views\Register.Designer.cs">
+      <DependentUpon>Register.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Welcome.cs">
+    <Compile Include="Views\RegisterAddSocial.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Welcome.Designer.cs">
-      <DependentUpon>Welcome.cs</DependentUpon>
+    <Compile Include="Views\RegisterAddSocial.Designer.cs">
+      <DependentUpon>RegisterAddSocial.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="Views\RegisterCreatePassword.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\RegisterCreatePassword.Designer.cs">
+      <DependentUpon>RegisterCreatePassword.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegisterInProgress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\RegisterInProgress.Designer.cs">
+      <DependentUpon>RegisterInProgress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WebView.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\WebView.Designer.cs">
+      <DependentUpon>WebView.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -158,23 +173,32 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControls\FlatProgress.resx">
-      <DependentUpon>FlatProgress.cs</DependentUpon>
+    <EmbeddedResource Include="UserControls\KMSFlatProgressBar.resx">
+      <DependentUpon>KMSFlatProgressBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\DeviceLink.resx">
-      <DependentUpon>DeviceLink.cs</DependentUpon>
+    <EmbeddedResource Include="Views\DeviceFirstConnect.resx">
+      <DependentUpon>DeviceFirstConnect.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\DeviceSync.resx">
-      <DependentUpon>DeviceSync.cs</DependentUpon>
+    <EmbeddedResource Include="Views\DeviceSyncing.resx">
+      <DependentUpon>DeviceSyncing.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Login.resx">
-      <DependentUpon>Login.cs</DependentUpon>
+    <EmbeddedResource Include="Views\LoginRegister.resx">
+      <DependentUpon>LoginRegister.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\RegisterProfile.resx">
-      <DependentUpon>RegisterProfile.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Register.resx">
+      <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Welcome.resx">
-      <DependentUpon>Welcome.cs</DependentUpon>
+    <EmbeddedResource Include="Views\RegisterAddSocial.resx">
+      <DependentUpon>RegisterAddSocial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RegisterCreatePassword.resx">
+      <DependentUpon>RegisterCreatePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RegisterInProgress.resx">
+      <DependentUpon>RegisterInProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\WebView.resx">
+      <DependentUpon>WebView.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="Properties\Settings.settings">
@@ -199,11 +223,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="KMS Icon.ico" />
-    <Content Include="Resources\conexion.jpg" />
-    <Content Include="Resources\conexion.png" />
-    <Content Include="Resources\fondo.png" />
-    <Content Include="Resources\fondo_pulsera.png" />
-    <Content Include="Resources\KMS_logo.png" />
+    <Content Include="Resources\KMS-ConnectDevice.png" />
+    <None Include="Resources\KMS-Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -216,6 +237,9 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataSync\UsbPrepare\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

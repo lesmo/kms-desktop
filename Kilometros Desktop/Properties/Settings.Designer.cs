@@ -49,5 +49,29 @@ namespace KMS.Desktop.Properties {
                 return ((string)(this["KmsUsbPids"]));
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string KmsCloudToken {
+            get {
+                return ((string)(this["KmsCloudToken"]));
+            }
+            set {
+                this["KmsCloudToken"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string KmsCloudTokenSecret {
+            get {
+                return ((string)(this["KmsCloudTokenSecret"]));
+            }
+            set {
+                this["KmsCloudTokenSecret"] = value;
+            }
+        }
     }
 }

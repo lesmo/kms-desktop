@@ -11,32 +11,28 @@ using KMS.UsbX;
 using KMS.Comm.InnerCore.CommandRequest;
 using KMS.Comm.InnerCore.CommandResponse;
 using KMS.Comm;
-using KMS.Desktop.DataSync.UsbDownload.CoreComm;
+using KMS.Desktop.DataSync.UsbCoreComm;
+using KMS.Comm.InnerCore;
 
 namespace KMS.Desktop.UsbSync {
     class DownloadAgent {
-        public delegate void OnDeviceFoundDelegate(object sender, DeviceFoundEventArgs e);
-        public delegate void OnDownloadCompleteDelegate(object sender, DownloadCompleteEventArgs e);
-        public delegate void OnDeviceNotFoundDelegate(object sender, DeviceNotFoundEventArgs e);
-        public delegate void OnProgressChangedDelegate(object sender, DownloadProgressChangedEventArgs e);
-
         /// <summary>
         /// Evento lanzado al encontrarse un KMS Inner Core durante el proceso de sincronización
         /// </summary>
-        public event OnDeviceFoundDelegate OnDeviceFound;
+        public event EventHandler<DeviceFoundEventArgs> OnDeviceFound;
         /// <summary>
         /// Evento lanzado al NO encontrarse un KMS Inner Core durante el proceso de sincronización
         /// </summary>
-        public event OnDeviceNotFoundDelegate OnDeviceNotFound;
+        public event EventHandler<DeviceNotFoundEventArgs> OnDeviceNotFound;
         /// <summary>
         /// Evento lanzado al completarse la sincronización de un dispositivo
         /// </summary>
-        public event OnDownloadCompleteDelegate OnDownloadComplete;
+        public event EventHandler<DownloadCompleteEventArgs> OnDownloadComplete;
         /// <summary>
         /// Evento lanzado al cambiars el progreso de sincronización de un dispositivo
         /// </summary>
-        public event OnProgressChangedDelegate OnProgressChanged;
- 
+        public event EventHandler<DownloadProgressChangedEventArgs> OnProgressChanged;
+        
         /// <summary>
         /// Especifica las configuraciones a utilizar para el proceso de descarga de datos del KMS Inner Core.
         /// </summary>
@@ -44,13 +40,7 @@ namespace KMS.Desktop.UsbSync {
             = new Synchronized<DownloadAgentSettings>(
                 new DownloadAgentSettings()
             );
-
-        /// <summary>
-        /// Contiene el número de intentos hechos de buscar y encontrar un KMS Inner Core.
-        /// </summary>
-        private Synchronized<int> AwaitAttempts
-            = new Synchronized<int>(0);
-
+        
         /// <summary>
         /// Inicia el proceso de sincronización de datos del KMS Inner Core.
         /// </summary>
@@ -58,14 +48,10 @@ namespace KMS.Desktop.UsbSync {
         public void DownloadData(DownloadAgentSettings syncSettings) {
             this.SyncSettings.Value
                 = syncSettings;
-            this.AwaitAttempts.Value
-                = 0;
-
-            Thread asyncDeviceSearch
-                = new Thread(
-                    new ThreadStart(this.SearchDevice)
-                );
-            asyncDeviceSearch.Start();
+            
+            (new Thread(
+                new ThreadStart(this.SearchDevice)
+            )).Start();
         }
 
         /// <summary>
@@ -145,13 +131,10 @@ namespace KMS.Desktop.UsbSync {
                         );
 
                     Data[] data
-                        =  device.Request<Data[]>(
+                        =  device.Request<DataReadTimeSpan, Data[]>(
                             commandRequest,
                             new ReadDataResponse()
                         );
-
-
-
                 } catch ( UsbCoreCommandException ) {
                     MessageBox.Show(
                         "Ocurrió algún error inesperado durante la sincronización.",

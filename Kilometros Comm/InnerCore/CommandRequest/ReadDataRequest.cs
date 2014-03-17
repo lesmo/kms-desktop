@@ -11,7 +11,7 @@ namespace KMS.Comm.InnerCore.CommandRequest {
             = 0;
     }
 
-    public sealed class ReadDataRequest : ICoreCommand<DataReadTimeSpan>, ICoreCommand {
+    public sealed class ReadDataRequest : ICoreCommand<DataReadTimeSpan> {
         protected override InnerCoreCommand Command {
             get {
                 return InnerCoreCommand.ReadDataRequest;

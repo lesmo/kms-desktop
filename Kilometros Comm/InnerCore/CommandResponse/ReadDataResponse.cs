@@ -17,7 +17,7 @@ namespace KMS.Comm.InnerCore.CommandResponse {
         public DataActivity Activity;
     }
 
-    public class ReadDataResponse: ICoreCommand<Data[]>, ICoreCommand {
+    public class ReadDataResponse: ICoreCommand<Data[]> {
         protected override InnerCoreCommand Command {
             get {
                 return InnerCoreCommand.ReadDataResponse;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace KMS.Comm.InnerCore.CommandRequest {
-    public sealed class FactoryResetRequest : ICoreCommand<object>, ICoreCommand {
+    public sealed class FactoryResetRequest : ICoreCommand<object> {
         protected override InnerCoreCommand Command {
             get {
                 return InnerCoreCommand.FactoryResetRequest;

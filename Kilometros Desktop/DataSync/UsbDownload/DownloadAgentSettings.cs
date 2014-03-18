@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KMS.Desktop.UsbSync {
+namespace KMS.Desktop.DataSync.UsbDownload {
     class DownloadAgentSettings {
         public DayOfWeek StartWeekday = DayOfWeek.Sunday;
         public TimeSpan Time = new TimeSpan(0);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KMS.Desktop.UsbSync {
+namespace KMS.Desktop.DataSync.UsbDownload {
     enum DeviceNotFoundReason {
         MaxAttemptsReached,
         NotFoundOnUniqueAttempt,

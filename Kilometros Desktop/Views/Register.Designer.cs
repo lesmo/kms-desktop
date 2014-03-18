@@ -504,7 +504,7 @@
             this.TermsAndConditionsLinkLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(147)))), ((int)(((byte)(147)))));
             this.TermsAndConditionsLinkLabel.LinkArea = new System.Windows.Forms.LinkArea(70, 115);
             this.TermsAndConditionsLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.AlwaysUnderline;
-            this.TermsAndConditionsLinkLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(205)))), ((int)(((byte)(219)))));
+            this.TermsAndConditionsLinkLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
             this.TermsAndConditionsLinkLabel.Location = new System.Drawing.Point(30, 289);
             this.TermsAndConditionsLinkLabel.Margin = new System.Windows.Forms.Padding(30, 7, 20, 0);
             this.TermsAndConditionsLinkLabel.Name = "TermsAndConditionsLinkLabel";

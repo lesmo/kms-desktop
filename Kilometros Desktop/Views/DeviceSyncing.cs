@@ -21,7 +21,7 @@ namespace KMS.Desktop.Views {
             }
         }
 
-        public string StatusLabel {
+        public string Status {
             get {
                 return this.ProgressLabel.Text;
             }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace KMS.Desktop.Views.Events {
-    class BasicLoginEventArgs : EventArgs {
+    public class BasicLoginEventArgs : EventArgs {
         public string Email {
             get;
             private set;

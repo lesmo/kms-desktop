@@ -14,16 +14,12 @@ using KMS.Comm;
 using KMS.Desktop.DataSync.UsbCoreComm;
 using KMS.Comm.InnerCore;
 
-namespace KMS.Desktop.UsbSync {
+namespace KMS.Desktop.DataSync.UsbDownload {
     class DownloadAgent {
         /// <summary>
         /// Evento lanzado al encontrarse un KMS Inner Core durante el proceso de sincronización
         /// </summary>
         public event EventHandler<DeviceFoundEventArgs> OnDeviceFound;
-        /// <summary>
-        /// Evento lanzado al NO encontrarse un KMS Inner Core durante el proceso de sincronización
-        /// </summary>
-        public event EventHandler<DeviceNotFoundEventArgs> OnDeviceNotFound;
         /// <summary>
         /// Evento lanzado al completarse la sincronización de un dispositivo
         /// </summary>

@@ -117,7 +117,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::KMS.Desktop.Properties.Resources.KMS_ConnectDevice;
+            this.pictureBox1.Image = global::KMS.Desktop.Properties.Resources.KMSConnectDevice;
             this.pictureBox1.Location = new System.Drawing.Point(3, 20);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
             this.pictureBox1.Name = "pictureBox1";

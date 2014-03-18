@@ -12,6 +12,7 @@ namespace KMS.Desktop.Views {
     public partial class LoginRegister : UserControl {
         private Color AttentionColor;
         private Color OriginalLineColor;
+        private Color OriginalTextBoxForeColor;
 
         private string OriginalEmailText;
         private string OriginalPasswordText;
@@ -20,7 +21,7 @@ namespace KMS.Desktop.Views {
         public event EventHandler<EventArgs> FacebookLoginClick;
         public event EventHandler<EventArgs> TwitterLoginClick;
         public event EventHandler<EventArgs> RegisterClick;
-
+        
         public LoginRegister() {
             InitializeComponent();
 
@@ -33,9 +34,34 @@ namespace KMS.Desktop.Views {
                 = this.EmailTextBox.Text;
             this.OriginalPasswordText
                 = this.PasswordTextBox.Text;
+            this.OriginalTextBoxForeColor
+                = this.EmailTextBox.ForeColor;
+        }
+
+        public void ShowWrongCredentials() {
+            this.EmailTextBox.Parent.BackColor
+                = this.AttentionColor;
+            this.PasswordTextBox.Parent.BackColor
+                = this.AttentionColor;
+
+            this.EmailTextBox.ForeColor
+                = this.AttentionColor;
+            this.PasswordTextBox.ForeColor
+                = this.AttentionColor;
+
+            this.WrongLoginCredentialsLabel.Visible
+                = true;
+            
+            this.EmailTextBox.Focus();
+            this.EmailTextBox.SelectAll();
         }
 
         private void LoginButton_Click(object sender, EventArgs e) {
+            this.EmailTextBox.ForeColor
+                = this.OriginalTextBoxForeColor;
+            this.PasswordTextBox.ForeColor
+                = this.OriginalTextBoxForeColor;
+
             if ( string.IsNullOrEmpty(this.EmailTextBox.Text) ) {
                 this.EmailTextBox.Parent.BackColor
                     = this.AttentionColor;
@@ -93,6 +119,15 @@ namespace KMS.Desktop.Views {
                 this,
                 e
             );
+        }
+
+        private void EmailTextBox_Enter(object sender, EventArgs e) {
+            if ( this.EmailTextBox.Text == this.OriginalEmailText )
+                this.EmailTextBox.SelectAll();
+        }
+
+        private void PasswordTextBox_Enter(object sender, EventArgs e) {
+            this.PasswordTextBox.SelectAll();
         }
     }
 }

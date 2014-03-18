@@ -78,8 +78,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DevicePrepareController.cs" />
+    <Compile Include="Controllers\DeviceSyncingController.cs" />
+    <Compile Include="Controllers\Events\Login3rdSuccessfulEventArgs.cs" />
+    <Compile Include="Controllers\Events\LoginUnsuccessfulEventArgs.cs" />
+    <Compile Include="Controllers\Events\RegisterUnsuccessfulEventArgs.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LoginTwitterController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCableNotFound.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandCrcInvalid.cs" />
@@ -87,6 +93,11 @@
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteException.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteTimeout.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommunicator.cs" />
+    <Compile Include="LocalizationStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LocalizationStrings.resx</DependentUpon>
+    </Compile>
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,6 +159,18 @@
     <Compile Include="Views\RegisterCreatePassword.Designer.cs">
       <DependentUpon>RegisterCreatePassword.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\LoginInProgress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\LoginInProgress.Designer.cs">
+      <DependentUpon>LoginInProgress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\RegisterError.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\RegisterError.Designer.cs">
+      <DependentUpon>RegisterError.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\RegisterInProgress.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -160,6 +183,10 @@
     <Compile Include="Views\WebView.Designer.cs">
       <DependentUpon>WebView.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="LocalizationStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LocalizationStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Main.resx">
       <DependentUpon>Main.cs</DependentUpon>
     </EmbeddedResource>
@@ -193,6 +220,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\RegisterCreatePassword.resx">
       <DependentUpon>RegisterCreatePassword.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\LoginInProgress.resx">
+      <DependentUpon>LoginInProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\RegisterError.resx">
+      <DependentUpon>RegisterError.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\RegisterInProgress.resx">
       <DependentUpon>RegisterInProgress.cs</DependentUpon>

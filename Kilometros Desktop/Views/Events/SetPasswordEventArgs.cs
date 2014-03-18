@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace KMS.Desktop.Views.Events {
-    class SetPasswordEventArgs : EventArgs {
+    public class SetPasswordEventArgs : EventArgs {
         public string Password {
             get;
             private set;

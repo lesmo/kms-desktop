@@ -32,8 +32,8 @@
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.Password2TextBox = new System.Windows.Forms.TextBox();
-            this.SetPasswordButton = new System.Windows.Forms.Button();
             this.PasswordMismatchLabel = new System.Windows.Forms.Label();
+            this.SetPasswordButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -141,6 +141,20 @@
             this.Password2TextBox.Text = "************";
             this.Password2TextBox.UseSystemPasswordChar = true;
             // 
+            // PasswordMismatchLabel
+            // 
+            this.PasswordMismatchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.PasswordMismatchLabel.AutoSize = true;
+            this.PasswordMismatchLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.PasswordMismatchLabel.Location = new System.Drawing.Point(200, 125);
+            this.PasswordMismatchLabel.Margin = new System.Windows.Forms.Padding(200, 5, 200, 0);
+            this.PasswordMismatchLabel.Name = "PasswordMismatchLabel";
+            this.PasswordMismatchLabel.Size = new System.Drawing.Size(221, 17);
+            this.PasswordMismatchLabel.TabIndex = 17;
+            this.PasswordMismatchLabel.Text = "Las contraseñas no coinciden";
+            this.PasswordMismatchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.PasswordMismatchLabel.Visible = false;
+            // 
             // SetPasswordButton
             // 
             this.SetPasswordButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -156,20 +170,6 @@
             this.SetPasswordButton.Text = "¡LISTO!";
             this.SetPasswordButton.UseVisualStyleBackColor = false;
             this.SetPasswordButton.Click += new System.EventHandler(this.SetPasswordButton_Click);
-            // 
-            // PasswordMismatchLabel
-            // 
-            this.PasswordMismatchLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.PasswordMismatchLabel.AutoSize = true;
-            this.PasswordMismatchLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
-            this.PasswordMismatchLabel.Location = new System.Drawing.Point(200, 125);
-            this.PasswordMismatchLabel.Margin = new System.Windows.Forms.Padding(200, 5, 200, 0);
-            this.PasswordMismatchLabel.Name = "PasswordMismatchLabel";
-            this.PasswordMismatchLabel.Size = new System.Drawing.Size(221, 17);
-            this.PasswordMismatchLabel.TabIndex = 17;
-            this.PasswordMismatchLabel.Text = "Las contraseñas no coinciden";
-            this.PasswordMismatchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.PasswordMismatchLabel.Visible = false;
             // 
             // RegisterCreatePassword
             // 

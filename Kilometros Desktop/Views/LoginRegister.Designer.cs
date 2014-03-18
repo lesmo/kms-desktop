@@ -39,6 +39,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.FacebookLoginButton = new System.Windows.Forms.Button();
             this.TwitterLoginButton = new System.Windows.Forms.Button();
+            this.WrongLoginCredentialsLabel = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -58,7 +59,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(646, 371);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(646, 388);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // flowLayoutPanel2
@@ -70,7 +71,7 @@
             this.flowLayoutPanel2.Location = new System.Drawing.Point(333, 0);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(303, 371);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(303, 388);
             this.flowLayoutPanel2.TabIndex = 3;
             // 
             // label2
@@ -119,6 +120,7 @@
             this.flowLayoutPanel1.Controls.Add(this.label3);
             this.flowLayoutPanel1.Controls.Add(this.panel1);
             this.flowLayoutPanel1.Controls.Add(this.panel3);
+            this.flowLayoutPanel1.Controls.Add(this.WrongLoginCredentialsLabel);
             this.flowLayoutPanel1.Controls.Add(this.LoginButton);
             this.flowLayoutPanel1.Controls.Add(this.label4);
             this.flowLayoutPanel1.Controls.Add(this.FacebookLoginButton);
@@ -128,7 +130,7 @@
             this.flowLayoutPanel1.Location = new System.Drawing.Point(10, 0);
             this.flowLayoutPanel1.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(303, 371);
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(303, 388);
             this.flowLayoutPanel1.TabIndex = 2;
             // 
             // label1
@@ -177,6 +179,7 @@
             this.EmailTextBox.Size = new System.Drawing.Size(241, 15);
             this.EmailTextBox.TabIndex = 0;
             this.EmailTextBox.Text = "E-mail";
+            this.EmailTextBox.Enter += new System.EventHandler(this.EmailTextBox_Enter);
             // 
             // panel3
             // 
@@ -200,6 +203,7 @@
             this.PasswordTextBox.TabIndex = 0;
             this.PasswordTextBox.Text = "************";
             this.PasswordTextBox.UseSystemPasswordChar = true;
+            this.PasswordTextBox.Enter += new System.EventHandler(this.PasswordTextBox_Enter);
             // 
             // LoginButton
             // 
@@ -208,8 +212,8 @@
             this.LoginButton.FlatAppearance.BorderSize = 0;
             this.LoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LoginButton.ForeColor = System.Drawing.Color.White;
-            this.LoginButton.Location = new System.Drawing.Point(30, 158);
-            this.LoginButton.Margin = new System.Windows.Forms.Padding(30, 15, 30, 3);
+            this.LoginButton.Location = new System.Drawing.Point(30, 190);
+            this.LoginButton.Margin = new System.Windows.Forms.Padding(30, 7, 30, 3);
             this.LoginButton.Name = "LoginButton";
             this.LoginButton.Size = new System.Drawing.Size(242, 35);
             this.LoginButton.TabIndex = 8;
@@ -221,8 +225,8 @@
             // 
             this.label4.AutoSize = true;
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(147)))), ((int)(((byte)(147)))));
-            this.label4.Location = new System.Drawing.Point(3, 219);
-            this.label4.Margin = new System.Windows.Forms.Padding(3, 23, 3, 0);
+            this.label4.Location = new System.Drawing.Point(3, 238);
+            this.label4.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(296, 34);
             this.label4.TabIndex = 9;
@@ -235,7 +239,7 @@
             this.FacebookLoginButton.FlatAppearance.BorderSize = 0;
             this.FacebookLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.FacebookLoginButton.ForeColor = System.Drawing.Color.White;
-            this.FacebookLoginButton.Location = new System.Drawing.Point(30, 268);
+            this.FacebookLoginButton.Location = new System.Drawing.Point(30, 287);
             this.FacebookLoginButton.Margin = new System.Windows.Forms.Padding(30, 15, 30, 3);
             this.FacebookLoginButton.Name = "FacebookLoginButton";
             this.FacebookLoginButton.Size = new System.Drawing.Size(242, 35);
@@ -251,7 +255,7 @@
             this.TwitterLoginButton.FlatAppearance.BorderSize = 0;
             this.TwitterLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.TwitterLoginButton.ForeColor = System.Drawing.Color.White;
-            this.TwitterLoginButton.Location = new System.Drawing.Point(30, 313);
+            this.TwitterLoginButton.Location = new System.Drawing.Point(30, 332);
             this.TwitterLoginButton.Margin = new System.Windows.Forms.Padding(30, 7, 30, 3);
             this.TwitterLoginButton.Name = "TwitterLoginButton";
             this.TwitterLoginButton.Size = new System.Drawing.Size(242, 35);
@@ -259,6 +263,25 @@
             this.TwitterLoginButton.Text = "LOGIN CON TWITTER";
             this.TwitterLoginButton.UseVisualStyleBackColor = false;
             this.TwitterLoginButton.Click += new System.EventHandler(this.TwitterLoginButton_Click);
+            // 
+            // WrongLoginCredentialsLabel
+            // 
+            this.WrongLoginCredentialsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.WrongLoginCredentialsLabel.AutoSize = true;
+            this.WrongLoginCredentialsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.WrongLoginCredentialsLabel.LinkArea = new System.Windows.Forms.LinkArea(32, 58);
+            this.WrongLoginCredentialsLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.WrongLoginCredentialsLabel.Location = new System.Drawing.Point(30, 148);
+            this.WrongLoginCredentialsLabel.Margin = new System.Windows.Forms.Padding(30, 5, 30, 0);
+            this.WrongLoginCredentialsLabel.Name = "WrongLoginCredentialsLabel";
+            this.WrongLoginCredentialsLabel.Size = new System.Drawing.Size(242, 35);
+            this.WrongLoginCredentialsLabel.TabIndex = 12;
+            this.WrongLoginCredentialsLabel.TabStop = true;
+            this.WrongLoginCredentialsLabel.Text = "E-mail o contraseña incorrectos. ¿Olvidaste tu contraseña?";
+            this.WrongLoginCredentialsLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.WrongLoginCredentialsLabel.UseCompatibleTextRendering = true;
+            this.WrongLoginCredentialsLabel.Visible = false;
+            this.WrongLoginCredentialsLabel.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
             // 
             // LoginRegister
             // 
@@ -268,7 +291,7 @@
             this.Controls.Add(this.tableLayoutPanel1);
             this.Margin = new System.Windows.Forms.Padding(0);
             this.Name = "LoginRegister";
-            this.Padding = new System.Windows.Forms.Padding(17);
+            this.Padding = new System.Windows.Forms.Padding(17, 17, 17, 0);
             this.Size = new System.Drawing.Size(680, 405);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.flowLayoutPanel2.ResumeLayout(false);
@@ -301,6 +324,7 @@
         private System.Windows.Forms.Button FacebookLoginButton;
         private System.Windows.Forms.Button TwitterLoginButton;
         private System.Windows.Forms.Button RegisterButton;
+        private System.Windows.Forms.LinkLabel WrongLoginCredentialsLabel;
 
 
     }

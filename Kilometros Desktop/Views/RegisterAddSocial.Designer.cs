@@ -167,10 +167,10 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button FacebookLoginButton;
-        private System.Windows.Forms.Button TwitterLoginButton;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        private System.Windows.Forms.Button SkipButton;
+        internal System.Windows.Forms.Button FacebookLoginButton;
+        internal System.Windows.Forms.Button TwitterLoginButton;
+        internal System.Windows.Forms.Button SkipButton;
 
     }
 }

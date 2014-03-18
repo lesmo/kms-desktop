@@ -1,4 +1,7 @@
-﻿using System;
+﻿using KMS.Comm.Cloud;
+using KMS.Comm.Cloud.OAuth;
+using KMS.Desktop.Properties;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,15 +15,78 @@ namespace KMS.Desktop {
     public partial class Main : Form {
         private Stack<Controllers.IController> PaneHistory
             = new Stack<Controllers.IController>();
-
-        public Main() {
-            InitializeComponent();
-            this.LoginPane_Go();
+        internal KMSCloudClient CloudAPI {
+            get;
+            private set;
         }
 
-        public Main(Controllers.IController pane) {
+        internal OAuthClient TwitterAPI {
+            get;
+            private set;
+        }
+
+        internal UserControl CurrentPane {
+            get {
+                return this.PaneHistory.Peek().ViewGeneric;
+            }
+        }
+        
+        public Main() {
             InitializeComponent();
-            this.NextPane(pane);
+
+            this.CloudAPI = new KMSCloudClient(
+                new KMSCloudUris() {
+                    BaseUri
+                        = new Uri(Settings.Default.KmsCloudUri),
+                    ExchangeTokenResource
+                        = "oauth/access_token",
+                    RequestTokenResource
+                        = "oauth/request_token",
+                    KmsSessionResource
+                        = "session",
+                    AuthorizationResource
+                        = "oauth/authorize"
+                },
+                new OAuthCryptoSet(
+                    Settings.Default.KmsApiOAuthKey,
+                    Settings.Default.KmsApiOAuthSecret
+                )
+            );
+
+            if (
+                !string.IsNullOrEmpty(Settings.Default.KmsCloudToken)
+                && !string.IsNullOrEmpty(Settings.Default.KmsCloudTokenSecret)
+            ) {
+                this.CloudAPI.Token
+                    = new OAuthCryptoSet(
+                        Settings.Default.KmsCloudToken,
+                        Settings.Default.KmsCloudTokenSecret
+                    );
+            }
+
+            this.TwitterAPI
+                = new OAuthClient(
+                    new OAuthClientUris() {
+                        BaseUri
+                            = new Uri("https://api.twitter.com/"),
+                        RequestTokenResource
+                            = "oauth/request_token",
+                        ExchangeTokenResource
+                            = "oauth/access_token",
+                        AuthorizationResource
+                            = "oauth/authorize"
+                    },
+                    new OAuthCryptoSet(
+                        "rxYNTbTkssfQHC5lgag",
+                        "085mxc60cNcrozw2Hh0P6UdIhqIvVE87qMJYXd2TIc"
+                    )
+                );
+
+            this.InitPane();
+        }
+
+        public void InitPane() {
+            this.LoginPane_Go();
         }
 
         public enum PaneAnimation {
@@ -28,13 +94,18 @@ namespace KMS.Desktop {
             PushRight
         }
 
-        private void AnimatePanes(
+        public void AnimatePanes(
             UserControl oldPane,
             UserControl newPane,
             PaneAnimation animation
         ) {
             newPane.Parent
                 = this.ContentPanel;
+            newPane.Size
+                = new Size(
+                    this.ContentPanel.Width,
+                    this.ContentPanel.Height
+                );
             newPane.Show();
 
             if ( oldPane != null ) {
@@ -80,7 +151,7 @@ namespace KMS.Desktop {
                     if ( oldPane != null )
                         oldPane.Location
                             = new Point(
-                                oldPane.Location.X + frame * frame,
+                                oldPane.Location.X + frame * frame * 100 / 1,
                                 0
                             );
 
@@ -159,6 +230,27 @@ namespace KMS.Desktop {
                     new Views.Register()
                 )
             );
+        }
+
+        internal void PrepareDevice_Go() {
+            this.NextPane(
+                new Controllers.DevicePrepareController(
+                    this,
+                    new Views.DeviceFirstConnect()
+                )
+            );
+        }
+
+        internal void SyncDevice_Go() {
+            this.NextPane(
+                new Controllers.DeviceSyncingController(
+                    this,
+                    new Views.DeviceSyncing()
+                )
+            );
+
+            //((Controllers.DeviceSyncingController)this.PaneHistory.Peek())
+            //    .InitSync();
         }
 
         private void Main_Load(object sender, EventArgs e) {

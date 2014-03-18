@@ -73,5 +73,14 @@ namespace KMS.Desktop.Properties {
                 this["KmsCloudTokenSecret"] = value;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://api.kms.me/")]
+        public string KmsCloudUri {
+            get {
+                return ((string)(this["KmsCloudUri"]));
+            }
+        }
     }
 }

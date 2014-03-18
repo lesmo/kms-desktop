@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 
 namespace KMS.Comm.Cloud.OAuth {
-    class OAuthUnexpectedResponse : Exception {
+    public class OAuthUnexpectedResponse : Exception {
     }
 }

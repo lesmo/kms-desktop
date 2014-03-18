@@ -190,8 +190,16 @@ namespace KMS.Comm.Cloud {
                     requestParameters
                 );
 
-            if ( response.StatusCode != HttpStatusCode.OK || response.StatusCode != HttpStatusCode.Created )
+            if (
+                response.StatusCode != HttpStatusCode.OK
+                || response.StatusCode != HttpStatusCode.Created
+                || response.StatusCode != HttpStatusCode.NotFound
+            ) {
                 throw new KMSScrewYou();
+            }
+
+            if ( response.StatusCode == HttpStatusCode.NotFound )
+                throw new KMSWrongUserCredentials();
 
             string kmsOAuthToken
                 = response.Response.Get("oauth_token");

@@ -58,6 +58,7 @@
     <Compile Include="Cloud\OAuth\OAuthResponse.cs" />
     <Compile Include="Cloud\OAuth\OAuthUnexpectedRequest.cs" />
     <Compile Include="Cloud\OAuth\OAuthUnexpectedResponse.cs" />
+    <Compile Include="Cloud\TwitterClient.cs" />
     <Compile Include="InnerCore\CommandRequest\FactoryResetRequest.cs" />
     <Compile Include="InnerCore\CommandRequest\ReadDataRequest.cs" />
     <Compile Include="InnerCore\CommandResponse\FactoryResetResponse.cs" />

@@ -8,6 +8,7 @@ using System.Net;
 using System.Security.Cryptography;
 using System.IO;
 using System.Collections.Specialized;
+using Newtonsoft.Json.Linq;
 
 namespace KMS.Comm.Cloud.OAuth {
     /// <summary>
@@ -626,7 +627,8 @@ namespace KMS.Comm.Cloud.OAuth {
         }
 
         /// <summary>
-        ///     Realizar una nueva petición al recurso OAuth especificado, deserializando la respuesta en JSON.
+        ///     Realizar una nueva petición al recurso OAuth especificado, deserializando la respuesta en JSON
+        ///     hacia el tipo de objeto especificado.
         /// </summary>
         /// <typeparam name="T">
         ///     Tipo al que se realizará la deserialización de la respuesta JSON.
@@ -677,6 +679,53 @@ namespace KMS.Comm.Cloud.OAuth {
                 response.Headers,
                 responseObject,
                 response.RawResponse
+            );
+        }
+
+        /// <summary>
+        ///     Realizar una nueva petición al recurso OAuth especificado, deserializando la respuesta en JSON.
+        /// </summary>
+        /// <param name="requestMethod">
+        ///     Método de Petición HTTP.
+        /// </param>
+        /// <param name="resource">
+        ///     Recurso HTTP al que llamar (parte del URI después del dominio).
+        /// </param>
+        /// <param name="parameters">
+        ///     Parámetros a enviar en la petición
+        /// </param>
+        /// <param name="oAuthExtraParameters">
+        ///     Parámetros extra a añadir en la cabecera Authorization de OAuth.
+        /// </param>
+        /// <param name="requestHeaders">
+        ///     Cabeceras HTTP a añadir a la petición.
+        /// </param>
+        /// <returns>
+        ///     Devuelve la respuesta recibida del API.
+        /// </returns>
+        public OAuthResponse<JObject> RequestJson(
+            HttpRequestMethod requestMethod,
+            string resource,
+            Dictionary<string, string> parameters = null,
+            Dictionary<string, string> oAuthExtraParameters = null,
+            Dictionary<HttpRequestHeader, string> requestHeaders = null
+        ) {
+            OAuthResponse<string> response
+                = this.RequestString(
+                    requestMethod,
+                    resource,
+                    parameters,
+                    oAuthExtraParameters,
+                    new Dictionary<HttpRequestHeader, string>(requestHeaders) {
+                        {HttpRequestHeader.Accept, "application/json"}
+                    }
+                );
+
+            return new OAuthResponse<JObject>(
+                response.StatusCode,
+                response.Headers,
+                JObject.Parse(response.Response),
+                response.Response
             );
         }
     }

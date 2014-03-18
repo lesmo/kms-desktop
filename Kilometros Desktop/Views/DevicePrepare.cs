@@ -9,10 +9,10 @@ using System.Windows.Forms;
 using KMS.Desktop.Utils;
 
 namespace KMS.Desktop.Views {
-    public partial class DeviceFirstConnect : UserControl {
+    public partial class DevicePrepare : UserControl {
         public event EventHandler<EventArgs> LetsGoClicked;
 
-        public DeviceFirstConnect() {
+        public DevicePrepare() {
             InitializeComponent();
         }
 

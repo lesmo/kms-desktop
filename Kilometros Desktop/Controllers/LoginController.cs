@@ -141,15 +141,15 @@ namespace KMS.Desktop.Controllers {
             Events.Login3rdSuccessfulEventArgs e
                 = (login3rdEventArgs as Events.Login3rdSuccessfulEventArgs);
             
-            if ( !string.IsNullOrEmpty(e.Verifier) )
-                e.Client.ExchangeRequestToken(
-                    e.Verifier
+            try {
+                this.SyncedMain.Value.CloudAPI.Login3rdParty(
+                    e.Party,
+                    e.Client.Token
                 );
-
-            this.SyncedMain.Value.CloudAPI.Login3rdParty(
-                e.Party,
-                e.Client.Party
-            );
+            } catch ( KMSWrongUserCredentials ) {
+                this.SyncedMain.Value.RegisterPane_Go();
+                return;
+            }
 
             this.LoginSuccessful.CrossInvoke(
                 this,

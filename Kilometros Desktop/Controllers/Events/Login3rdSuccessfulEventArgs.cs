@@ -1,4 +1,5 @@
-﻿using KMS.Comm.Cloud.OAuth;
+﻿using KMS.Comm.Cloud;
+using KMS.Comm.Cloud.OAuth;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,11 @@ using System.Text;
 
 namespace KMS.Desktop.Controllers.Events {
     class Login3rdSuccessfulEventArgs : EventArgs {
-        public OAuthClient Client {
+        public TwitterClient Client {
             get;
             private set;
         }
-        public string Verifier {
+        public OAuthCryptoSet Token {
             get;
             private set;
         }
@@ -20,11 +21,11 @@ namespace KMS.Desktop.Controllers.Events {
             private set;
         }
 
-        public Login3rdSuccessfulEventArgs(OAuthClient client, string verifier, OAuth3rdParties party) {
+        public Login3rdSuccessfulEventArgs(TwitterClient client, OAuthCryptoSet token, OAuth3rdParties party) {
             this.Client
                 = client;
-            this.Verifier
-                = verifier;
+            this.Token
+                = token;
             this.Party
                 = party;
         }

@@ -20,7 +20,7 @@ namespace KMS.Desktop {
             private set;
         }
 
-        internal OAuthClient TwitterAPI {
+        internal TwitterClient TwitterAPI {
             get;
             private set;
         }
@@ -65,7 +65,7 @@ namespace KMS.Desktop {
             }
 
             this.TwitterAPI
-                = new OAuthClient(
+                = new TwitterClient(
                     new OAuthClientUris() {
                         BaseUri
                             = new Uri("https://api.twitter.com/"),
@@ -176,15 +176,13 @@ namespace KMS.Desktop {
             Controllers.IController newPane,
             PaneAnimation animation = PaneAnimation.PushLeft
         ) {
-            Controllers.IController oldPane
-                = this.PaneHistory.Count > 0
-                ? this.PaneHistory.Peek()
-                : null;
+            UserControl oldPane
+                = this.CurrentPane;
 
             this.AnimatePanes(
                 oldPane == null
                     ? null
-                    : oldPane.ViewGeneric,
+                    : oldPane,
                 newPane.ViewGeneric,
                 animation
             );
@@ -196,7 +194,7 @@ namespace KMS.Desktop {
             return newPane;
         }
 
-        internal Controllers.IController PreviousPane(PaneAnimation animation = PaneAnimation.PushLeft) {
+        internal Controllers.IController PreviousPane(PaneAnimation animation = PaneAnimation.PushRight) {
             if ( this.PaneHistory.Count == 0 )
                 throw new IndexOutOfRangeException();
 
@@ -210,6 +208,7 @@ namespace KMS.Desktop {
             );
 
             currentPane.Dispose();
+            currentPane = null;
 
             return this.PaneHistory.Peek();
         }
@@ -236,7 +235,7 @@ namespace KMS.Desktop {
             this.NextPane(
                 new Controllers.DevicePrepareController(
                     this,
-                    new Views.DeviceFirstConnect()
+                    new Views.DevicePrepare()
                 )
             );
         }

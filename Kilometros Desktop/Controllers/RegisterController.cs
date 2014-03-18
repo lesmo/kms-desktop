@@ -72,6 +72,14 @@ namespace KMS.Desktop.Controllers {
                     {"UtcOffset", utcOffsetString}
                 };
 
+            if ( this.Main.TwitterAPI.CurrentlyHasAccessToken ) {
+                this.AddSocialView.TwitterLoginButton.Text
+                    = "@" + this.Main.TwitterAPI.UserName;
+            } else {
+                this.AddSocialView.TwitterLoginButton.Click
+                    += TwitterLoginButton_Click;
+            }
+
             this.Main.AnimatePanes(
                 this.View,
                 this.AddSocialView,
@@ -80,15 +88,42 @@ namespace KMS.Desktop.Controllers {
         }
 
         void TwitterLoginButton_Click(object sender, EventArgs e) {
-            throw new NotImplementedException();
+            LoginTwitterController loginTwitterController
+                = new LoginTwitterController(
+                    this.Main,
+                    new Views.WebView()
+                );
 
-            //this.GoToCreatePassword(sender, e);
-        }
+            loginTwitterController.LoginSuccessful
+                += LoginSocialController_LoginSuccessful;
+
+            this.Main.NextPane(
+                loginTwitterController
+            );
+        }        
 
         void FacebookLoginButton_Click(object sender, EventArgs e) {
             throw new NotImplementedException();
+        }
 
-            //this.GoToCreatePassword(sender, e);
+        void LoginSocialController_LoginSuccessful(object sender, Events.Login3rdSuccessfulEventArgs e) {
+            if ( e.Party == OAuth3rdParties.Twitter ) {
+                this.AddSocialView.TwitterLoginButton.Text
+                    = e.Client.UserName;
+                this.AddSocialView.TwitterLoginButton.Click
+                    -= this.TwitterLoginButton_Click;
+            } else {
+                throw new NotImplementedException();
+            }
+
+            if (
+                this.Main.TwitterAPI.CurrentlyHasAccessToken
+                //&& this.Main.FacebookAPI.CurrentlyHasAccessToken
+            ) {
+                this.Main.PrepareDevice_Go();
+            } else {
+                this.Main.PreviousPane();
+            }
         }
 
         void GoToCreatePassword(object sender, EventArgs e) {
@@ -107,7 +142,8 @@ namespace KMS.Desktop.Controllers {
             );
 
             this.RegisterPayload.Value.Add(
-                "Password", e.Password
+                "Password",
+                e.Password
             );
 
             this.RegisterAccount();

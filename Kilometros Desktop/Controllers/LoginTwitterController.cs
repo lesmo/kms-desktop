@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using KMS.Desktop.Utils;
 using System.Windows.Forms;
+using KMS.Comm.Cloud;
 
 namespace KMS.Desktop.Controllers {
     class LoginTwitterController : IController<Views.WebView> {
@@ -14,8 +15,8 @@ namespace KMS.Desktop.Controllers {
 
         private event EventHandler TwitterAuthorizationUriRetrieved;
 
-        private Synchronized<OAuthClient> TwitterAPI
-            = new Synchronized<OAuthClient>();
+        private Synchronized<TwitterClient> TwitterAPI
+            = new Synchronized<TwitterClient>();
         private Synchronized<Uri> TwitterAuthorizationUri
             = new Synchronized<Uri>();
 
@@ -69,6 +70,10 @@ namespace KMS.Desktop.Controllers {
                         new Views.LoginInProgress(),
                         Desktop.Main.PaneAnimation.PushLeft
                     );
+
+                    (new Thread(
+                        new ParameterizedThreadStart(this.GetAccessToken)
+                    )).Start(code[0].InnerText);
                 }
             } else {
                 System.Diagnostics.Process.Start(e.Url.AbsoluteUri);
@@ -76,6 +81,35 @@ namespace KMS.Desktop.Controllers {
                     this,
                     null
                 );
+            }
+        }
+
+        void GetAccessToken(object verifier) {
+            try {
+                OAuthCryptoSet twitterTokenSet
+                    =  this.TwitterAPI.Value.ExchangeRequestToken(
+                        verifier as string
+                    );
+
+                string userName
+                    =  this.TwitterAPI.Value.UserName; // forcing download for name
+
+                this.LoginSuccessful.CrossInvoke(
+                    this,
+                    new Events.Login3rdSuccessfulEventArgs(
+                        this.TwitterAPI.Value,
+                        twitterTokenSet,
+                        OAuth3rdParties.Twitter
+                    )
+                );
+            } catch ( OAuthUnexpectedResponse ) {
+                this.LoginUnsuccessful.CrossInvoke(
+                    this,
+                    new Events.LoginUnsuccessfulEventArgs(
+                        Events.LoginUnsuccessfulReason.Unknown
+                    )
+                );
+                return;
             }
         }
 

@@ -120,11 +120,11 @@
     </Compile>
     <Compile Include="Utils\DelegateExpansion.cs" />
     <Compile Include="Utils\Synchronized.cs" />
-    <Compile Include="Views\DeviceFirstConnect.cs">
+    <Compile Include="Views\DevicePrepare.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\DeviceFirstConnect.Designer.cs">
-      <DependentUpon>DeviceFirstConnect.cs</DependentUpon>
+    <Compile Include="Views\DevicePrepare.Designer.cs">
+      <DependentUpon>DevicePrepare.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\DeviceSyncing.cs">
       <SubType>UserControl</SubType>
@@ -203,8 +203,8 @@
     <EmbeddedResource Include="UserControls\KMSFlatProgressBar.resx">
       <DependentUpon>KMSFlatProgressBar.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\DeviceFirstConnect.resx">
-      <DependentUpon>DeviceFirstConnect.cs</DependentUpon>
+    <EmbeddedResource Include="Views\DevicePrepare.resx">
+      <DependentUpon>DevicePrepare.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\DeviceSyncing.resx">
       <DependentUpon>DeviceSyncing.cs</DependentUpon>

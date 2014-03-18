@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 
 namespace KMS.Desktop.Controllers {
-    class DevicePrepareController : IController<Views.DeviceFirstConnect> {
-        public DevicePrepareController(Main main, Views.DeviceFirstConnect view) : base(main, view) {
+    class DevicePrepareController : IController<Views.DevicePrepare> {
+        public DevicePrepareController(Main main, Views.DevicePrepare view) : base(main, view) {
         }
     }
 }

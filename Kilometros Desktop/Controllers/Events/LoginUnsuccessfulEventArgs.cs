@@ -5,6 +5,7 @@ using System.Text;
 
 namespace KMS.Desktop.Controllers.Events {
     enum LoginUnsuccessfulReason {
+        Unknown,
         Canceled,
         WrongCredentials
     }

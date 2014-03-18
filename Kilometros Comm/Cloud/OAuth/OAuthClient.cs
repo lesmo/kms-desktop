@@ -121,7 +121,7 @@ namespace KMS.Comm.Cloud.OAuth {
         ///     Devuelve los bytes que representan la Firma de Petición (listo para obtener la represetnación en
         ///     Base 64).
         /// </returns>
-        private byte[] GetSignatureBase(
+        public byte[] GetSignatureBase(
             HttpRequestMethod requestMethod,
             Uri requestUri,
             SortedDictionary<string, string> oAuthSortedParameters
@@ -147,9 +147,9 @@ namespace KMS.Comm.Cloud.OAuth {
                 =  string.Format(
                     "{0}&{1}&{2}",
                     requestMethod.ToString().ToUpper(),
-                    requestUri.AbsoluteUri,
+                    Uri.EscapeDataString(requestUri.AbsoluteUri),
                     Uri.EscapeDataString(parameterString)
-                );
+                ).Replace("!","%2521");
 
             return System.Text.Encoding.UTF8.GetBytes(
                 signatureBaseString
@@ -171,7 +171,7 @@ namespace KMS.Comm.Cloud.OAuth {
         /// <returns>
         ///     Devuelve la Firma de Petición calculada, URL-Encoded.
         /// </returns>
-        private string GetSignature(
+        public string GetSignature(
             HttpRequestMethod requestMethod,
             Uri requestUri,
             SortedDictionary<string, string> oAuthSortedParameters
@@ -186,11 +186,11 @@ namespace KMS.Comm.Cloud.OAuth {
                     oAuthSortedParameters
                 );
             string signatureKey
-                = Uri.EscapeDataString(this.ConsumerCredentials.Secret)
-                + Uri.EscapeDataString(
+                = this.ConsumerCredentials.Secret + "&"
+                + (
                     this.Token == null
                         ? ""
-                        : "&" + this.Token.Secret  
+                        : this.Token.Secret  
                 );
             
             HMACSHA1 hmacsha1
@@ -203,7 +203,7 @@ namespace KMS.Comm.Cloud.OAuth {
                     hmacsha1.ComputeHash(signatureBase)    
                 );
 
-            return Uri.EscapeDataString(signatureString);
+            return signatureString;
         }
 
         /// <summary>
@@ -259,19 +259,25 @@ namespace KMS.Comm.Cloud.OAuth {
         ///     Devuelve la URI a través de la cual el Usuario autoriza a la Aplicación el acceso a su información.
         /// </returns>
         public Uri GetAuthorizationUri() {
-            if ( this.Token == null && this.CurrentlyHasAccessToken )
+            if ( this.Token != null && this.CurrentlyHasAccessToken )
                 throw new OAuthUnexpectedRequest();
 
             OAuthCryptoSet requestToken
                 = this.GetRequestToken();
 
-            return new Uri(
-                new Uri(
+            Uri baseAuthorizationUri
+                = new Uri(
                     this.ClientUris.BaseUri,
-                    this.ClientUris.ExchangeTokenResource
-                ),
+                    this.ClientUris.AuthorizationResource
+                );
+
+            return new Uri(
                 string.Format(
-                    "?oauth_token={0}",
+                    "{0}{1}oauth_token={2}",
+                    baseAuthorizationUri.AbsoluteUri,
+                    baseAuthorizationUri.AbsoluteUri.Contains('?')
+                        ? "&"
+                        : "?",
                     requestToken.Key
                 )
             );
@@ -291,7 +297,7 @@ namespace KMS.Comm.Cloud.OAuth {
         ///     Conjunto de Access Token y Token Secret para peticiones subsecuentes. El 
         /// </returns>
         public OAuthCryptoSet ExchangeRequestToken(string verifier) {
-            if ( this.Token == null && this.CurrentlyHasAccessToken )
+            if ( this.Token == null || this.CurrentlyHasAccessToken )
                 throw new OAuthUnexpectedRequest();
 
             if ( string.IsNullOrEmpty(verifier) )
@@ -320,6 +326,8 @@ namespace KMS.Comm.Cloud.OAuth {
                     response.Response.Get("oauth_token"),
                     response.Response.Get("oauth_token_secret")
                 );
+            this.CurrentlyHasAccessToken
+                = true;
 
             return this.Token;
         }
@@ -384,7 +392,9 @@ namespace KMS.Comm.Cloud.OAuth {
 
             // -- Parámetros ordenados alfabéticamente por Key --
             SortedDictionary<string, string> sortedParameters
-                = new SortedDictionary<string, string>(parameters);
+                = new SortedDictionary<string, string>(
+                    parameters ?? new Dictionary<string, string>()
+                );
 
             // -- Generar base para Firma de Petición --
             SortedDictionary<string, string> oAuthSignatureBaseSortedParameters
@@ -399,23 +409,49 @@ namespace KMS.Comm.Cloud.OAuth {
                 this.GetSignature(
                     requestMethod,
                     requestUri,
-                    oAuthSortedParameters
+                    oAuthSignatureBaseSortedParameters
                 )
             );
 
             // -- Generar HttpWebRequest --
+            // Generar cuerpo de petición
+            StringBuilder requestStringBuilder
+                = new StringBuilder();
+
+            foreach ( KeyValuePair<string, string> param in sortedParameters )
+                requestStringBuilder.Append(
+                    string.Format(
+                        "{0}={1}&",
+                        Uri.EscapeDataString(param.Key),
+                        Uri.EscapeDataString(param.Value)
+                    )
+                );
+
+            string requestString
+                = "";
+            if ( requestStringBuilder.Length > 0 )
+                requestString
+                    = requestStringBuilder.ToString().Substring(
+                        0,
+                        requestStringBuilder.Length - 1
+                    );
+
             // Preparar objeto de Petición Web
             HttpWebRequest request
-                = (HttpWebRequest)WebRequest.Create(requestUri);
+                = (HttpWebRequest)WebRequest.Create(
+                    requestMethod == HttpRequestMethod.GET
+                        ? new Uri(requestUri, "?" + requestString)
+                        : requestUri
+                );
             request.Method
                 = requestMethod.ToString();
 
-            foreach ( KeyValuePair<HttpRequestHeader, string> item in requestHeaders )
+            foreach ( KeyValuePair<HttpRequestHeader, string> item in requestHeaders ?? new Dictionary<HttpRequestHeader, string>() )
                 request.Headers.Add(item.Key, item.Value);
 
             // Añadir cabecera Authorization: OAuth
             string oAuthHeaderString
-                = oAuthSignatureBaseSortedParameters.Aggregate(
+                = oAuthSortedParameters.Aggregate(
                     "OAuth ",
                     (str, param) =>
                         str + param.Key + "=\"" + Uri.EscapeDataString(param.Value) + "\", "
@@ -427,6 +463,25 @@ namespace KMS.Comm.Cloud.OAuth {
                 HttpRequestHeader.Authorization,
                 oAuthHeaderString
             );
+
+            if ( requestMethod != HttpRequestMethod.GET ) {
+                byte[] requestBodyBytes
+                    = Encoding.ASCII.GetBytes(requestString);
+
+                request.ContentType
+                    = "application/x-www-form-urlencoded";
+                request.ContentLength
+                    = requestBodyBytes.Length;
+                
+                Stream requestBodyStream
+                    = request.GetRequestStream();
+
+                requestBodyStream.Write(
+                    requestBodyBytes,
+                    0,
+                    requestBodyBytes.Length
+                );
+            }
 
             // -- Solicitar y devolver respuesta de API --
             return (HttpWebResponse)request.GetResponse();

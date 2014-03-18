@@ -3,6 +3,7 @@ using KMS.Comm.Properties;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -15,6 +16,57 @@ namespace KMS.Comm.Cloud {
             OAuthCryptoSet consumer,
             OAuthCryptoSet token = null
         ) : base(clientUris, consumer, token) {
+        }
+
+        /// <summary>
+        ///     Registra una nueva cuenta en la Nube de KMS.
+        /// </summary>
+        /// <param name="accountData">
+        ///     Información de la cuenta a registrar.
+        /// </param>
+        public void RegisterAccount(Dictionary<string, string> accountData) {
+            if ( this.Token == null ) 
+                throw new KMSScrewYou();
+
+            Uri registerUri
+                = new Uri(
+                    this.ClientUris.BaseUri,
+                    (this.ClientUris as KMSCloudUris).KmsRegisterAccountResource
+                );
+
+            OAuthResponse<string> response = this.RequestString(
+                HttpRequestMethod.POST,
+                (this.ClientUris as KMSCloudUris).KmsRegisterAccountResource,
+                accountData,
+                null,
+                new Dictionary<HttpRequestHeader, string>() {
+                    {HttpRequestHeader.AcceptLanguage, CultureInfo.CurrentCulture.Name}
+                }
+            );
+
+            if ( response.StatusCode != HttpStatusCode.OK )
+                throw new KMSScrewYou(
+                    response.Headers[HttpResponseHeader.Warning]
+                );
+        }
+
+        /// <summary>
+        ///     Determina si la sesión actual es válida.
+        /// </summary>
+        /// <returns>
+        ///     TRUE si la sesión es válida, FALSE de lo contrario.
+        /// </returns>
+        public bool SessionIsValid() {
+            if ( this.Token == null )
+                return false;
+
+            OAuthResponse<string> response
+                = this.RequestString(
+                    HttpRequestMethod.GET,
+                    (this.ClientUris as KMSCloudUris).KmsSessionResource
+                );
+
+            return response.StatusCode == HttpStatusCode.OK;
         }
         
         /// <summary>
@@ -44,6 +96,10 @@ namespace KMS.Comm.Cloud {
                 HttpRequestHeader.Authorization,
                 "Basic " + authorizationLoginString
             );
+            request.Headers.Add(
+                HttpRequestHeader.AcceptLanguage,
+                CultureInfo.CurrentCulture.Name
+            );
 
             HttpWebResponse response
                 = (HttpWebResponse)request.GetResponse();
@@ -52,7 +108,9 @@ namespace KMS.Comm.Cloud {
                 throw new KMSWrongUserCredentials();
 
             if ( response.StatusCode == HttpStatusCode.Forbidden )
-                throw new KMSScrewYou();
+                throw new KMSScrewYou(
+                    response.Headers[HttpRequestHeader.Warning]
+                );
 
             StringBuilder responseStringBuilder
                 = new StringBuilder();
@@ -87,12 +145,21 @@ namespace KMS.Comm.Cloud {
         }
 
         /// <summary>
-        ///     Realizar un Inicio de Sesión en la Nube KMS con un Servicio OAuth de Terceros.
+        ///     Realizar un Inicio de Sesión en la Nube de KMS con un Servicio OAuth de Terceros.
         /// </summary>
-        /// <param name="party">Servicio de un Tercero a utilizar para el inicio de Sesión</param>
-        /// <param name="oAuthToken">Access Token OAuth del Servicio</param>
-        /// <param name="oAuthTokenSecret">Token Secret OAuth del Servicio</param>
-        /// <returns></returns>
+        /// <param name="party">
+        ///     Servicio de un Tercero a utilizar para el inicio de Sesión
+        /// </param>
+        /// <param name="oAuthToken">
+        ///     Access Token OAuth del Servicio
+        /// </param>
+        /// <param name="oAuthTokenSecret">
+        ///     Token Secret OAuth del Servicio
+        /// </param>
+        /// <returns>
+        ///     Devuelve el conjunto de Token y Token Secret generados por la Nube de KMS. El conjunto
+        ///     también se establece automáticamente de forma interna para peticiones subsecuentes.
+        /// </returns>
         /// <remarks>
         ///     Facebook, y todos los futuros servicios que implementan OAuth 2.0 no utilizan el Token
         ///     Secret del protocolo OAuth 1.0a, por lo que DEBE omitirase en esos casos. La Nube de KMS
@@ -100,25 +167,24 @@ namespace KMS.Comm.Cloud {
         /// </remarks>
         public OAuthCryptoSet Login3rdParty(
             OAuth3rdParties party,
-            string oAuthToken,
-            string oAuthTokenSecret = null
+            OAuthCryptoSet oAuthToken
         ) {
             if ( this.Token != null || this.ConsumerCredentials == null )
                 throw new OAuthUnexpectedRequest();
 
             Dictionary<string, string> requestParameters
                 = new Dictionary<string, string>() {
-                    {"oauth_token", oAuthToken}
+                    {"oauth_token", oAuthToken.Key}
                 };
 
-            if ( !string.IsNullOrEmpty(oAuthTokenSecret) )
-                requestParameters.Add("oauth_token_secret", oAuthTokenSecret);
+            if ( !string.IsNullOrEmpty(oAuthToken.Secret) )
+                requestParameters.Add("oauth_token_secret", oAuthToken.Secret);
 
             OAuthResponse<NameValueCollection> response
                 = this.RequestSimpleNameValue(
                     HttpRequestMethod.POST,
                     string.Format(
-                        Settings.Default.OAuthKms3rdLoginUrl,
+                        (this.ClientUris as KMSCloudUris).KmsOAuth3rdLogin,
                         party.ToString().ToLower()
                     ),
                     requestParameters
@@ -157,7 +223,7 @@ namespace KMS.Comm.Cloud {
             OAuthResponse<string> response
                 = this.RequestString(
                     HttpRequestMethod.DELETE,
-                    ((KMSCloudUris)this.ClientUris).KmsSessionResource
+                    (this.ClientUris as KMSCloudUris).KmsSessionResource
                 );
 
             return response.StatusCode == HttpStatusCode.NoContent;

@@ -1,5 +1,6 @@
 ﻿using KMS.Comm.Cloud;
-using KMS.Comm.Cloud.OAuth;
+using SharpDynamics.OAuthClient;
+using SharpDynamics.OAuthClient.SocialClients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading;
 
 namespace KMS.Desktop.Controllers.Events {
     class Login3rdSuccessfulEventArgs : EventArgs {
-        public TwitterClient Client {
+        public IOAuthSocialClient Client {
             get;
             private set;
         }
@@ -22,7 +23,7 @@ namespace KMS.Desktop.Controllers.Events {
             private set;
         }
 
-        public Login3rdSuccessfulEventArgs(TwitterClient client, OAuthCryptoSet token, OAuth3rdParties party) {
+        public Login3rdSuccessfulEventArgs(IOAuthSocialClient client, OAuthCryptoSet token, OAuth3rdParties party) {
             this.Client
                 = client;
             this.Token

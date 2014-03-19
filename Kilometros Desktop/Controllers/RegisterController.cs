@@ -1,5 +1,5 @@
 ﻿using KMS.Comm.Cloud;
-using KMS.Comm.Cloud.OAuth;
+using SharpDynamics.OAuthClient;
 using KMS.Desktop.Utils;
 using System;
 using System.Collections.Generic;

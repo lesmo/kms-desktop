@@ -1,5 +1,6 @@
 ﻿using KMS.Comm.Cloud;
-using KMS.Comm.Cloud.OAuth;
+using SharpDynamics.OAuthClient;
+using SharpDynamics.OAuthClient.SocialClients;
 using KMS.Desktop.Properties;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,11 @@ namespace KMS.Desktop {
         }
 
         internal TwitterClient TwitterAPI {
+            get;
+            private set;
+        }
+
+        internal FacebookClient FacebookAPI {
             get;
             private set;
         }
@@ -76,19 +82,17 @@ namespace KMS.Desktop {
 
             this.TwitterAPI
                 = new TwitterClient(
-                    new OAuthClientUris() {
-                        BaseUri
-                            = new Uri("https://api.twitter.com/"),
-                        RequestTokenResource
-                            = "oauth/request_token",
-                        ExchangeTokenResource
-                            = "oauth/access_token",
-                        AuthorizationResource
-                            = "oauth/authorize"
-                    },
                     new OAuthCryptoSet(
                         "rxYNTbTkssfQHC5lgag",
                         "085mxc60cNcrozw2Hh0P6UdIhqIvVE87qMJYXd2TIc"
+                    )
+                );
+
+            this.FacebookAPI
+                = new FacebookClient(
+                    new OAuthCryptoSet(
+                        "671595709566936",
+                        null //"cc0acb4c78a2d25f110a03d56d5cd074"
                     )
                 );
 

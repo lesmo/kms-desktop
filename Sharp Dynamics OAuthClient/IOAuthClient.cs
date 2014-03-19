@@ -4,6 +4,14 @@ using System.Linq;
 using System.Text;
 
 namespace SharpDynamics.OAuthClient {
-    interface IOAuthClient {
+    public interface IOAuthClient {
+        OAuthCryptoSet ConsumerCredentials {
+            get;
+            set;
+        }
+        OAuthCryptoSet Token {
+            get;
+            set;
+        }
     }
 }

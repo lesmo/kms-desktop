@@ -8,7 +8,7 @@ namespace SharpDynamics.OAuthClient.SocialClients {
     /// <summary>
     ///     Cliente del Twitter API
     /// </summary>
-    class TwitterClient : OAuth.OAuthClient {
+    public class TwitterClient : OAuth.OAuthClient, IOAuthSocialClient {
         /// <summary>
         ///     Crea una nueva instancia del Cliente del Twitter API.
         /// </summary>

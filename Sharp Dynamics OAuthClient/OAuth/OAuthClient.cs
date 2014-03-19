@@ -18,7 +18,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
     ///     Sesión HTTP Básico (Basic HTTP Authorization), de forma que las aplicaciones oficiales pueden saltarse
     ///     el mostrar un formulario Web de Inicio de Sesión y Autorización.
     /// </summary>
-    public class OAuthClient {
+    public class OAuthClient : IOAuthClient {
         #region Properties
         /// <summary>
         ///     Información de la ubicación de diversos recursos HTTP necesarios para el flujo
@@ -631,7 +631,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
                     oAuthExtraParameters,
                     requestHeaders
                 );
-                
+            
             string[] responseItems
                 = response.RawResponse.Split(new char[]{'&'});
             NameValueCollection nameValue

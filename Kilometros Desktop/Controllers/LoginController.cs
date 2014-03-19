@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using KMS.Desktop.Utils;
-using KMS.Comm.Cloud.OAuth;
+using SharpDynamics.OAuthClient;
 
 namespace KMS.Desktop.Controllers {
     struct BasicCredentials {

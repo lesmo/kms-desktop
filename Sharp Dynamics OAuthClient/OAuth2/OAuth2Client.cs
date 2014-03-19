@@ -5,5 +5,6 @@ using System.Text;
 
 namespace SharpDynamics.OAuthClient.OAuth2 {
     public class OAuth2Client {
+        
     }
 }

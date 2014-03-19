@@ -1,5 +1,4 @@
-﻿using KMS.Comm.Cloud.OAuth;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,6 +6,9 @@ using System.Threading;
 using KMS.Desktop.Utils;
 using System.Windows.Forms;
 using KMS.Comm.Cloud;
+using SharpDynamics.OAuthClient;
+using SharpDynamics.OAuthClient.OAuth;
+using SharpDynamics.OAuthClient.SocialClients;
 
 namespace KMS.Desktop.Controllers {
     class LoginTwitterController : IController<Views.WebView> {
@@ -25,7 +27,7 @@ namespace KMS.Desktop.Controllers {
         public LoginTwitterController(Main main, Views.WebView view) : base(main, view) {
             this.TwitterAPI.Value
                 = this.Main.TwitterAPI;
-
+            
             this.TwitterAuthorizationUriRetrieved
                 += LoginTwitterController_TwitterAuthorizationUriRetrieved;
             this.TwitterTokenRetrieved

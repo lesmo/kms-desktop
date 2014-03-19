@@ -16,7 +16,7 @@ namespace SharpDynamics.OAuthClient.SocialClients {
         CodeAndToken
     }
 
-    public class FacebookClient /*: OAuth2.OAuth2Client */ {
+    public class FacebookClient /*: OAuth2.OAuth2Client */ : IOAuthSocialClient {
         public OAuthClientUris ClientUris {
             get;
             set;
@@ -39,6 +39,11 @@ namespace SharpDynamics.OAuthClient.SocialClients {
             }
         }
         private OAuthCryptoSet _token;
+
+        public string Code {
+            get;
+            set;
+        }
 
         public bool CurrentlyHasAccessToken {
             get;
@@ -63,7 +68,8 @@ namespace SharpDynamics.OAuthClient.SocialClients {
                     ExchangeTokenResource
                         = "oauth/access_token",
                     CallbackRequestTokenUri
-                        = callbackRequestTokenUri,
+                        = callbackRequestTokenUri
+                        ?? new Uri("https://www.facebook.com/connect/login_success.html"),
                 };
 
             this.ConsumerCredentials
@@ -158,6 +164,11 @@ namespace SharpDynamics.OAuthClient.SocialClients {
         }
 
         public OAuthCryptoSet ExchangeCodeForToken(string code) {
+            if ( string.IsNullOrEmpty(this.ConsumerCredentials.Secret) )
+                throw new InvalidOperationException(
+                    "Current Facebook Client configuration does not include Client Secret."
+                );
+
             OAuthResponse<NameValueCollection> response
                 = this.RequestSimpleNameValue(
                     HttpRequestMethod.GET,
@@ -165,9 +176,7 @@ namespace SharpDynamics.OAuthClient.SocialClients {
                         "oauth/access_token?client_id={0}&redirect_uri={1}&client_secret={2}&code={3}",
                         this.ConsumerCredentials.Key,
                         Uri.EscapeDataString(
-                            this.ClientUris.CallbackRequestTokenUri == null
-                            ? "https://www.facebook.com/connect/login_success.html"
-                            : this.ClientUris.CallbackRequestTokenUri.AbsoluteUri
+                            this.ClientUris.CallbackRequestTokenUri.AbsoluteUri
                         ),
                         this.ConsumerCredentials.Secret,
                         code
@@ -187,6 +196,8 @@ namespace SharpDynamics.OAuthClient.SocialClients {
                 );
             this.CurrentlyHasAccessToken
                 = true;
+            this.Code
+                = code;
 
             return this.Token;
         }
@@ -455,5 +466,22 @@ namespace SharpDynamics.OAuthClient.SocialClients {
                 response.RawResponse
             );
         }
+
+        public string UserName {
+            get {
+                if ( this._userName == null ) {
+                    this._userName
+                        = this.RequestJson(
+                            HttpRequestMethod.GET,
+                            "/me?fields=name"
+                        ).Response.SelectToken(
+                            "$.name"
+                        ).ToString();
+                }
+
+                return this._userName;
+            }
+        }
+        private string _userName;
     }
 }

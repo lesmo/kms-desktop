@@ -264,6 +264,10 @@
       <Project>{e1b82fb5-2ab4-47f2-b36c-7b0a695378cf}</Project>
       <Name>KMS UsbX</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Sharp Dynamics OAuthClient\Sharp Dynamics OAuthClient.csproj">
+      <Project>{ebd429ed-9168-4497-ae09-ef1dbeaa2186}</Project>
+      <Name>Sharp Dynamics OAuthClient</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="KMS Icon.ico" />

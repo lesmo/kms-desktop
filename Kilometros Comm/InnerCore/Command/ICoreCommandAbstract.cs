@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace KMS.Comm.InnerCore {
-    public abstract class ICoreCommand<T> {
+    public abstract class ICoreCommand<T>{
         protected abstract InnerCoreCommand Command {
             get;
         }

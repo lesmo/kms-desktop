@@ -29,18 +29,23 @@ namespace KMS.Desktop.Controllers {
         private Synchronized<Main> SyncedMain
             = new Synchronized<Main>();
 
-        private event EventHandler RegisterSuccessful;
+        private event EventHandler<EventArgs> RegisterSuccessful;
         private event EventHandler<Events.RegisterUnsuccessfulEventArgs> RegisterUnsuccessful;
+
+        private delegate void SetSocialUserNameDelegate(string u);
+        private delegate Controllers.IController MainPreviousPane(
+            KMS.Desktop.Main.PaneAnimation animation = KMS.Desktop.Main.PaneAnimation.PushRight
+        );
 
         public RegisterController(Main main, Views.Register view) : base(main, view) {
             this.View.RegisterContinue
                 += View_RegisterContinue;
 
-            this.AddSocialView.FacebookLoginButton.Click
+            this.AddSocialView.FacebookLoginClick
                 += FacebookLoginButton_Click;
-            this.AddSocialView.TwitterLoginButton.Click
+            this.AddSocialView.TwitterLoginClick
                 += TwitterLoginButton_Click;
-            this.AddSocialView.SkipButton.Click
+            this.AddSocialView.SkipClick
                 += GoToCreatePassword;
 
             this.CreatePasswordView.SetPasswordContinue
@@ -73,11 +78,12 @@ namespace KMS.Desktop.Controllers {
                 };
 
             if ( this.Main.TwitterAPI.CurrentlyHasAccessToken ) {
-                this.AddSocialView.TwitterLoginButton.Text
-                    = "@" + this.Main.TwitterAPI.UserName;
-            } else {
-                this.AddSocialView.TwitterLoginButton.Click
-                    += TwitterLoginButton_Click;
+                SetSocialUserNameDelegate setUserName
+                    = this.AddSocialView.SetTwitterUserName;
+
+                setUserName.CrossInvoke(
+                    this.Main.TwitterAPI.UserName
+                );
             }
 
             this.Main.AnimatePanes(
@@ -91,38 +97,51 @@ namespace KMS.Desktop.Controllers {
             LoginTwitterController loginTwitterController
                 = new LoginTwitterController(
                     this.Main,
-                    new Views.WebView()
+                    new Views.WebView("Twitter")
                 );
 
             loginTwitterController.LoginSuccessful
-                += LoginSocialController_LoginSuccessful;
+                += this.LoginSocialController_LoginSuccessful;
+
+            loginTwitterController.Initialize();
 
             this.Main.NextPane(
                 loginTwitterController
             );
-        }        
+        }
 
         void FacebookLoginButton_Click(object sender, EventArgs e) {
             throw new NotImplementedException();
         }
 
+        bool ignoreLoginSuccessfulEvent
+            = false;
         void LoginSocialController_LoginSuccessful(object sender, Events.Login3rdSuccessfulEventArgs e) {
+            if ( ignoreLoginSuccessfulEvent )
+                return;
+            else
+                ignoreLoginSuccessfulEvent
+                    = true;
+
             if ( e.Party == OAuth3rdParties.Twitter ) {
-                this.AddSocialView.TwitterLoginButton.Text
-                    = e.Client.UserName;
-                this.AddSocialView.TwitterLoginButton.Click
-                    -= this.TwitterLoginButton_Click;
+                this.AddSocialView.SetTwitterUserName(
+                    e.Client.UserName
+                );
             } else {
                 throw new NotImplementedException();
             }
 
             if (
-                this.Main.TwitterAPI.CurrentlyHasAccessToken
+                this.Main.TwitterAPI.CurrentlyHasAccessToken && false
                 //&& this.Main.FacebookAPI.CurrentlyHasAccessToken
             ) {
                 this.Main.PrepareDevice_Go();
             } else {
-                this.Main.PreviousPane();
+                this.Main.AnimatePanes(
+                    this.Main.CurrentPane,
+                    this.AddSocialView,
+                    Desktop.Main.PaneAnimation.PushRight
+                );
             }
         }
 

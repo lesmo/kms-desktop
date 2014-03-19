@@ -1,4 +1,4 @@
-﻿using KMS.Comm.Cloud.OAuth;
+﻿using SharpDynamics.OAuthClient;
 
 namespace KMS.Comm.Cloud {
     public class KMSCloudUris : OAuthClientUris {

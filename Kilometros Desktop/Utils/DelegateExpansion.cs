@@ -20,8 +20,37 @@ namespace KMS.Desktop.Utils {
                     }
                 );
             }
-
+            
             return delgt.Method.Invoke(delgt.Target, new object[] { sender, e });
+        }
+
+        public static object CrossInvoke(this Delegate delgt, object argument) {
+            if ( delgt == null )
+                return null;
+
+            if ( delgt.Target is Control && (delgt.Target as Control).InvokeRequired ) {
+                return (delgt.Target as Control).Invoke(
+                    delgt,
+                    new object[] {
+                        argument
+                    }
+                );
+            }
+
+            return delgt.Method.Invoke(delgt.Target, new object[] { argument });
+        }
+
+        public static object CrossInvoke(this Delegate delgt) {
+            if ( delgt == null )
+                return null;
+
+            if ( delgt.Target is Control && (delgt.Target as Control).InvokeRequired ) {
+                return (delgt.Target as Control).Invoke(
+                    delgt
+                );
+            }
+
+            return delgt.Method.Invoke(delgt.Target, new object[0]);
         }
     }
 }

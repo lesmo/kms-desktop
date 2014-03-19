@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net;
 
-namespace KMS.Comm.Cloud.OAuth {
+namespace SharpDynamics.OAuthClient {
     public class OAuthResponse<T> {
         public readonly HttpStatusCode StatusCode;
         public readonly WebHeaderCollection Headers;

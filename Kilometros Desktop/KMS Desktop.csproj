@@ -37,6 +37,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -85,6 +86,7 @@
     <Compile Include="Controllers\Events\RegisterUnsuccessfulEventArgs.cs" />
     <Compile Include="Controllers\IController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\LoginFacebookController.cs" />
     <Compile Include="Controllers\LoginTwitterController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCableNotFound.cs" />
@@ -125,6 +127,12 @@
     </Compile>
     <Compile Include="Views\DevicePrepare.Designer.cs">
       <DependentUpon>DevicePrepare.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DevicePrepareInProgress.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\DevicePrepareInProgress.Designer.cs">
+      <DependentUpon>DevicePrepareInProgress.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\DeviceSyncing.cs">
       <SubType>UserControl</SubType>
@@ -205,6 +213,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\DevicePrepare.resx">
       <DependentUpon>DevicePrepare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\DevicePrepareInProgress.resx">
+      <DependentUpon>DevicePrepareInProgress.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\DeviceSyncing.resx">
       <DependentUpon>DeviceSyncing.cs</DependentUpon>

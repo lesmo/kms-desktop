@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KMS.Comm.Cloud.OAuth {
-    public class OAuthConsumerKeySetInvalid : Exception {
+namespace SharpDynamics.OAuthClient {
+    public class OAuthUnexpectedResponse : Exception {
     }
 }

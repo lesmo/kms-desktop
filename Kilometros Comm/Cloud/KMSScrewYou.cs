@@ -5,13 +5,15 @@ using System.Text;
 
 namespace KMS.Comm.Cloud {
     public class KMSScrewYou : Exception {
-        public string Message {
-            get;
-            private set;
+        public override string Message {
+            get {
+                return this._message;
+            }
         }
+        private string _message;
 
         public KMSScrewYou(string message = "General screw you") {
-            this.Message
+            this._message
                 = message;
         }
     }

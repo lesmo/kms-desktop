@@ -16,6 +16,13 @@ namespace KMS.Desktop.Views {
             InitializeComponent();
         }
 
+        public void ShowDevicePrepareError() {
+            this.DevicePrepareErrorLabel.Visible
+                = true;
+            this.LetsGoButton.BackColor
+                = this.DevicePrepareErrorLabel.ForeColor;
+        }
+
         private void LetsGoButton_Click(object sender, EventArgs e) {
             this.LetsGoClicked.CrossInvoke(
                 this,

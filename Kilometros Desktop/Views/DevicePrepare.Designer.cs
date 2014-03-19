@@ -28,8 +28,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
-            this.LetsGoButton = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.LetsGoButton = new System.Windows.Forms.Button();
+            this.DevicePrepareErrorLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -69,6 +70,7 @@
             this.flowLayoutPanel1.Controls.Add(this.label3);
             this.flowLayoutPanel1.Controls.Add(this.pictureBox1);
             this.flowLayoutPanel1.Controls.Add(this.LetsGoButton);
+            this.flowLayoutPanel1.Controls.Add(this.DevicePrepareErrorLabel);
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
             this.flowLayoutPanel1.Location = new System.Drawing.Point(3, 39);
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
@@ -87,6 +89,18 @@
             this.label3.TabIndex = 6;
             this.label3.Text = resources.GetString("label3.Text");
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictureBox1.Image = global::KMS.Desktop.Properties.Resources.KMSConnectDevice;
+            this.pictureBox1.Location = new System.Drawing.Point(0, 105);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(0, 20, 0, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(640, 109);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
+            // 
             // LetsGoButton
             // 
             this.LetsGoButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -94,7 +108,7 @@
             this.LetsGoButton.FlatAppearance.BorderSize = 0;
             this.LetsGoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.LetsGoButton.ForeColor = System.Drawing.Color.White;
-            this.LetsGoButton.Location = new System.Drawing.Point(240, 270);
+            this.LetsGoButton.Location = new System.Drawing.Point(240, 234);
             this.LetsGoButton.Margin = new System.Windows.Forms.Padding(240, 20, 240, 3);
             this.LetsGoButton.Name = "LetsGoButton";
             this.LetsGoButton.Size = new System.Drawing.Size(160, 35);
@@ -103,25 +117,29 @@
             this.LetsGoButton.UseVisualStyleBackColor = false;
             this.LetsGoButton.Click += new System.EventHandler(this.LetsGoButton_Click);
             // 
-            // pictureBox1
+            // DevicePrepareErrorLabel
             // 
-            this.pictureBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.pictureBox1.Image = global::KMS.Desktop.Properties.Resources.KMSConnectDevice;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 105);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 20, 3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(634, 142);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 16;
-            this.pictureBox1.TabStop = false;
+            this.DevicePrepareErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.DevicePrepareErrorLabel.AutoSize = true;
+            this.DevicePrepareErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.DevicePrepareErrorLabel.Location = new System.Drawing.Point(0, 279);
+            this.DevicePrepareErrorLabel.Margin = new System.Windows.Forms.Padding(0, 7, 0, 0);
+            this.DevicePrepareErrorLabel.Name = "DevicePrepareErrorLabel";
+            this.DevicePrepareErrorLabel.Size = new System.Drawing.Size(640, 34);
+            this.DevicePrepareErrorLabel.TabIndex = 17;
+            this.DevicePrepareErrorLabel.Text = "No pudimos encontrar tu Pulsera. Asegúrate de que el cable está firmemente conect" +
+    "ado a tu computadora, y que el bloque haya parpadeado tres veces antes de contin" +
+    "uar.";
+            this.DevicePrepareErrorLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.DevicePrepareErrorLabel.Visible = false;
             // 
-            // DeviceFirstConnect
+            // DevicePrepare
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Name = "DeviceFirstConnect";
+            this.Name = "DevicePrepare";
             this.Padding = new System.Windows.Forms.Padding(17);
             this.Size = new System.Drawing.Size(680, 405);
             this.tableLayoutPanel1.ResumeLayout(false);
@@ -141,5 +159,6 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button LetsGoButton;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label DevicePrepareErrorLabel;
     }
 }

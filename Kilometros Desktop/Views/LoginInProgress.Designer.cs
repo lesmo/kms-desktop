@@ -65,7 +65,7 @@
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(284, 34);
             this.label3.TabIndex = 7;
-            this.label3.Text = "Estamos iniciando tu sesión en KMS.\r\n¡No tardamos!";
+            this.label3.Text = "Estamos descargando tu cuenta\r\n¡No tardamos!";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // LoginInProgress

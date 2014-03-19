@@ -166,14 +166,14 @@ namespace KMS.Desktop.Views {
             }
 
             if ( this.EmailRegex.IsMatch(this.EmailTextBox.Text) ) {
-                this.Email2TextBox.Parent.BackColor
+                this.EmailTextBox.Parent.BackColor
                     = this.OriginalLineColor;
-                this.Email2TextBox.ForeColor
+                this.EmailTextBox.ForeColor
                     = this.OriginalTextColor;
             } else {
-                this.Email2TextBox.Parent.BackColor
+                this.EmailTextBox.Parent.BackColor
                     = this.AttentionColor;
-                this.Email2TextBox.ForeColor
+                this.EmailTextBox.ForeColor
                     = this.AttentionColor;
                 return;
             }
@@ -196,7 +196,7 @@ namespace KMS.Desktop.Views {
             try {
                 birthDate
                     =  new DateTime(
-                        (int)this.BirthYearComboBox.SelectedValue,
+                        (int)this.BirthYearComboBox.SelectedItem,
                         this.BirthMonthComboBox.SelectedIndex + 1,
                         this.BirthDayComboBox.SelectedIndex + 1
                     );

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KMS.Comm.Cloud.OAuth {
+namespace SharpDynamics.OAuthClient {
     public class OAuthClientUris {
         public Uri BaseUri {
             get;

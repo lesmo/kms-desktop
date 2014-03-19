@@ -14,6 +14,14 @@ namespace KMS.Comm.Cloud {
         ) : base(clientUris, consumer, token) {
         }
 
+        public override OAuthCryptoSet ExchangeRequestToken(string verifier) {
+            base.ExchangeRequestToken(verifier);
+            string s
+                = this.UserName;
+
+            return this.Token;
+        }
+
         public string UserName {
             get {
                 if ( this._userName == null ) {

@@ -70,12 +70,12 @@ namespace KMS.Desktop.Controllers {
 
             loginTwitterController.LoginSuccessful
                 += LoginController_Login3rdSuccessful;
-
-            loginTwitterController.Initialize();
-
+            
             this.Main.NextPane(
                 loginTwitterController
             );
+
+            loginTwitterController.Initialize();
         }
 
         void LoginController_Login3rdSuccessful(object sender, Events.Login3rdSuccessfulEventArgs e) {

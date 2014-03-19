@@ -30,9 +30,9 @@
             this.label3 = new System.Windows.Forms.Label();
             this.FacebookLoginButton = new System.Windows.Forms.Button();
             this.TwitterLoginButton = new System.Windows.Forms.Button();
+            this.SocialLoginErrorLabel = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.SkipButton = new System.Windows.Forms.Button();
-            this.SocialLoginErrorLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -107,6 +107,7 @@
             this.FacebookLoginButton.TabIndex = 12;
             this.FacebookLoginButton.Text = "LOGIN CON FACEBOOK";
             this.FacebookLoginButton.UseVisualStyleBackColor = false;
+            this.FacebookLoginButton.Click += new System.EventHandler(this.FacebookLoginButton_Click);
             // 
             // TwitterLoginButton
             // 
@@ -122,6 +123,21 @@
             this.TwitterLoginButton.TabIndex = 13;
             this.TwitterLoginButton.Text = "LOGIN CON TWITTER";
             this.TwitterLoginButton.UseVisualStyleBackColor = false;
+            this.TwitterLoginButton.Click += new System.EventHandler(this.TwitterLoginButton_Click);
+            // 
+            // SocialLoginErrorLabel
+            // 
+            this.SocialLoginErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.SocialLoginErrorLabel.AutoSize = true;
+            this.SocialLoginErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.SocialLoginErrorLabel.Location = new System.Drawing.Point(140, 177);
+            this.SocialLoginErrorLabel.Margin = new System.Windows.Forms.Padding(140, 10, 140, 0);
+            this.SocialLoginErrorLabel.Name = "SocialLoginErrorLabel";
+            this.SocialLoginErrorLabel.Size = new System.Drawing.Size(358, 34);
+            this.SocialLoginErrorLabel.TabIndex = 14;
+            this.SocialLoginErrorLabel.Text = "¡Ooops! Pasó algo que no esparabamos que ocurriera, o cancelaste el proceso de Lo" +
+    "gin. Intenta de nuevo.";
+            this.SocialLoginErrorLabel.Visible = false;
             // 
             // flowLayoutPanel2
             // 
@@ -146,20 +162,7 @@
             this.SkipButton.TabIndex = 16;
             this.SkipButton.Text = "DESPUÉS >>";
             this.SkipButton.UseVisualStyleBackColor = false;
-            // 
-            // SocialLoginErrorLabel
-            // 
-            this.SocialLoginErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.SocialLoginErrorLabel.AutoSize = true;
-            this.SocialLoginErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
-            this.SocialLoginErrorLabel.Location = new System.Drawing.Point(140, 177);
-            this.SocialLoginErrorLabel.Margin = new System.Windows.Forms.Padding(140, 10, 140, 0);
-            this.SocialLoginErrorLabel.Name = "SocialLoginErrorLabel";
-            this.SocialLoginErrorLabel.Size = new System.Drawing.Size(358, 34);
-            this.SocialLoginErrorLabel.TabIndex = 14;
-            this.SocialLoginErrorLabel.Text = "¡Ooops! Pasó algo que no esparabamos que ocurriera, o cancelaste el proceso de Lo" +
-    "gin. Intenta de nuevo.";
-            this.SocialLoginErrorLabel.Visible = false;
+            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
             // 
             // RegisterAddSocial
             // 
@@ -186,10 +189,10 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel2;
-        internal System.Windows.Forms.Button FacebookLoginButton;
-        internal System.Windows.Forms.Button TwitterLoginButton;
-        internal System.Windows.Forms.Button SkipButton;
         private System.Windows.Forms.Label SocialLoginErrorLabel;
+        private System.Windows.Forms.Button FacebookLoginButton;
+        private System.Windows.Forms.Button TwitterLoginButton;
+        private System.Windows.Forms.Button SkipButton;
 
     }
 }

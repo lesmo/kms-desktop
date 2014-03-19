@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{599494B1-8D7F-44DF-9D70-F0E2B8D118F0}</ProjectGuid>
+    <ProjectGuid>{EBD429ED-9168-4497-AE09-EF1DBEAA2186}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KMS.Comm</RootNamespace>
-    <AssemblyName>KMS Communication</AssemblyName>
+    <RootNamespace>SharpDynamics.OAuthClient</RootNamespace>
+    <AssemblyName>Sharp Dynamics OAuthClient</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,49 +36,32 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cloud\KMSCloudClient.cs" />
-    <Compile Include="Cloud\KMSCloudUris.cs" />
-    <Compile Include="Cloud\KMSScrewYou.cs" />
-    <Compile Include="Cloud\KMSWrongUserCredentials.cs" />
-    <Compile Include="Cloud\OAuth3rdParties.cs" />
-    <Compile Include="Cloud\TwitterClient.cs" />
-    <Compile Include="InnerCore\CommandRequest\FactoryResetRequest.cs" />
-    <Compile Include="InnerCore\CommandRequest\ReadDataRequest.cs" />
-    <Compile Include="InnerCore\CommandResponse\FactoryResetResponse.cs" />
-    <Compile Include="InnerCore\CommandResponse\ReadDataResponse.cs" />
-    <Compile Include="InnerCore\Command\CoreCommandException.cs" />
-    <Compile Include="InnerCore\Command\ICoreCommand.cs" />
-    <Compile Include="InnerCore\Command\ICoreCommandAbstract.cs" />
-    <Compile Include="InnerCore\Command\ICoreCommandContent.cs" />
-    <Compile Include="InnerCore\Command\ICoreCommandContentAbstract.cs" />
-    <Compile Include="InnerCore\ICoreCommunicator.cs" />
+    <Compile Include="HttpRequestMethod.cs" />
+    <Compile Include="IOAuthClient.cs" />
+    <Compile Include="OAuth2\OAuth2Client.cs" />
+    <Compile Include="OAuthTokenNotSet.cs" />
+    <Compile Include="OAuth\OAuthClient.cs" />
+    <Compile Include="OAuthClientUris.cs" />
+    <Compile Include="OAuth\OAuthClientUrisNotSet.cs" />
+    <Compile Include="Exceptions\OAuthConsumerKeySetInvalid.cs" />
+    <Compile Include="OAuthCryptoSet.cs" />
+    <Compile Include="OAuthResponse.cs" />
+    <Compile Include="Exceptions\OAuthUnexpectedRequest.cs" />
+    <Compile Include="Exceptions\OAuthUnexpectedResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\Settings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>Settings.settings</DependentUpon>
-    </Compile>
+    <Compile Include="SocialClients\FacebookClient.cs" />
+    <Compile Include="SocialClients\FacebookPermission.cs" />
+    <Compile Include="SocialClients\TwitterClient.cs" />
+    <Compile Include="Utils\EnumStringUnderlined.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Sharp Dynamics OAuthClient\Sharp Dynamics OAuthClient.csproj">
-      <Project>{ebd429ed-9168-4497-ae09-ef1dbeaa2186}</Project>
-      <Name>Sharp Dynamics OAuthClient</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

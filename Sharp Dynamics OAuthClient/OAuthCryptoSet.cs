@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KMS.Comm.Cloud.OAuth {
+namespace SharpDynamics.OAuthClient {
     /// <summary>
     ///     Representa el conjunto de Token y Secret, o Consumer Key (API-Key de KMS)
     ///     y Secret (API-Secret de KMS) de OAuth

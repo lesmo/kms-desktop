@@ -15,6 +15,10 @@ namespace KMS.Desktop {
     public partial class Main : Form {
         private Stack<Controllers.IController> PaneHistory
             = new Stack<Controllers.IController>();
+        
+        private bool AnimatingPanes
+            = false;
+
         internal KMSCloudClient CloudAPI {
             get;
             private set;
@@ -27,10 +31,12 @@ namespace KMS.Desktop {
 
         internal UserControl CurrentPane {
             get {
-                return this.PaneHistory.Peek().ViewGeneric;
+                return this.ContentPanel.GetChildAtPoint(
+                    new Point(0, 0)
+                ) as UserControl;
             }
         }
-        
+
         public Main() {
             InitializeComponent();
 
@@ -42,10 +48,14 @@ namespace KMS.Desktop {
                         = "oauth/access_token",
                     RequestTokenResource
                         = "oauth/request_token",
+                    AuthorizationResource
+                        = "oauth/authorize",
                     KmsSessionResource
                         = "session",
-                    AuthorizationResource
-                        = "oauth/authorize"
+                    KmsOAuth3rdLogin
+                        = "oauth/3rd/{0}/login",
+                    KmsRegisterAccountResource
+                        = "account"
                 },
                 new OAuthCryptoSet(
                     Settings.Default.KmsApiOAuthKey,
@@ -99,6 +109,12 @@ namespace KMS.Desktop {
             UserControl newPane,
             PaneAnimation animation
         ) {
+            if ( this.AnimatingPanes )
+                return;
+            else
+                this.AnimatingPanes
+                    = true;
+
             newPane.Parent
                 = this.ContentPanel;
             newPane.Size
@@ -118,47 +134,44 @@ namespace KMS.Desktop {
                 newPane.Location
                     = new Point(this.ContentPanel.Width, 0);
 
-                for ( int frame = 6; newPane.Location.X - frame * frame > 0; frame++ ) {
+                for ( int frame = 6, distance = 40; newPane.Location.X - distance > 0; frame++ ) {
                     newPane.Location
                         = new Point(
-                            newPane.Location.X - frame * frame,
+                            newPane.Location.X - distance,
                             0
                         );
 
                     if ( oldPane != null )
                         oldPane.Location
                             = new Point(
-                                oldPane.Location.X - frame * frame,
+                                oldPane.Location.X - distance,
                                 0
                             );
 
 
                     this.ContentPanel.Invalidate();
                     Application.DoEvents();
-                    Thread.Sleep(3);
                 }
             } else if ( animation == PaneAnimation.PushRight ) {
                 newPane.Location
                     = new Point(0 - this.ContentPanel.Width, 0);
 
-                for ( int frame = 6; newPane.Location.X + frame * frame < 0; frame++ ) {
+                for ( int frame = 6, distance = 40; newPane.Location.X + distance < 0; frame++ ) {
                     newPane.Location
                         = new Point(
-                            newPane.Location.X + frame * frame,
+                            newPane.Location.X + distance,
                             0
                         );
 
                     if ( oldPane != null )
                         oldPane.Location
                             = new Point(
-                                oldPane.Location.X + frame * frame * 100 / 1,
+                                oldPane.Location.X + distance * 100 / 1,
                                 0
                             );
 
-
                     this.ContentPanel.Invalidate();
                     Application.DoEvents();
-                    Thread.Sleep(3);
                 }
             }
 
@@ -170,12 +183,18 @@ namespace KMS.Desktop {
                     = null;
                 oldPane.Hide();
             }
+
+            this.AnimatingPanes
+                = false;
         }
 
         internal Controllers.IController NextPane(
             Controllers.IController newPane,
             PaneAnimation animation = PaneAnimation.PushLeft
         ) {
+            if ( this.AnimatingPanes )
+                return null;
+
             UserControl oldPane
                 = this.CurrentPane;
 
@@ -198,17 +217,15 @@ namespace KMS.Desktop {
             if ( this.PaneHistory.Count == 0 )
                 throw new IndexOutOfRangeException();
 
-            Controllers.IController currentPane
-                =  this.PaneHistory.Pop();
+            UserControl currentPane
+                =  this.CurrentPane;
+            this.PaneHistory.Pop();
             
             this.AnimatePanes(
-                currentPane.ViewGeneric,
+                currentPane,
                 this.PaneHistory.Peek().ViewGeneric,
                 animation
             );
-
-            currentPane.Dispose();
-            currentPane = null;
 
             return this.PaneHistory.Peek();
         }

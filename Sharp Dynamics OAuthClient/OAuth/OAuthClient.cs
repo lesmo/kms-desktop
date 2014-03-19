@@ -1,16 +1,16 @@
-﻿using KMS.Comm.Properties;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net;
 using System.Security.Cryptography;
 using System.IO;
 using System.Collections.Specialized;
-using Newtonsoft.Json.Linq;
+using SharpDynamics.OAuthClient;
 
-namespace KMS.Comm.Cloud.OAuth {
+namespace SharpDynamics.OAuthClient.OAuth {
     /// <summary>
     ///     Permite acceder a los recursos de un API que utiliza el protocolo OAuth, específicamente la Nube de KMS.
     ///     Los procesos normales de Autorización OAuth son ligeramente diferentes, pues las Consumer Keys (API-Keys
@@ -297,7 +297,7 @@ namespace KMS.Comm.Cloud.OAuth {
         /// <returns>
         ///     Conjunto de Access Token y Token Secret para peticiones subsecuentes. El 
         /// </returns>
-        public OAuthCryptoSet ExchangeRequestToken(string verifier) {
+        public virtual OAuthCryptoSet ExchangeRequestToken(string verifier) {
             if ( this.Token == null || this.CurrentlyHasAccessToken )
                 throw new OAuthUnexpectedRequest();
 
@@ -308,10 +308,10 @@ namespace KMS.Comm.Cloud.OAuth {
                 response = this.RequestSimpleNameValue(
                     HttpRequestMethod.POST,
                     this.ClientUris.ExchangeTokenResource,
-                    null,
                     new Dictionary<string,string> {
                         {"oauth_verifier", verifier}
-                    }
+                    },
+                    null
                 );
 
             string token
@@ -380,7 +380,9 @@ namespace KMS.Comm.Cloud.OAuth {
 
             // Generar valores de cabecera Authorization: OAuth
             SortedDictionary<string, string> oAuthSortedParameters
-                = new SortedDictionary<string,string>(oAuthExtraParameters) {
+                = new SortedDictionary<string,string>(
+                    oAuthExtraParameters ?? new Dictionary<string, string>()
+                ) {
                     {"oauth_consumer_key", this.ConsumerCredentials.Key},
                     {"oauth_nonce", nonce},
                     {"oauth_signature_method", this.SignatureMethod},
@@ -438,17 +440,41 @@ namespace KMS.Comm.Cloud.OAuth {
                     );
 
             // Preparar objeto de Petición Web
+            if ( requestMethod == HttpRequestMethod.GET && requestString.Length > 0 ) {
+                requestUri = new Uri(
+                    string.Format(
+                        "{0}{1}{2}",
+                        requestUri.AbsoluteUri,
+                        requestUri.AbsoluteUri.Contains('?')
+                            ? "&"
+                            : "?",
+                        requestString
+                    )
+                );
+            }
+
             HttpWebRequest request
                 = (HttpWebRequest)WebRequest.Create(
-                    requestMethod == HttpRequestMethod.GET
-                        ? new Uri(requestUri, "?" + requestString)
-                        : requestUri
+                    requestUri
                 );
             request.Method
                 = requestMethod.ToString();
 
-            foreach ( KeyValuePair<HttpRequestHeader, string> item in requestHeaders ?? new Dictionary<HttpRequestHeader, string>() )
-                request.Headers.Add(item.Key, item.Value);
+            foreach ( KeyValuePair<HttpRequestHeader, string> item in requestHeaders ?? new Dictionary<HttpRequestHeader, string>() ) {
+                switch ( item.Key ) {
+                    case HttpRequestHeader.Accept :
+                        request.Accept = item.Value;
+                        break;
+
+                    case HttpRequestHeader.IfModifiedSince :
+                        request.IfModifiedSince = DateTime.Parse(item.Value);
+                        break;
+
+                    default :
+                        request.Headers.Add(item.Key, item.Value);
+                        break;
+                }
+            }
 
             // Añadir cabecera Authorization: OAuth
             string oAuthHeaderString
@@ -459,7 +485,7 @@ namespace KMS.Comm.Cloud.OAuth {
                 );
             oAuthHeaderString
                 = oAuthHeaderString.Substring(0, oAuthHeaderString.Length - 2);
-            //request.Headers["Authorization"] = authheader;
+            
             request.Headers.Add(
                 HttpRequestHeader.Authorization,
                 oAuthHeaderString
@@ -485,7 +511,11 @@ namespace KMS.Comm.Cloud.OAuth {
             }
 
             // -- Solicitar y devolver respuesta de API --
-            return (HttpWebResponse)request.GetResponse();
+            try {
+                return request.GetResponse() as HttpWebResponse;
+            } catch ( WebException ex ) {
+                return ex.Response as HttpWebResponse;
+            }
         }
 
         /// <summary>
@@ -716,7 +746,9 @@ namespace KMS.Comm.Cloud.OAuth {
                     resource,
                     parameters,
                     oAuthExtraParameters,
-                    new Dictionary<HttpRequestHeader, string>(requestHeaders) {
+                    new Dictionary<HttpRequestHeader, string>(
+                        requestHeaders ?? new Dictionary<HttpRequestHeader, string>()
+                    ) {
                         {HttpRequestHeader.Accept, "application/json"}
                     }
                 );

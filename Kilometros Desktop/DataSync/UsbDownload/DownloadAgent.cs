@@ -25,63 +25,100 @@ namespace KMS.Desktop.DataSync.UsbDownload {
         /// </summary>
         public event EventHandler<DownloadCompleteEventArgs> OnDownloadComplete;
         /// <summary>
+        /// Evento lanzado al encontrarse alguna excepción durante el proceso de sincronización
+        /// </summary>
+        public event EventHandler<DownloadExceptionEventArgs> OnDownloadException;
+        /// <summary>
         /// Evento lanzado al cambiars el progreso de sincronización de un dispositivo
         /// </summary>
         public event EventHandler<DownloadProgressChangedEventArgs> OnProgressChanged;
         
-        /// <summary>
-        /// Especifica las configuraciones a utilizar para el proceso de descarga de datos del KMS Inner Core.
-        /// </summary>
-        private Synchronized<DownloadAgentSettings> SyncSettings
-            = new Synchronized<DownloadAgentSettings>(
-                new DownloadAgentSettings()
-            );
+        private BackgroundWorker DownloadDataAsync
+            = new BackgroundWorker();
+
+        public DownloadAgent() {
+            DownloadDataAsync.WorkerReportsProgress
+                = true;
+            DownloadDataAsync.WorkerSupportsCancellation
+                = true;
+
+            DownloadDataAsync.ProgressChanged
+                += DownloadDataAsync_ProgressChanged;
+            DownloadDataAsync.RunWorkerCompleted
+                += DownloadDataAsync_RunWorkerCompleted;
+            DownloadDataAsync.DoWork
+                += DownloadDataAsync_DoWork;
+        }
         
         /// <summary>
         /// Inicia el proceso de sincronización de datos del KMS Inner Core.
         /// </summary>
         /// <param name="syncSettings">Configuraciones del proceso de descarga de datos.</param>
-        public void DownloadData(DownloadAgentSettings syncSettings) {
-            this.SyncSettings.Value
-                = syncSettings;
-            
-            (new Thread(
-                new ThreadStart(this.SearchDevice)
-            )).Start();
+        public void StartDataDownload(DownloadAgentSettings syncSettings) {
+            DownloadDataAsync.RunWorkerAsync(syncSettings);
         }
 
-        /// <summary>
-        ///     Iniciar la búsqueda de un KMS Inner Core
-        /// </summary>
-        public void SearchDevice() {
-            UsbCoreCommunicator communicator
+        void DownloadDataAsync_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            if ( e.Cancelled ) {
+                this.OnDownloadException(
+                    this,
+                    null
+                );
+            } else if ( e.Error == null ) {
+                this.OnDownloadComplete(
+                    this,
+                    e.Result as DownloadCompleteEventArgs
+                );
+            } else {
+                this.OnDownloadException(
+                    this,
+                    new DownloadExceptionEventArgs(e.Error)
+                );
+            }
+        }
+
+        void DownloadDataAsync_ProgressChanged(object sender, ProgressChangedEventArgs e) {
+            if ( e.ProgressPercentage == 1 && e.UserState is USBDevice ) {
+                this.OnDeviceFound(
+                    this,
+                    new DeviceFoundEventArgs(e.UserState as USBDevice)
+                );
+            } else {
+                this.OnProgressChanged(
+                    this,
+                    new DownloadProgressChangedEventArgs(
+                        (short)e.ProgressPercentage
+                    )
+                );
+            }
+        }
+
+        void DownloadDataAsync_DoWork(object sender, DoWorkEventArgs e) {
+            BackgroundWorker worker
+                = sender as BackgroundWorker;
+            DownloadAgentSettings settings
+                = e.Argument as DownloadAgentSettings;
+
+            // -- Buscar el dispositivo --
+            UsbCoreCommunicator device
                 = null;
 
-            try {
-                communicator
-                    = new UsbCoreCommunicator();
-            } catch ( UsbCoreCableNotFound ) {
-                SearchDevice();
+            while ( device == null && !worker.CancellationPending ) {
+                try {
+                    device
+                        = new UsbCoreCommunicator();
+                } catch ( UsbCoreCableNotFound ) {
+                    device
+                        = null;
+                }
             }
 
-            this.OnDeviceFound.CrossInvoke(
-                this,
-                new DeviceFoundEventArgs(
-                    communicator.Device
-                )
-            );
+            // --- Lanzar evento de Dispositivo encontrado ---
+            worker.ReportProgress(1, device.Device);
 
-            this.GetDeviceData(communicator);
-        }
-
-        /// <summary>
-        /// Obtiene la información del KMS Inner Core
-        /// </summary>
-        /// <param name="usb">Objeto que representa el KMS Inner Core</param>
-        public void GetDeviceData(UsbCoreCommunicator device) {
             // --- Preparar cálculos calendáricos ---
             int diff
-                = DateTime.Now.DayOfWeek - this.SyncSettings.Value.StartWeekday;
+                = DateTime.Now.DayOfWeek - settings.StartWeekday;
             if ( diff > 0 )
                 throw new ArgumentException();
 
@@ -92,8 +129,8 @@ namespace KMS.Desktop.DataSync.UsbDownload {
                     DateTime.Now.Year,
                     DateTime.Now.Month,
                     startDay,
-                    this.SyncSettings.Value.Time.Hours,
-                    this.SyncSettings.Value.Time.Minutes,
+                    settings.Time.Hours,
+                    settings.Time.Minutes,
                     0
                 );
             DateTime endDate
@@ -104,75 +141,40 @@ namespace KMS.Desktop.DataSync.UsbDownload {
                 = new List<Data>();
             double totalMinutes
                 = (endDate - startDate).TotalMinutes;
-            short progress
-                = 0;
-
+            
             for (
                 DateTime currentDate = startDate;
-                currentDate < endDate;
+                currentDate < endDate && ! worker.CancellationPending;
                 currentDate = currentDate.AddHours(3)
             ) {
-                bool exit
-                    = false;
-
-                try {
-                    ReadDataRequest commandRequest
-                        = new ReadDataRequest(
-                            new DataReadTimeSpan() {
-                                DayOfWeek
-                                    = currentDate.DayOfWeek,
-                                Hour
-                                    = (short)currentDate.Hour
-                            }
-                        );
-
-                    Data[] data
-                        =  device.Request<DataReadTimeSpan, Data[]>(
-                            commandRequest,
-                            new ReadDataResponse()
-                        );
-                } catch ( UsbCoreCommandException ) {
-                    MessageBox.Show(
-                        "Ocurrió algún error inesperado durante la sincronización.",
-                        "Oooops!",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Exclamation
+                ReadDataRequest commandRequest
+                    = new ReadDataRequest(
+                        new DataReadTimeSpan() {
+                            DayOfWeek
+                                = currentDate.DayOfWeek,
+                            Hour
+                                = (short)currentDate.Hour
+                        }
                     );
 
-                    exit = true;
-                }
-
-                if ( exit ) {
-                    this.OnDownloadComplete.CrossInvoke(
-                        this,
-                        new DownloadCompleteEventArgs(
-                            device.Device,
-                            dataRaw.ToArray()
-                        )
+                Data[] data
+                    = device.Request<DataReadTimeSpan, Data[]>(
+                        commandRequest,
+                        new ReadDataResponse()
                     );
 
-                    return;
-                }
-
-                progress
-                    = (short)(
-                        100 - ((endDate - currentDate).TotalMinutes / totalMinutes)
-                        * 100
-                    );
-
-                this.OnProgressChanged.CrossInvoke(
-                    this,
-                    new DownloadProgressChangedEventArgs(progress)
+                dataRaw.AddRange(data);
+                
+                worker.ReportProgress(
+                    (int)(100 - ((endDate - currentDate).TotalMinutes / totalMinutes) * 100)
                 );
             }
-            
-            this.OnDownloadComplete.CrossInvoke(
-                this,
-                new DownloadCompleteEventArgs(
+
+            e.Result
+                = new DownloadCompleteEventArgs(
                     device.Device,
                     dataRaw.ToArray()
-                )
-            );
+                );
         }
     }
 }

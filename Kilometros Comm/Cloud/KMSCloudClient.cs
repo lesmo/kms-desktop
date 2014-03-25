@@ -25,17 +25,13 @@ namespace KMS.Comm.Cloud {
         /// <param name="accountData">
         ///     Información de la cuenta a registrar.
         /// </param>
-        public void RegisterAccount(Dictionary<string, string> accountData) {
-            if ( this.Token == null ) 
+        public OAuthCryptoSet RegisterAccount(Dictionary<string, string> accountData) {
+            if ( this.Token != null ) 
                 throw new KMSScrewYou();
 
-            Uri registerUri
-                = new Uri(
-                    this.ClientUris.BaseUri,
-                    (this.ClientUris as KMSCloudUris).KmsRegisterAccountResource
-                );
+            this.GetRequestToken();
 
-            OAuthResponse<string> response = this.RequestString(
+            OAuthResponse<NameValueCollection> response = this.RequestSimpleNameValue(
                 HttpRequestMethod.POST,
                 (this.ClientUris as KMSCloudUris).KmsRegisterAccountResource,
                 accountData,
@@ -45,10 +41,30 @@ namespace KMS.Comm.Cloud {
                 }
             );
 
-            if ( response.StatusCode != HttpStatusCode.OK )
-                throw new KMSScrewYou(
-                    response.Headers[HttpResponseHeader.Warning]
-                );
+            if ( response.StatusCode == HttpStatusCode.OK ) {
+                OAuthCryptoSet tokenSet
+                    = new OAuthCryptoSet(
+                        response.Response.Get("oauth_token"),
+                        response.Response.Get("oauth_token_secret")
+                    );
+
+                if (
+                    string.IsNullOrEmpty(tokenSet.Key)
+                    || string.IsNullOrEmpty(tokenSet.Secret) 
+                ) {
+                    throw new KMSScrewYou("BAM, BAM, BAM 3.4");
+                } else {
+                    this.Token
+                        = tokenSet;
+                    return tokenSet;
+                }
+            } else {
+                if ( string.IsNullOrEmpty(response.Headers[HttpResponseHeader.Warning]) ) {
+                    throw new KMSScrewYou(response.RawResponse);
+                } else {
+                    throw new KMSScrewYou(response.Headers[HttpResponseHeader.Warning]);
+                }
+            }
         }
 
         /// <summary>
@@ -67,7 +83,14 @@ namespace KMS.Comm.Cloud {
                     (this.ClientUris as KMSCloudUris).KmsSessionResource
                 );
 
-            return response.StatusCode == HttpStatusCode.OK;
+            if ( response.StatusCode == HttpStatusCode.OK ) {
+                this.CurrentlyHasAccessToken
+                    = true;
+
+                return true;
+            } else {
+                return false;
+            }
         }
         
         /// <summary>

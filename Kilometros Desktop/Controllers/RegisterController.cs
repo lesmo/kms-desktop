@@ -8,6 +8,9 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using KMS.Desktop.Properties;
+using System.Net;
+using System.ComponentModel;
 
 namespace KMS.Desktop.Controllers {
     class RegisterController : IController<Views.Register> {
@@ -18,24 +21,16 @@ namespace KMS.Desktop.Controllers {
         private Views.RegisterInProgress RegisterInProgressView
             = new Views.RegisterInProgress();
 
-        private Synchronized<Dictionary<string, string>> RegisterPayload
-            = new Synchronized<Dictionary<string, string>>();
+        private Dictionary<string, string> RegisterPayload
+            = new Dictionary<string, string>();
 
         public Synchronized<OAuthCryptoSet> RegisterFacebookTokenSet
             = new Synchronized<OAuthCryptoSet>();
         public Synchronized<OAuthCryptoSet> TwitterTokenSet
             = new Synchronized<OAuthCryptoSet>();
-
-        private Synchronized<Main> SyncedMain
-            = new Synchronized<Main>();
-
-        private event EventHandler<EventArgs> RegisterSuccessful;
-        private event EventHandler<Events.RegisterUnsuccessfulEventArgs> RegisterUnsuccessful;
-
-        private delegate void SetSocialUserNameDelegate(string u);
-        private delegate Controllers.IController MainPreviousPane(
-            KMS.Desktop.Main.PaneAnimation animation = KMS.Desktop.Main.PaneAnimation.PushRight
-        );
+        
+        private BackgroundWorker RegisterWorker
+            = new BackgroundWorker();
 
         public RegisterController(Main main, Views.Register view) : base(main, view) {
             this.View.RegisterContinue
@@ -51,13 +46,46 @@ namespace KMS.Desktop.Controllers {
             this.CreatePasswordView.SetPasswordContinue
                 += CreatePasswordView_SetPasswordContinue;
 
-            this.RegisterSuccessful
-                += RegisterController_RegisterSuccessful;
-            this.RegisterUnsuccessful
-                += RegisterController_RegisterUnsuccessful;
+            this.RegisterWorker.DoWork
+                += RegisterWorker_DoWork;
+            this.RegisterWorker.RunWorkerCompleted
+                += RegisterWorker_RunWorkerCompleted;
+        }
 
-            this.SyncedMain.Value
-                = main;
+        void RegisterWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            if ( e.Error == null ) {
+                this.Main.PrepareDevice_Go();
+            } else {
+                Utils.GenericWorkerExceptionHandler.Handle(
+                    this.Main,
+                    this,
+                    e.Error,
+                    this.RegisterAsync
+                );
+            }
+        }
+
+        void RegisterWorker_DoWork(object sender, DoWorkEventArgs e) {
+            object[] arguments
+                = e.Argument as object[];
+            KMSCloudClient cloudAPI
+                = arguments[0] as KMSCloudClient;
+            Dictionary<string, string> registerPayload
+                = arguments[1] as Dictionary<string, string>;
+
+            OAuthCryptoSet tokenSet
+                    = cloudAPI.RegisterAccount(
+                        registerPayload
+                    );
+
+            Settings.Default.KmsCloudToken
+                = tokenSet.Key;
+            Settings.Default.KmsCloudTokenSecret
+                = tokenSet.Secret;
+            Settings.Default.Save();
+
+            e.Result
+                = tokenSet;
         }
 
         void View_RegisterContinue(object sender, Views.Events.RegisterContinueEventArgs e) {
@@ -68,21 +96,27 @@ namespace KMS.Desktop.Controllers {
                     DateTime.Now
                 ).Hours.ToString();
 
-            this.RegisterPayload.Value
+            this.RegisterPayload
                 = new Dictionary<string,string>() {
                     {"Name", registerData.Name},
                     {"LastName", registerData.LastName},
                     {"Email", registerData.Email},
+                    {"BirthDate", registerData.BirthDate.ToString()},
+                    {"Height", registerData.Height.ToString()},
+                    {"Weight", registerData.Weight.ToString()},
+                    {"Gender", registerData.Gender.ToString()},
+                    {"CultureCode", registerData.CultureCode},
                     {"RegionCode", registerData.RegionCode},
                     {"UtcOffset", utcOffsetString}
                 };
 
             if ( this.Main.TwitterAPI.CurrentlyHasAccessToken ) {
-                SetSocialUserNameDelegate setUserName
-                    = this.AddSocialView.SetTwitterUserName;
-
-                setUserName.CrossInvoke(
+                this.AddSocialView.SetTwitterUserName(
                     this.Main.TwitterAPI.UserName
+                );
+            } else if ( this.Main.FacebookAPI.CurrentlyHasAccessToken ) {
+                this.AddSocialView.SetFacebookUserName(
+                    this.Main.FacebookAPI.UserName
                 );
             }
 
@@ -103,39 +137,48 @@ namespace KMS.Desktop.Controllers {
             loginTwitterController.LoginSuccessful
                 += this.LoginSocialController_LoginSuccessful;
 
-            loginTwitterController.Initialize();
-
             this.Main.NextPane(
                 loginTwitterController
             );
+
+            loginTwitterController.Initialize();
         }
 
         void FacebookLoginButton_Click(object sender, EventArgs e) {
-            throw new NotImplementedException();
+            LoginFacebookController loginFacebookController
+                = new LoginFacebookController(
+                    this.Main,
+                    new Views.WebView("Facebook")
+                );
+
+            loginFacebookController.LoginSuccessful
+                += this.LoginSocialController_LoginSuccessful;
+
+            this.Main.NextPane(
+                loginFacebookController
+            );
         }
 
-        bool ignoreLoginSuccessfulEvent
-            = false;
         void LoginSocialController_LoginSuccessful(object sender, Events.Login3rdSuccessfulEventArgs e) {
-            if ( ignoreLoginSuccessfulEvent )
-                return;
-            else
-                ignoreLoginSuccessfulEvent
-                    = true;
-
             if ( e.Party == OAuth3rdParties.Twitter ) {
                 this.AddSocialView.SetTwitterUserName(
-                    e.Client.UserName
+                    e.Client.UserName.ToUpper()
                 );
-            } else {
-                throw new NotImplementedException();
+            } else if ( e.Party == OAuth3rdParties.Facebook ) {
+                this.AddSocialView.SetFacebookUserName(
+                    e.Client.UserName.ToUpper()
+                );
             }
 
             if (
-                this.Main.TwitterAPI.CurrentlyHasAccessToken && false
-                //&& this.Main.FacebookAPI.CurrentlyHasAccessToken
+                this.Main.TwitterAPI.CurrentlyHasAccessToken
+                && this.Main.FacebookAPI.CurrentlyHasAccessToken
             ) {
-                this.Main.PrepareDevice_Go();
+                this.Main.AnimatePanes(
+                    this.Main.CurrentPane,
+                    this.CreatePasswordView,
+                    Desktop.Main.PaneAnimation.PushLeft
+                );
             } else {
                 this.Main.AnimatePanes(
                     this.Main.CurrentPane,
@@ -160,73 +203,21 @@ namespace KMS.Desktop.Controllers {
                 Desktop.Main.PaneAnimation.PushLeft
             );
 
-            this.RegisterPayload.Value.Add(
+            this.RegisterPayload.Add(
                 "Password",
                 e.Password
             );
 
-            this.RegisterAccount();
+            this.RegisterAsync();
         }
 
-        void RegisterAccount() {
-            (new Thread(
-                new ThreadStart(this.RegisterAccountAsync)
-            )).Start();
-        }
-
-        void RegisterAccountAsync() {
-            KMSCloudClient cloudAPI
-                = this.SyncedMain.Value.CloudAPI;
-            Dictionary<string, string> accountData
-                = new Dictionary<string,string>() {
-                    
-                };
-
-            try {
-                cloudAPI.RegisterAccount(
-                    this.RegisterPayload.Value
-                );
-            } catch ( KMSScrewYou ex ) {
-                this.RegisterUnsuccessful.CrossInvoke(
-                    this,
-                    new Events.RegisterUnsuccessfulEventArgs(
-                        ex.Message
-                    )
-                );
-            }
-
-            this.RegisterSuccessful.CrossInvoke(
-                this,
-                null
+        void RegisterAsync() {
+            this.RegisterWorker.RunWorkerAsync(
+                new object[] {
+                    this.Main.CloudAPI,
+                    this.RegisterPayload
+                }
             );
-        }
-
-        void RegisterController_RegisterUnsuccessful(object sender, Events.RegisterUnsuccessfulEventArgs e) {
-            Views.RegisterError registerErrorView
-                = new Views.RegisterError(e.Message);
-
-            registerErrorView.TryAgainClick
-                += (object tac_sender, EventArgs tac_e) => {
-                    this.Main.AnimatePanes(
-                        registerErrorView,
-                        this.RegisterInProgressView,
-                        Desktop.Main.PaneAnimation.PushRight
-                    );
-
-                    this.RegisterAccount();
-
-                    (tac_sender as IDisposable).Dispose();
-                };
-
-            this.Main.AnimatePanes(
-                this.RegisterInProgressView,
-                registerErrorView,
-                Desktop.Main.PaneAnimation.PushLeft
-            );
-        }
-
-        void RegisterController_RegisterSuccessful(object sender, EventArgs e) {
-            this.Main.PrepareDevice_Go();
         }
     }
 }

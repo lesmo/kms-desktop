@@ -9,84 +9,96 @@ using KMS.Comm.Cloud;
 using SharpDynamics.OAuthClient;
 using SharpDynamics.OAuthClient.OAuth;
 using SharpDynamics.OAuthClient.SocialClients;
+using System.ComponentModel;
+using System.Net;
+using System.Diagnostics;
+using System.Security.Cryptography;
+using KMS.Desktop.Properties;
 
 namespace KMS.Desktop.Controllers {
     class LoginTwitterController : IController<Views.WebView> {
         public event EventHandler<Events.LoginUnsuccessfulEventArgs> LoginUnsuccessful;
         public event EventHandler<Events.Login3rdSuccessfulEventArgs> LoginSuccessful;
 
-        private event EventHandler TwitterAuthorizationUriRetrieved;
-        private event EventHandler TwitterTokenRetrieved;
-        private event EventHandler TwitterTokenRetrievalError;
+        private TwitterClient TwitterAPI;
+        private Uri TwitterAuthorizationUri;
 
-        private Synchronized<TwitterClient> TwitterAPI
-            = new Synchronized<TwitterClient>();
-        private Synchronized<Uri> TwitterAuthorizationUri
-            = new Synchronized<Uri>();
+        private BackgroundWorker TwitterAuthUriRetrievalWorker
+            = new BackgroundWorker();
+        private BackgroundWorker TwitterTokenRetrievalWorker
+            = new BackgroundWorker();
 
         public LoginTwitterController(Main main, Views.WebView view) : base(main, view) {
-            this.TwitterAPI.Value
+            this.TwitterAPI
                 = this.Main.TwitterAPI;
             
-            this.TwitterAuthorizationUriRetrieved
-                += LoginTwitterController_TwitterAuthorizationUriRetrieved;
-            this.TwitterTokenRetrieved
-                += LoginTwitterController_TwitterTokenRetrieved;
-            this.TwitterTokenRetrievalError
-                += LoginTwitterController_TwitterTokenRetrievalError;
+            this.TwitterAuthUriRetrievalWorker.RunWorkerCompleted
+                += TwitterAuthUriRetrievalWorker_RunWorkerCompleted;
+            this.TwitterTokenRetrievalWorker.RunWorkerCompleted
+                += TwitterTokenRetrievalWorker_RunWorkerCompleted;
+
+            this.TwitterAuthUriRetrievalWorker.DoWork
+                += (object sender, DoWorkEventArgs e) => {
+                    e.Result
+                        = (e.Argument as TwitterClient).GetAuthorizationUri();
+                };
+            this.TwitterTokenRetrievalWorker.DoWork
+                += (object sender, DoWorkEventArgs e) => {
+                    TwitterClient twitterClient
+                        = (e.Argument as object[])[0] as TwitterClient;
+                    string verifier
+                        = (e.Argument as object[])[1] as string;
+
+                    OAuthCryptoSet twitterTokenSet
+                        = twitterClient.ExchangeRequestToken(
+                            verifier
+                        );
+
+                    e.Result
+                        = twitterTokenSet;
+                };
         }
 
-        void LoginTwitterController_TwitterTokenRetrieved(object sender, EventArgs e) {
-            this.LoginSuccessful.CrossInvoke(
+        void TwitterAuthUriRetrievalWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            if ( e.Error == null ) {
+                this.TwitterAuthorizationUri
+                    = e.Result as Uri;
+                this.View.Web.Url
+                    = e.Result as Uri;
+
+                this.View.Web.Navigating
+                    += Web_Navigating;
+                this.View.Web.DocumentCompleted
+                    += Web_DocumentCompleted;
+            } else {
+                Utils.GenericWorkerExceptionHandler.Handle(
+                    this.Main,
+                    this,
+                    e.Error,
+                    this.Initialize
+                );
+            }
+        }
+
+        void TwitterTokenRetrievalWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            this.LoginSuccessful(
                 this,
                 new Events.Login3rdSuccessfulEventArgs(
-                    this.TwitterAPI.Value,
-                    this.TwitterAPI.Value.Token,
+                    this.TwitterAPI,
+                    e.Result as OAuthCryptoSet,
                     OAuth3rdParties.Twitter
                 )
             );
         }
 
-        void LoginTwitterController_TwitterTokenRetrievalError(object sender, EventArgs e) {
-            this.LoginUnsuccessful.CrossInvoke(
-                this,
-                new Events.LoginUnsuccessfulEventArgs(
-                    Events.LoginUnsuccessfulReason.WrongCredentials
-                )
-            );
-        }
-
         public void Initialize() {
-            this.View.Web.DocumentText
-                = LocalizationStrings.SocialPleaseWaitHtml;
-            this.View.Web.Invalidate();
-
-            (new Thread(
-                new ThreadStart(this.GetRequestUriAsync)
-            )).Start();
-        }
-
-        public void GetRequestUriAsync() {
-            this.TwitterAuthorizationUri.Value
-                = this.TwitterAPI.Value.GetAuthorizationUri();
-            this.TwitterAuthorizationUriRetrieved.CrossInvoke(
-                this,
-                null
+            this.TwitterAuthUriRetrievalWorker.RunWorkerAsync(
+                this.TwitterAPI
             );
         }
-
-        private void LoginTwitterController_TwitterAuthorizationUriRetrieved(object sender, EventArgs e) {
-            this.View.Web.Url
-                = this.TwitterAuthorizationUri.Value;
-
-            this.View.Web.Navigating
-                += Web_Navigating;
-            this.View.Web.DocumentCompleted
-                += Web_DocumentCompleted;
-        }
-
+        
         void Web_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
-            if ( e.Url.AbsolutePath != this.TwitterAuthorizationUri.Value.AbsolutePath )
+            if ( e.Url.AbsolutePath != this.TwitterAuthorizationUri.AbsolutePath )
                 return;
 
             HtmlDocument document
@@ -95,48 +107,21 @@ namespace KMS.Desktop.Controllers {
                 = this.View.Web.Document.GetElementsByTagName("code");
 
             if ( code.Count > 0 ) {
-                this.Main.AnimatePanes(
-                    this.Main.CurrentPane,
-                    new Views.LoginInProgress(),
-                    Desktop.Main.PaneAnimation.PushLeft
-                );
-
-                this.GetAccessToken(code[0].InnerText);
-
-                this.LoginSuccessful.CrossInvoke(
-                    this,
-                    new Events.Login3rdSuccessfulEventArgs(
-                        this.TwitterAPI.Value,
-                        this.TwitterAPI.Value.Token,
-                        OAuth3rdParties.Twitter
-                    )
-                );
-            }
-        }
-
-        void GetAccessToken(object verifier) {
-            try {
-                OAuthCryptoSet twitterTokenSet
-                    =  this.TwitterAPI.Value.ExchangeRequestToken(
-                        verifier as string
-                    );
-
-                this.TwitterTokenRetrieved(
-                    this,
-                    null
-                );
-            } catch ( OAuthUnexpectedResponse ) {
-                this.TwitterTokenRetrievalError(
-                    this,
-                    null
+                this.View.Web.Hide();
+                this.TwitterTokenRetrievalWorker.RunWorkerAsync(
+                    new object[] {
+                        this.TwitterAPI,
+                        code[0].InnerText
+                    }
                 );
             }
         }
 
         void Web_Navigating(object sender, System.Windows.Forms.WebBrowserNavigatingEventArgs e) {
-            if ( e.Url.AbsolutePath != this.TwitterAuthorizationUri.Value.AbsolutePath ) {
+            if ( e.Url.AbsolutePath != this.TwitterAuthorizationUri.AbsolutePath ) {
                 System.Diagnostics.Process.Start(e.Url.AbsoluteUri);
-                this.LoginUnsuccessful.CrossInvoke(
+
+                this.LoginUnsuccessful(
                     this,
                     new Events.LoginUnsuccessfulEventArgs(
                         Events.LoginUnsuccessfulReason.Canceled
@@ -145,6 +130,8 @@ namespace KMS.Desktop.Controllers {
 
                 e.Cancel
                     = true;
+            } else {
+                this.View.Web.Hide();
             }
         }
     }

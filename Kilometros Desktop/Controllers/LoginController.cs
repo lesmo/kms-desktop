@@ -6,9 +6,12 @@ using System.Text;
 using System.Threading;
 using KMS.Desktop.Utils;
 using SharpDynamics.OAuthClient;
+using System.ComponentModel;
+using System.Net;
+using KMS.Desktop.Properties;
 
 namespace KMS.Desktop.Controllers {
-    struct BasicCredentials {
+    class BasicCredentials {
         public string Email;
         public string Password;
     }
@@ -22,6 +25,11 @@ namespace KMS.Desktop.Controllers {
         private Views.LoginInProgress LoginInProgressView
             = new Views.LoginInProgress();
 
+        private BackgroundWorker LoginBasicWorker
+            = new BackgroundWorker();
+        private BackgroundWorker Login3rdWorker
+            = new BackgroundWorker();
+
         public LoginController(Main main, Views.LoginRegister view) : base(main, view) {
             this.SyncedMain.Value
                 = main;
@@ -34,31 +42,87 @@ namespace KMS.Desktop.Controllers {
                 += TwitterLoginButton_Click;
 
             view.RegisterClick
-                += RegisterButton_Click;
+                += (object sender, EventArgs e) => {
+                    this.Main.RegisterPane_Go();
+                };
 
-            this.LoginSuccessful
-                += LoginController_LoginSuccessful;
-            this.LoginUnsuccessful
-                += LoginController_LoginUnsuccessful;
+            this.LoginBasicWorker.RunWorkerCompleted
+                += LoginWorker_RunWorkerCompleted;
+            this.Login3rdWorker.RunWorkerCompleted
+                += LoginWorker_RunWorkerCompleted;
+
+            this.LoginBasicWorker.DoWork
+                += LoginBasicWorker_DoWork;
+            this.Login3rdWorker.DoWork
+                += Login3rdWorker_DoWork;
         }
 
-        void LoginController_LoginUnsuccessful(object sender, Events.LoginUnsuccessfulEventArgs e) {
-            if ( e.Reason == Events.LoginUnsuccessfulReason.WrongCredentials)
+        void LoginWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            if ( e.Error == null ) {
+                this.Main.SyncDevice_Go();
+            } else if ( e.Error is KMSWrongUserCredentials ) {
                 this.View.ShowWrongCredentials();
 
-            this.Main.AnimatePanes(
-                this.Main.CurrentPane,
-                this.View,
-                Desktop.Main.PaneAnimation.PushRight
-            );
+                this.Main.AnimatePanes(
+                    this.Main.CurrentPane,
+                    this.View,
+                    Desktop.Main.PaneAnimation.PushRight
+                );
+            } else {
+                Utils.GenericWorkerExceptionHandler.Handle(
+                    this.Main,
+                    this,
+                    e.Error
+                );
+            }
         }
 
-        void LoginController_LoginSuccessful(object sender, EventArgs e) {
-            this.Main.SyncDevice_Go();
+        void Login3rdWorker_DoWork(object sender, DoWorkEventArgs e) {
+            object[] arguments
+                = e.Argument as object[];
+            KMSCloudClient cloudAPI
+                = arguments[0] as KMSCloudClient;
+            Events.Login3rdSuccessfulEventArgs loginEventArgs
+                = arguments[1] as Events.Login3rdSuccessfulEventArgs;
+            
+            OAuthCryptoSet tokenSet
+                = cloudAPI.Login3rdParty(
+                    loginEventArgs.Party,
+                    loginEventArgs.Client.Token
+                );
+
+            Settings.Default.KmsCloudToken
+                = tokenSet.Key;
+            Settings.Default.KmsCloudTokenSecret
+                = tokenSet.Secret;
+            Settings.Default.Save();
+
+            e.Result
+                = tokenSet;
         }
 
-        private void RegisterButton_Click(object sender, EventArgs e) {
-            this.Main.RegisterPane_Go();
+        void LoginBasicWorker_DoWork(object sender, DoWorkEventArgs e) {
+            object[] arguments
+                = e.Argument as object[];
+            KMSCloudClient cloudAPI
+                = arguments[0] as KMSCloudClient;
+            BasicCredentials credentials
+                = arguments[1] as BasicCredentials;
+
+            OAuthCryptoSet tokenSet
+                = cloudAPI.LoginBasic(
+                    credentials.Email,
+                    credentials.Password
+                );
+
+            Settings.Default.KmsCloudToken
+                = tokenSet.Key;
+            Settings.Default.KmsCloudTokenSecret
+                = tokenSet.Secret;
+            Settings.Default.Save();
+
+            e.Result
+                = tokenSet;
         }
 
         private void TwitterLoginButton_Click(object sender, EventArgs e) {
@@ -85,13 +149,27 @@ namespace KMS.Desktop.Controllers {
                 Desktop.Main.PaneAnimation.PushLeft
             );
 
-            (new Thread(
-                new ParameterizedThreadStart(this.Login3rdAsync)
-            )).Start(e);
+            this.Login3rdWorker.RunWorkerAsync(
+                new object[] {
+                    this.Main.CloudAPI,
+                    e
+                }
+            );
         }
 
         private void FacebookLoginButton_Click(object sender, EventArgs e) {
-            throw new NotImplementedException();
+            LoginFacebookController loginFacebookController
+                = new LoginFacebookController(
+                    this.Main,
+                    new Views.WebView("Facebook")
+                );
+
+            loginFacebookController.LoginSuccessful
+                += LoginController_Login3rdSuccessful;
+
+            this.Main.NextPane(
+                loginFacebookController
+            );
         }
 
         private void BasicLoginButton_Click(object sender, EventArgs e) {
@@ -101,59 +179,16 @@ namespace KMS.Desktop.Controllers {
                 Desktop.Main.PaneAnimation.PushLeft
             );
 
-            (new Thread(
-                new ParameterizedThreadStart(this.BasicLoginAsync)
-            )).Start(new BasicCredentials() {
-                Email
-                    =  this.View.EmailTextBox.Text,
-                Password
-                    = this.View.PasswordTextBox.Text
-            });
-        }
-        
-        private void BasicLoginAsync(object credentialsObject) {
-            BasicCredentials credentials
-                = (BasicCredentials)credentialsObject;
-            KMSCloudClient cloudAPI
-                = this.SyncedMain.Value.CloudAPI;
-
-            try {
-                cloudAPI.LoginBasic(
-                    credentials.Email,
-                    credentials.Password
-                );
-            } catch ( KMSWrongUserCredentials ) {
-                this.LoginUnsuccessful.CrossInvoke(
-                    this,
-                    new Events.LoginUnsuccessfulEventArgs(
-                        Events.LoginUnsuccessfulReason.WrongCredentials
-                    )
-                );
-            }
-
-            this.LoginSuccessful.CrossInvoke(
-                this,
-                null
-            );
-        }
-
-        private void Login3rdAsync(object login3rdEventArgs) {
-            Events.Login3rdSuccessfulEventArgs e
-                = (login3rdEventArgs as Events.Login3rdSuccessfulEventArgs);
-            
-            try {
-                this.SyncedMain.Value.CloudAPI.Login3rdParty(
-                    e.Party,
-                    e.Client.Token
-                );
-            } catch ( KMSWrongUserCredentials ) {
-                this.SyncedMain.Value.RegisterPane_Go();
-                return;
-            }
-
-            this.LoginSuccessful.CrossInvoke(
-                this,
-                null
+            this.LoginBasicWorker.RunWorkerAsync(
+                new object[] {
+                    this.Main.CloudAPI,
+                    new BasicCredentials() {
+                        Email
+                            =  this.View.EmailTextBox.Text,
+                        Password
+                            = this.View.PasswordTextBox.Text
+                    }
+                }
             );
         }
     }

@@ -13,44 +13,35 @@ namespace KMS.Desktop.Controllers {
         public event EventHandler<Events.LoginUnsuccessfulEventArgs> LoginUnsuccessful;
         public event EventHandler<Events.Login3rdSuccessfulEventArgs> LoginSuccessful;
 
-        private Synchronized<FacebookClient> FacebookAPI
-            = new Synchronized<FacebookClient>();
-        private Synchronized<Uri> FacebookLoginUri
-            = new Synchronized<Uri>();
+        private FacebookClient FacebookAPI;
 
         public LoginFacebookController(Main main, Views.WebView view) : base(main, view) {
-            this.FacebookAPI.Value
+            this.FacebookAPI
                 = this.Main.FacebookAPI;
 
             this.View.Web.Url
-                = this.FacebookAPI.Value.GetAuthorizationUri(
+                = this.FacebookAPI.GetAuthorizationUri(
                     OAuth2ResponseType.CodeAndToken,
                     new FacebookPermission[] {
                         FacebookPermission.UserGamesActivity
                     }
                 );
 
-            this.View.Web.Navigating
-                += Web_Navigating;
+            this.View.Web.DocumentCompleted
+                += Web_DocumentCompleted;
         }
 
-        void Web_Navigating(object sender, System.Windows.Forms.WebBrowserNavigatingEventArgs e) {
-            if (
-                !e.Url.AbsoluteUri.StartsWith(
-                    this.FacebookAPI.Value.ClientUris.CallbackRequestTokenUri.AbsoluteUri
-                )
-            ) {
-                return;
-            }
-
+        void Web_DocumentCompleted(object sender, System.Windows.Forms.WebBrowserDocumentCompletedEventArgs e) {
             if ( e.Url.AbsoluteUri.Contains("error") ) {
-                this.LoginUnsuccessful.CrossInvoke(
+                this.LoginUnsuccessful(
                     this,
                     new Events.LoginUnsuccessfulEventArgs(
                         Events.LoginUnsuccessfulReason.Canceled
                     )
                 );
             } else {
+                this.View.Web.Hide();
+
                 string[] responseUriComponents
                     = e.Url.AbsoluteUri.Split(
                         new char[]{
@@ -62,7 +53,7 @@ namespace KMS.Desktop.Controllers {
                     );
 
                 if ( responseUriComponents.Length < 2 ) {
-                    this.LoginUnsuccessful.CrossInvoke(
+                    this.LoginUnsuccessful(
                         this,
                         new Events.LoginUnsuccessfulEventArgs(
                             Events.LoginUnsuccessfulReason.Unknown
@@ -94,7 +85,7 @@ namespace KMS.Desktop.Controllers {
                     = nameValue.Get("code");
 
                 if ( string.IsNullOrEmpty(tokenString) || string.IsNullOrEmpty(codeString) ) {
-                    this.LoginUnsuccessful.CrossInvoke(
+                    this.LoginUnsuccessful(
                         this,
                         new Events.LoginUnsuccessfulEventArgs(
                             Events.LoginUnsuccessfulReason.Unknown
@@ -102,21 +93,21 @@ namespace KMS.Desktop.Controllers {
                     );
                 }
 
-                this.FacebookAPI.Value.Token
+                this.FacebookAPI.Token
                     = new OAuthCryptoSet(
                         tokenString,
                         null
                     );
-                this.FacebookAPI.Value.Code
+                this.FacebookAPI.Code
                     = codeString;
 
-                this.FacebookAPI.Value.UserName.Count();
+                this.FacebookAPI.UserName.Count();
 
-                this.LoginSuccessful.CrossInvoke(
+                this.LoginSuccessful(
                     this,
                     new Events.Login3rdSuccessfulEventArgs(
-                        this.FacebookAPI.Value,
-                        this.FacebookAPI.Value.Token,
+                        this.FacebookAPI,
+                        this.FacebookAPI.Token,
                         Comm.Cloud.OAuth3rdParties.Facebook
                     )
                 );

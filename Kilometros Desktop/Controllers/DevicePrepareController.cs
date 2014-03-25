@@ -8,39 +8,46 @@ using KMS.UsbX;
 using KMS.Desktop.Utils;
 using KMS.Comm.InnerCore.CommandRequest;
 using KMS.Comm.InnerCore.CommandResponse;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Windows.Forms;
+using KMS.Desktop.DataSync.UsbReset;
 
 namespace KMS.Desktop.Controllers {
     class DevicePrepareController : IController<Views.DevicePrepare> {
-        private EventHandler DeviceNotFound;
-        private EventHandler DevicePrepareCompleted;
-
-        private Synchronized<Main> SyncedMain
-            = new Synchronized<Main>();
+        private FactoryResetAgent ResetAgent
+            = new FactoryResetAgent();
 
         public DevicePrepareController(Main main, Views.DevicePrepare view) : base(main, view) {
             this.View.LetsGoClicked
                 += View_LetsGoClicked;
 
-            this.DeviceNotFound
-                += DevicePrepareController_DeviceNotFound;
-            this.DevicePrepareCompleted
-                += DevicePrepareController_DevicePrepareCompleted;
-
-            this.SyncedMain.Value
-                = main;
+            this.ResetAgent.OnResetSuccessful
+                += ResetAgent_OnResetSuccessful;
+            this.ResetAgent.OnResetUnsuccessful
+                += ResetAgent_OnResetUnsuccessful;
         }
 
-        void DevicePrepareController_DeviceNotFound(object sender, EventArgs e) {
-            this.View.ShowDevicePrepareError();
+        void ResetAgent_OnResetUnsuccessful(object sender, FactoryResetExceptionEventArgs e) {
+            if ( e.Exception is UsbCoreCableNotFound || e.Exception is UsbCoreCommandWriteTimeout ) {
+                this.View.ShowDevicePrepareError();
 
-            this.Main.AnimatePanes(
-                this.Main.CurrentPane,
-                this.View,
-                Desktop.Main.PaneAnimation.PushLeft
-            );
+                this.Main.AnimatePanes(
+                    this.Main.CurrentPane,
+                    this.View,
+                    Desktop.Main.PaneAnimation.PushLeft
+                );
+            } else {
+                Utils.GenericWorkerExceptionHandler.Handle(
+                    this.Main,
+                    this,
+                    e.Exception
+                );
+            }
         }
 
-        void DevicePrepareController_DevicePrepareCompleted(object sender, EventArgs e) {
+        void ResetAgent_OnResetSuccessful(object sender, EventArgs e) {
+            this.Main.MyAccount_Go();
         }
 
         void View_LetsGoClicked(object sender, EventArgs e) {
@@ -50,36 +57,7 @@ namespace KMS.Desktop.Controllers {
                 Desktop.Main.PaneAnimation.PushLeft
             );
 
-            (new Thread(
-                new ThreadStart(this.PrepareDeviceAsync)
-            )).Start();
-        }
-
-        void PrepareDeviceAsync() {
-            try {
-                UsbCoreCommunicator usbComm
-                    = new UsbCoreCommunicator();
-
-                usbComm.Request<object, object>(
-                    new FactoryResetRequest(),
-                    new FactoryResetResponse()
-                );
-            } catch ( UsbCoreCableNotFound ) {
-                this.DeviceNotFound.CrossInvoke(
-                    this,
-                    null
-                );
-            } catch ( UsbCoreCommandWriteTimeout ) {
-                this.DeviceNotFound.CrossInvoke(
-                    this,
-                    null
-                );
-            }
-
-            this.DevicePrepareCompleted.CrossInvoke(
-                this,
-                null
-            );
+            this.ResetAgent.ResetAsync();
         }
     }
 }

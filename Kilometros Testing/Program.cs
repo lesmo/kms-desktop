@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Kilometros.UsbX;
+using KMS.UsbX;
 using System.Threading;
 
 namespace Kilometros_Testing {
@@ -20,11 +20,21 @@ namespace Kilometros_Testing {
             Console.WriteLine();
         }
 
-        static KmsDevice OpenDevice() {
+        static USBDevice OpenDevice() {
             try {
                 Console.WriteLine("          ---- Abriendo dispositivo ...");
-                return new KmsDevice();
-            } catch (CradleNotFoundException) {
+                USBDevice device
+                    = (
+                        from d in USBDevice.DeviceList.Values
+                        where d.PID == "ea60"
+                        select d
+                    ).FirstOrDefault();
+
+                if ( device != null )
+                    return device;
+                else
+                    return OpenDevice();
+            } catch ( USBXpressNETException ) {
                 return OpenDevice();
             }
         }
@@ -32,9 +42,11 @@ namespace Kilometros_Testing {
         static void Main(string[] args) {
             WriteHelp();
 
-            KmsDevice device
+            USBDevice device
                 = OpenDevice();
-
+            device.Timeouts
+                = new ReadWriteTimeouts(1000, 1000);
+                
             string input;
 
             while ( true ) {
@@ -62,15 +74,47 @@ namespace Kilometros_Testing {
                         ? Convert.ToByte(command[0], 16)
                         : byte.Parse(command[0]);
 
+                    byte[] responseBuffer
+                        = new byte[256];
+                    byte[] writeBytes;
                     byte[] response
                         = new byte[0];
-                    byte[] writeBytes;
+
+                    StringBuilder bytesInt
+                        = new StringBuilder();
 
                     if ( command.Length == 1 ) {
                         writeBytes
                             = new byte[] { commandByte, 0, 0 };
+
+                        bytesInt
+                            = new StringBuilder();
+
+                        foreach ( string s in response.Select(b => b.ToString().PadRight(3)) )
+                            bytesInt.Append(s + " ");
+
+                        Console.WriteLine("          ---> {0}", BitConverter.ToString(writeBytes).Replace("-", "  "));
+                        Console.WriteLine("               {0}", bytesInt.ToString());
+                        device.Write(writeBytes);
+
+                        int responseByteCount
+                            = device.Read(responseBuffer);
                         response
-                            = device.Request(writeBytes);
+                            = new byte[responseBuffer[1]];
+
+                        for ( short i = 0; i < responseBuffer[1] + 2; i++ ) {
+                            response[i]
+                                = responseBuffer[i];
+                        }
+
+                        bytesInt
+                        = new StringBuilder();
+
+                        foreach ( string s in response.Select(b => b.ToString().PadRight(3)) )
+                            bytesInt.Append(s + " ");
+
+                        Console.WriteLine("          <--- {0}", BitConverter.ToString(response).Replace("-", "  "));
+                        Console.WriteLine("               {0}", bytesInt.ToString());
                     } else {
                         string[] parameters
                             = command[1].Split(new char[]{','}).Select(s => s.Trim()).ToArray();
@@ -95,24 +139,30 @@ namespace Kilometros_Testing {
                         }
                     }
 
-                    StringBuilder bytesInt
-                        = new StringBuilder();
-
                     foreach ( string s in writeBytes.Select(b => b.ToString().PadRight(3)) )
                         bytesInt.Append(s + " ");
 
                     Console.WriteLine("          ---> {0}", BitConverter.ToString(writeBytes).Replace("-","  ") );
                     Console.WriteLine("               {0}", bytesInt.ToString());
 
-                    byte[] readBytes
-                        = device.Request(writeBytes);
+                    device.Write(writeBytes);
+                    device.Read(responseBuffer);
+
+                    response
+                        = new byte[responseBuffer[1]];
+
+                    for ( short i = 0; i < responseBuffer[1] + 2; i++ ) {
+                        response[i]
+                            = responseBuffer[i];
+                    }
+
                     bytesInt
                         = new StringBuilder();
 
-                    foreach ( string s in readBytes.Select(b => b.ToString().PadRight(3)) )
+                    foreach ( string s in response.Select(b => b.ToString().PadRight(3)) )
                         bytesInt.Append(s + " ");
 
-                    Console.WriteLine("          <--- {0}", BitConverter.ToString(readBytes).Replace("-", "  "));
+                    Console.WriteLine("          <--- {0}", BitConverter.ToString(response).Replace("-", "  "));
                     Console.WriteLine("               {0}", bytesInt.ToString());
                 } catch ( Exception ex ) {
                     Console.WriteLine("          ---- {0}: {1}", ex.ToString(), ex.Message);

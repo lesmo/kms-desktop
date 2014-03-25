@@ -63,6 +63,26 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap FacebookLogoWhite {
+            get {
+                object obj = ResourceManager.GetObject("FacebookLogoWhite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap KMSClock {
+            get {
+                object obj = ResourceManager.GetObject("KMSClock", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap KMSConnectDevice {
             get {
                 object obj = ResourceManager.GetObject("KMSConnectDevice", resourceCulture);
@@ -76,6 +96,16 @@ namespace KMS.Desktop.Properties {
         public static System.Drawing.Bitmap KMSLogo {
             get {
                 object obj = ResourceManager.GetObject("KMSLogo", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap TwitterLogowhite {
+            get {
+                object obj = ResourceManager.GetObject("TwitterLogowhite", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

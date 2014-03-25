@@ -61,28 +61,38 @@ namespace KMS.Desktop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &lt;html&gt;
-        ///&lt;head&gt;
-        ///&lt;title&gt;KMS :: Espera ...&lt;/title&gt;
-        ///&lt;style type=&quot;text-css&quot;&gt;
-        ///body {
-        ///	background: #fff;
-        ///	color: #00d0db;
-        ///	font-face: sans-serif;
-        ///	font-size: 14pt;
-        ///	text-align: center;
-        ///	padding-top: 20px;
-        ///}
-        ///&lt;/style&gt;
-        ///&lt;/head&gt;
-        ///&lt;body&gt;
-        ///ESPERA UN MOMENTO...
-        ///&lt;/body&gt;
-        ///&lt;/html&gt;.
+        ///   Looks up a localized string similar to Esperando dispositivo ....
         /// </summary>
-        internal static string SocialPleaseWaitHtml {
+        internal static string DownloadAgent_AwaitingDevice {
             get {
-                return ResourceManager.GetString("SocialPleaseWaitHtml", resourceCulture);
+                return ResourceManager.GetString("DownloadAgent_AwaitingDevice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Conectando con servidores KMS ....
+        /// </summary>
+        internal static string DownloadAgent_ConnectingToCloud {
+            get {
+                return ResourceManager.GetString("DownloadAgent_ConnectingToCloud", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Descagando datos ....
+        /// </summary>
+        internal static string DownloadAgent_DownloadingData {
+            get {
+                return ResourceManager.GetString("DownloadAgent_DownloadingData", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Inicializando descarga de datos ....
+        /// </summary>
+        internal static string DownloadAgent_InitializingDownload {
+            get {
+                return ResourceManager.GetString("DownloadAgent_InitializingDownload", resourceCulture);
             }
         }
     }

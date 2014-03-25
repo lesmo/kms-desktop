@@ -95,12 +95,17 @@ namespace KMS.Desktop {
                         null //"cc0acb4c78a2d25f110a03d56d5cd074"
                     )
                 );
-
-            this.InitPane();
         }
 
-        public void InitPane() {
-            this.LoginPane_Go();
+        public void InitPane(Controllers.IController jumpTo = null) {
+            if ( jumpTo != null && this.CloudAPI.CurrentlyHasAccessToken ) {
+                this.NextPane(
+                    jumpTo
+                );
+            } else {
+                //this.LoginPane_Go();
+                this.PrepareDevice_Go();
+            }
         }
 
         public enum PaneAnimation {
@@ -262,15 +267,19 @@ namespace KMS.Desktop {
         }
 
         internal void SyncDevice_Go() {
-            this.NextPane(
-                new Controllers.DeviceSyncingController(
-                    this,
-                    new Views.DeviceSyncing()
-                )
-            );
+            Controllers.DeviceSyncingController controller
+                =  this.NextPane(
+                    new Controllers.DeviceSyncingController(
+                        this,
+                        new Views.DeviceSyncing()
+                    )
+                ) as Controllers.DeviceSyncingController;
 
-            //((Controllers.DeviceSyncingController)this.PaneHistory.Peek())
-            //    .InitSync();
+            controller.SyncAsync();
+        }
+
+        internal void MyAccount_Go() {
+            throw new NotImplementedException();
         }
 
         private void Main_Load(object sender, EventArgs e) {

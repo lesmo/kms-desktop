@@ -18,7 +18,10 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="KmsCloudUri" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">http://api.kms.me/</Value>
+      <Value Profile="(Default)">http://localhost:25695/</Value>
+    </Setting>
+    <Setting Name="KmsDataLastModified" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

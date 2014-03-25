@@ -9,10 +9,25 @@ namespace KMS.Desktop {
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main() {
+        static void Main(string[] args) {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main());
+
+            Main main
+                = new Main();
+
+            if ( args.Length > 0 && args.Contains("-sync") ) {
+                main.InitPane(
+                    new Controllers.DeviceSyncingController(
+                        main,
+                        new Views.DeviceSyncing()
+                    )
+                );
+            } else {
+                main.InitPane();
+            }
+
+            Application.Run(main);
         }
     }
 }

@@ -95,6 +95,9 @@
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteException.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteTimeout.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommunicator.cs" />
+    <Compile Include="DataSync\UsbDownload\DownloadExceptionEventArgs.cs" />
+    <Compile Include="DataSync\UsbReset\FactoryResetAgent.cs" />
+    <Compile Include="DataSync\UsbReset\FactoryResetExceptionEventArgs.cs" />
     <Compile Include="LocalizationStrings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -109,7 +112,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataSync\UsbDownload\DeviceFoundEventArgs.cs" />
-    <Compile Include="DataSync\UsbDownload\DeviceNotFoundEventArgs.cs" />
     <Compile Include="DataSync\UsbDownload\DownloadAgent.cs" />
     <Compile Include="DataSync\UsbDownload\DownloadCompleteEventArgs.cs" />
     <Compile Include="DataSync\UsbDownload\DownloadAgentSettings.cs" />
@@ -121,6 +123,9 @@
       <DependentUpon>KMSFlatProgressBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Utils\DelegateExpansion.cs" />
+    <Compile Include="Utils\ExceptionSerializer.cs" />
+    <Compile Include="Utils\GenericWorkerExceptionHandler.cs" />
+    <Compile Include="Utils\StringEncrypt.cs" />
     <Compile Include="Utils\Synchronized.cs" />
     <Compile Include="Views\DevicePrepare.cs">
       <SubType>UserControl</SubType>
@@ -148,6 +153,12 @@
     </Compile>
     <Compile Include="Views\LoginRegister.Designer.cs">
       <DependentUpon>LoginRegister.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MyAccount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\MyAccount.Designer.cs">
+      <DependentUpon>MyAccount.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Register.cs">
       <SubType>UserControl</SubType>
@@ -184,6 +195,18 @@
     </Compile>
     <Compile Include="Views\RegisterInProgress.Designer.cs">
       <DependentUpon>RegisterInProgress.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UnhandledException.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\UnhandledException.Designer.cs">
+      <DependentUpon>UnhandledException.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WebException.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\WebException.Designer.cs">
+      <DependentUpon>WebException.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\WebView.cs">
       <SubType>UserControl</SubType>
@@ -223,6 +246,9 @@
     <EmbeddedResource Include="Views\LoginRegister.resx">
       <DependentUpon>LoginRegister.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\MyAccount.resx">
+      <DependentUpon>MyAccount.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Register.resx">
       <DependentUpon>Register.cs</DependentUpon>
     </EmbeddedResource>
@@ -240,6 +266,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\RegisterInProgress.resx">
       <DependentUpon>RegisterInProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\UnhandledException.resx">
+      <DependentUpon>UnhandledException.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\WebException.resx">
+      <DependentUpon>WebException.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\WebView.resx">
       <DependentUpon>WebView.cs</DependentUpon>
@@ -271,7 +303,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="KMS Icon.ico" />
+    <Content Include="Resources\FacebookLogoWhite.png" />
+    <Content Include="Resources\KMS-Clock.png" />
     <Content Include="Resources\KMS-ConnectDevice.png" />
+    <Content Include="Resources\TwitterLogowhite.png" />
     <None Include="Resources\KMS-Logo.png" />
   </ItemGroup>
   <ItemGroup>
@@ -286,9 +321,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataSync\UsbPrepare\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

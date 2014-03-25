@@ -76,10 +76,21 @@ namespace KMS.Desktop.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://api.kms.me/")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:25695/")]
         public string KmsCloudUri {
             get {
                 return ((string)(this["KmsCloudUri"]));
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime KmsDataLastModified {
+            get {
+                return ((global::System.DateTime)(this["KmsDataLastModified"]));
+            }
+            set {
+                this["KmsDataLastModified"] = value;
             }
         }
     }

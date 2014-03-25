@@ -49,7 +49,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         /// </summary>
         public bool CurrentlyHasAccessToken {
             get;
-            private set;
+            protected set;
         }
         /// <summary>
         ///     Método de Firmado de la Petición. Por ahora, la librería sólo soporta HMAC-SHA1.
@@ -150,7 +150,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
                     requestMethod.ToString().ToUpper(),
                     Uri.EscapeDataString(requestUri.AbsoluteUri),
                     Uri.EscapeDataString(parameterString)
-                ).Replace("!","%2521");
+                );
 
             return System.Text.Encoding.UTF8.GetBytes(
                 signatureBaseString
@@ -493,10 +493,10 @@ namespace SharpDynamics.OAuthClient.OAuth {
 
             if ( requestMethod != HttpRequestMethod.GET ) {
                 byte[] requestBodyBytes
-                    = Encoding.ASCII.GetBytes(requestString);
+                    = Encoding.UTF8.GetBytes(requestString);
 
                 request.ContentType
-                    = "application/x-www-form-urlencoded";
+                    = "application/x-www-form-urlencoded; charset=utf-8";
                 request.ContentLength
                     = requestBodyBytes.Length;
                 
@@ -508,6 +508,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
                     0,
                     requestBodyBytes.Length
                 );
+                requestBodyStream.Flush();
             }
 
             // -- Solicitar y devolver respuesta de API --

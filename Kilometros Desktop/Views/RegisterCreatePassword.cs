@@ -13,6 +13,8 @@ namespace KMS.Desktop.Views {
         private Color OriginalLineColor;
         private Color AttentionColor;
 
+        private string OriginalPasswordString;
+
         public event EventHandler<Events.SetPasswordEventArgs> SetPasswordContinue;
 
         public RegisterCreatePassword() {
@@ -22,14 +24,19 @@ namespace KMS.Desktop.Views {
                 = this.SetPasswordButton.BackColor;
             this.OriginalLineColor
                 = this.PasswordTextBox.Parent.BackColor;
+
+            this.OriginalPasswordString
+                = this.PasswordTextBox.Text;
         }
 
         private void SetPasswordButton_Click(object sender, EventArgs e) {
-            this.PasswordMismatchLabel.Visible = false;
+            this.PasswordMismatchLabel.Hide();
 
             if ( this.PasswordTextBox.Text.Length < 6 ) {
                 this.PasswordTextBox.Parent.BackColor
                     = this.AttentionColor;
+
+                this.PasswordTooShortLabel.Show();
 
                 this.PasswordTextBox.Focus();
                 this.PasswordTextBox.SelectAll();
@@ -38,12 +45,33 @@ namespace KMS.Desktop.Views {
             } else {
                 this.PasswordTextBox.Parent.BackColor
                     = this.OriginalLineColor;
+
+                this.PasswordTooShortLabel.Hide();
+            }
+
+            if ( this.PasswordTextBox.Text == this.OriginalPasswordString ) {
+                this.PasswordTextBox.Parent.BackColor
+                    = this.AttentionColor;
+
+                this.PasswordInvalidLabel.Show();
+
+                this.PasswordTextBox.Focus();
+                this.PasswordTextBox.SelectAll();
+
+                return;
+            } else {
+                this.PasswordTextBox.Parent.BackColor
+                    = this.OriginalLineColor;
+
+                this.PasswordInvalidLabel.Hide();
             }
 
             if ( this.PasswordTextBox.Text.Contains(' ') ) {
                 this.PasswordTextBox.Parent.BackColor
                     = this.AttentionColor;
 
+                this.PasswordInvalidLabel.Show();
+
                 this.PasswordTextBox.Focus();
                 this.PasswordTextBox.SelectAll();
 
@@ -51,6 +79,8 @@ namespace KMS.Desktop.Views {
             } else {
                 this.PasswordTextBox.Parent.BackColor
                     = this.OriginalLineColor;
+
+                this.PasswordInvalidLabel.Hide();
             }
 
             if ( this.PasswordTextBox.Text != this.Password2TextBox.Text ) {
@@ -60,11 +90,11 @@ namespace KMS.Desktop.Views {
                     = this.AttentionColor;
                 this.PasswordMismatchLabel.Visible
                     = true;
-
+        
                 return;
             }
 
-            this.SetPasswordContinue.CrossInvoke(
+            this.SetPasswordContinue(
                 this,
                 new Events.SetPasswordEventArgs(this.PasswordTextBox.Text)
             );

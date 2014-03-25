@@ -10,6 +10,7 @@ namespace KMS.Desktop.Views.Events {
         public string Email;
         public DateTime BirthDate;
 
+        public string CultureCode;
         public string RegionCode;
         public char Gender;
         public int Height;

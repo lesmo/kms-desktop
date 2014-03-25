@@ -28,11 +28,11 @@
             this.label2 = new System.Windows.Forms.Label();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
-            this.FacebookLoginButton = new System.Windows.Forms.Button();
-            this.TwitterLoginButton = new System.Windows.Forms.Button();
             this.SocialLoginErrorLabel = new System.Windows.Forms.Label();
             this.flowLayoutPanel2 = new System.Windows.Forms.FlowLayoutPanel();
             this.SkipButton = new System.Windows.Forms.Button();
+            this.FacebookLoginButton = new System.Windows.Forms.Button();
+            this.TwitterLoginButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
@@ -93,38 +93,6 @@
             this.label3.TabIndex = 6;
             this.label3.Text = resources.GetString("label3.Text");
             // 
-            // FacebookLoginButton
-            // 
-            this.FacebookLoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.FacebookLoginButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(95)))), ((int)(((byte)(156)))));
-            this.FacebookLoginButton.FlatAppearance.BorderSize = 0;
-            this.FacebookLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.FacebookLoginButton.ForeColor = System.Drawing.Color.White;
-            this.FacebookLoginButton.Location = new System.Drawing.Point(140, 81);
-            this.FacebookLoginButton.Margin = new System.Windows.Forms.Padding(140, 30, 140, 3);
-            this.FacebookLoginButton.Name = "FacebookLoginButton";
-            this.FacebookLoginButton.Size = new System.Drawing.Size(358, 35);
-            this.FacebookLoginButton.TabIndex = 12;
-            this.FacebookLoginButton.Text = "LOGIN CON FACEBOOK";
-            this.FacebookLoginButton.UseVisualStyleBackColor = false;
-            this.FacebookLoginButton.Click += new System.EventHandler(this.FacebookLoginButton_Click);
-            // 
-            // TwitterLoginButton
-            // 
-            this.TwitterLoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.TwitterLoginButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(172)))), ((int)(((byte)(238)))));
-            this.TwitterLoginButton.FlatAppearance.BorderSize = 0;
-            this.TwitterLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.TwitterLoginButton.ForeColor = System.Drawing.Color.White;
-            this.TwitterLoginButton.Location = new System.Drawing.Point(140, 129);
-            this.TwitterLoginButton.Margin = new System.Windows.Forms.Padding(140, 10, 140, 3);
-            this.TwitterLoginButton.Name = "TwitterLoginButton";
-            this.TwitterLoginButton.Size = new System.Drawing.Size(358, 35);
-            this.TwitterLoginButton.TabIndex = 13;
-            this.TwitterLoginButton.Text = "LOGIN CON TWITTER";
-            this.TwitterLoginButton.UseVisualStyleBackColor = false;
-            this.TwitterLoginButton.Click += new System.EventHandler(this.TwitterLoginButton_Click);
-            // 
             // SocialLoginErrorLabel
             // 
             this.SocialLoginErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -163,6 +131,38 @@
             this.SkipButton.Text = "DESPUÉS >>";
             this.SkipButton.UseVisualStyleBackColor = false;
             this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
+            // 
+            // FacebookLoginButton
+            // 
+            this.FacebookLoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.FacebookLoginButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(66)))), ((int)(((byte)(95)))), ((int)(((byte)(156)))));
+            this.FacebookLoginButton.FlatAppearance.BorderSize = 0;
+            this.FacebookLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.FacebookLoginButton.ForeColor = System.Drawing.Color.White;
+            this.FacebookLoginButton.Location = new System.Drawing.Point(140, 81);
+            this.FacebookLoginButton.Margin = new System.Windows.Forms.Padding(140, 30, 140, 3);
+            this.FacebookLoginButton.Name = "FacebookLoginButton";
+            this.FacebookLoginButton.Size = new System.Drawing.Size(358, 35);
+            this.FacebookLoginButton.TabIndex = 12;
+            this.FacebookLoginButton.Text = "LOGIN CON FACEBOOK";
+            this.FacebookLoginButton.UseVisualStyleBackColor = false;
+            this.FacebookLoginButton.Click += new System.EventHandler(this.FacebookLoginButton_Click);
+            // 
+            // TwitterLoginButton
+            // 
+            this.TwitterLoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.TwitterLoginButton.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(85)))), ((int)(((byte)(172)))), ((int)(((byte)(238)))));
+            this.TwitterLoginButton.FlatAppearance.BorderSize = 0;
+            this.TwitterLoginButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.TwitterLoginButton.ForeColor = System.Drawing.Color.White;
+            this.TwitterLoginButton.Location = new System.Drawing.Point(140, 129);
+            this.TwitterLoginButton.Margin = new System.Windows.Forms.Padding(140, 10, 140, 3);
+            this.TwitterLoginButton.Name = "TwitterLoginButton";
+            this.TwitterLoginButton.Size = new System.Drawing.Size(358, 35);
+            this.TwitterLoginButton.TabIndex = 13;
+            this.TwitterLoginButton.Text = "LOGIN CON TWITTER";
+            this.TwitterLoginButton.UseVisualStyleBackColor = false;
+            this.TwitterLoginButton.Click += new System.EventHandler(this.TwitterLoginButton_Click);
             // 
             // RegisterAddSocial
             // 

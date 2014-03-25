@@ -34,6 +34,8 @@
             this.Password2TextBox = new System.Windows.Forms.TextBox();
             this.PasswordMismatchLabel = new System.Windows.Forms.Label();
             this.SetPasswordButton = new System.Windows.Forms.Button();
+            this.PasswordInvalidLabel = new System.Windows.Forms.Label();
+            this.PasswordTooShortLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -75,6 +77,8 @@
             this.flowLayoutPanel1.Controls.Add(this.panel3);
             this.flowLayoutPanel1.Controls.Add(this.panel1);
             this.flowLayoutPanel1.Controls.Add(this.PasswordMismatchLabel);
+            this.flowLayoutPanel1.Controls.Add(this.PasswordInvalidLabel);
+            this.flowLayoutPanel1.Controls.Add(this.PasswordTooShortLabel);
             this.flowLayoutPanel1.Controls.Add(this.SetPasswordButton);
             this.flowLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
@@ -91,7 +95,7 @@
             this.label3.Location = new System.Drawing.Point(20, 0);
             this.label3.Margin = new System.Windows.Forms.Padding(20, 0, 20, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(581, 51);
+            this.label3.Size = new System.Drawing.Size(587, 51);
             this.label3.TabIndex = 6;
             this.label3.Text = resources.GetString("label3.Text");
             // 
@@ -149,7 +153,7 @@
             this.PasswordMismatchLabel.Location = new System.Drawing.Point(200, 125);
             this.PasswordMismatchLabel.Margin = new System.Windows.Forms.Padding(200, 5, 200, 0);
             this.PasswordMismatchLabel.Name = "PasswordMismatchLabel";
-            this.PasswordMismatchLabel.Size = new System.Drawing.Size(221, 17);
+            this.PasswordMismatchLabel.Size = new System.Drawing.Size(227, 17);
             this.PasswordMismatchLabel.TabIndex = 17;
             this.PasswordMismatchLabel.Text = "Las contraseñas no coinciden";
             this.PasswordMismatchLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -162,14 +166,42 @@
             this.SetPasswordButton.FlatAppearance.BorderSize = 0;
             this.SetPasswordButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.SetPasswordButton.ForeColor = System.Drawing.Color.White;
-            this.SetPasswordButton.Location = new System.Drawing.Point(230, 162);
+            this.SetPasswordButton.Location = new System.Drawing.Point(230, 206);
             this.SetPasswordButton.Margin = new System.Windows.Forms.Padding(230, 20, 230, 3);
             this.SetPasswordButton.Name = "SetPasswordButton";
-            this.SetPasswordButton.Size = new System.Drawing.Size(161, 35);
+            this.SetPasswordButton.Size = new System.Drawing.Size(167, 35);
             this.SetPasswordButton.TabIndex = 16;
             this.SetPasswordButton.Text = "¡LISTO!";
             this.SetPasswordButton.UseVisualStyleBackColor = false;
             this.SetPasswordButton.Click += new System.EventHandler(this.SetPasswordButton_Click);
+            // 
+            // PasswordInvalidLabel
+            // 
+            this.PasswordInvalidLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.PasswordInvalidLabel.AutoSize = true;
+            this.PasswordInvalidLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.PasswordInvalidLabel.Location = new System.Drawing.Point(200, 147);
+            this.PasswordInvalidLabel.Margin = new System.Windows.Forms.Padding(200, 5, 200, 0);
+            this.PasswordInvalidLabel.Name = "PasswordInvalidLabel";
+            this.PasswordInvalidLabel.Size = new System.Drawing.Size(227, 17);
+            this.PasswordInvalidLabel.TabIndex = 18;
+            this.PasswordInvalidLabel.Text = "La contraseña es inválida";
+            this.PasswordInvalidLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.PasswordInvalidLabel.Visible = false;
+            // 
+            // PasswordTooShortLabel
+            // 
+            this.PasswordTooShortLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.PasswordTooShortLabel.AutoSize = true;
+            this.PasswordTooShortLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.PasswordTooShortLabel.Location = new System.Drawing.Point(200, 169);
+            this.PasswordTooShortLabel.Margin = new System.Windows.Forms.Padding(200, 5, 200, 0);
+            this.PasswordTooShortLabel.Name = "PasswordTooShortLabel";
+            this.PasswordTooShortLabel.Size = new System.Drawing.Size(227, 17);
+            this.PasswordTooShortLabel.TabIndex = 19;
+            this.PasswordTooShortLabel.Text = "La contraseña es demasiado corta";
+            this.PasswordTooShortLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.PasswordTooShortLabel.Visible = false;
             // 
             // RegisterCreatePassword
             // 
@@ -204,5 +236,7 @@
         internal System.Windows.Forms.TextBox Password2TextBox;
         private System.Windows.Forms.Button SetPasswordButton;
         private System.Windows.Forms.Label PasswordMismatchLabel;
+        private System.Windows.Forms.Label PasswordInvalidLabel;
+        private System.Windows.Forms.Label PasswordTooShortLabel;
     }
 }

@@ -23,16 +23,16 @@ namespace KMS.Desktop.Views {
 
         private void FacebookLoginButton_Click(object sender, EventArgs e) {
             if ( !this.IgnoreFacebookClick )
-                this.FacebookLoginClick.CrossInvoke(this, e);
+                this.FacebookLoginClick(this, e);
         }
 
         private void TwitterLoginButton_Click(object sender, EventArgs e) {
             if ( !this.IgnoreTwitterClick )
-                this.TwitterLoginClick.CrossInvoke(this, e);
+                this.TwitterLoginClick(this, e);
         }
 
         private void SkipButton_Click(object sender, EventArgs e) {
-            this.SkipClick.CrossInvoke(this, e);
+            this.SkipClick(this, e);
         }
 
         private delegate void SetUserNameDelegate(string userName);

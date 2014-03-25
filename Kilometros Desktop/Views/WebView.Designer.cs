@@ -41,10 +41,13 @@
             this.Web.ScriptErrorsSuppressed = true;
             this.Web.Size = new System.Drawing.Size(680, 370);
             this.Web.TabIndex = 0;
+            this.Web.Visible = false;
             this.Web.WebBrowserShortcutsEnabled = false;
             // 
             // tableLayoutPanel1
             // 
+            this.tableLayoutPanel1.BackgroundImage = global::KMS.Desktop.Properties.Resources.KMSClock;
+            this.tableLayoutPanel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Controls.Add(this.Web, 0, 1);
@@ -61,7 +64,7 @@
             // 
             // WebViewNoticeLabel
             // 
-            this.WebViewNoticeLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.WebViewNoticeLabel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(165)))), ((int)(((byte)(169)))));
             this.WebViewNoticeLabel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.WebViewNoticeLabel.ForeColor = System.Drawing.Color.White;
             this.WebViewNoticeLabel.Location = new System.Drawing.Point(0, 0);

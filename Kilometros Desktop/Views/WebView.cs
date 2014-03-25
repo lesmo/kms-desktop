@@ -36,6 +36,19 @@ namespace KMS.Desktop.Views {
                 = this.WebViewNoticeLabel.Text;
             this.SocialNetworkText
                 = socialNetwork;
+
+            this.Web.Navigating
+                += Web_Navigating;
+            this.Web.DocumentCompleted
+                += Web_DocumentCompleted;
+        }
+
+        void Web_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
+            this.Web.Show();
+        }
+
+        void Web_Navigating(object sender, WebBrowserNavigatingEventArgs e) {
+            this.Web.Hide();
         }
     }
 }

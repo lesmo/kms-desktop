@@ -91,7 +91,7 @@ namespace KMS.Desktop.Views {
                     = this.OriginalLineColor;
             }
 
-            this.BasicLoginClick.CrossInvoke(
+            this.BasicLoginClick(
                 this,
                 new Events.BasicLoginEventArgs(
                     this.EmailTextBox.Text,
@@ -101,21 +101,21 @@ namespace KMS.Desktop.Views {
         }
 
         private void FacebookLoginButton_Click(object sender, EventArgs e) {
-            this.FacebookLoginClick.CrossInvoke(
+            this.FacebookLoginClick(
                 this,
                 e
             );
         }
 
         private void TwitterLoginButton_Click(object sender, EventArgs e) {
-            this.TwitterLoginClick.CrossInvoke(
+            this.TwitterLoginClick(
                 this,
                 e
             );
         }
 
         private void RegisterButton_Click(object sender, EventArgs e) {
-            this.RegisterClick.CrossInvoke(
+            this.RegisterClick(
                 this,
                 e
             );

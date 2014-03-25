@@ -35,11 +35,11 @@
             this.EmailTextBox = new System.Windows.Forms.TextBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.PasswordTextBox = new System.Windows.Forms.TextBox();
+            this.WrongLoginCredentialsLabel = new System.Windows.Forms.LinkLabel();
             this.LoginButton = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.FacebookLoginButton = new System.Windows.Forms.Button();
             this.TwitterLoginButton = new System.Windows.Forms.Button();
-            this.WrongLoginCredentialsLabel = new System.Windows.Forms.LinkLabel();
             this.tableLayoutPanel1.SuspendLayout();
             this.flowLayoutPanel2.SuspendLayout();
             this.flowLayoutPanel1.SuspendLayout();
@@ -205,6 +205,25 @@
             this.PasswordTextBox.UseSystemPasswordChar = true;
             this.PasswordTextBox.Enter += new System.EventHandler(this.PasswordTextBox_Enter);
             // 
+            // WrongLoginCredentialsLabel
+            // 
+            this.WrongLoginCredentialsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.WrongLoginCredentialsLabel.AutoSize = true;
+            this.WrongLoginCredentialsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.WrongLoginCredentialsLabel.LinkArea = new System.Windows.Forms.LinkArea(32, 58);
+            this.WrongLoginCredentialsLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            this.WrongLoginCredentialsLabel.Location = new System.Drawing.Point(30, 148);
+            this.WrongLoginCredentialsLabel.Margin = new System.Windows.Forms.Padding(30, 5, 30, 0);
+            this.WrongLoginCredentialsLabel.Name = "WrongLoginCredentialsLabel";
+            this.WrongLoginCredentialsLabel.Size = new System.Drawing.Size(242, 35);
+            this.WrongLoginCredentialsLabel.TabIndex = 12;
+            this.WrongLoginCredentialsLabel.TabStop = true;
+            this.WrongLoginCredentialsLabel.Text = "E-mail o contraseña incorrectos. ¿Olvidaste tu contraseña?";
+            this.WrongLoginCredentialsLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.WrongLoginCredentialsLabel.UseCompatibleTextRendering = true;
+            this.WrongLoginCredentialsLabel.Visible = false;
+            this.WrongLoginCredentialsLabel.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
+            // 
             // LoginButton
             // 
             this.LoginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
@@ -263,25 +282,6 @@
             this.TwitterLoginButton.Text = "LOGIN CON TWITTER";
             this.TwitterLoginButton.UseVisualStyleBackColor = false;
             this.TwitterLoginButton.Click += new System.EventHandler(this.TwitterLoginButton_Click);
-            // 
-            // WrongLoginCredentialsLabel
-            // 
-            this.WrongLoginCredentialsLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.WrongLoginCredentialsLabel.AutoSize = true;
-            this.WrongLoginCredentialsLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
-            this.WrongLoginCredentialsLabel.LinkArea = new System.Windows.Forms.LinkArea(32, 58);
-            this.WrongLoginCredentialsLabel.LinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
-            this.WrongLoginCredentialsLabel.Location = new System.Drawing.Point(30, 148);
-            this.WrongLoginCredentialsLabel.Margin = new System.Windows.Forms.Padding(30, 5, 30, 0);
-            this.WrongLoginCredentialsLabel.Name = "WrongLoginCredentialsLabel";
-            this.WrongLoginCredentialsLabel.Size = new System.Drawing.Size(242, 35);
-            this.WrongLoginCredentialsLabel.TabIndex = 12;
-            this.WrongLoginCredentialsLabel.TabStop = true;
-            this.WrongLoginCredentialsLabel.Text = "E-mail o contraseña incorrectos. ¿Olvidaste tu contraseña?";
-            this.WrongLoginCredentialsLabel.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.WrongLoginCredentialsLabel.UseCompatibleTextRendering = true;
-            this.WrongLoginCredentialsLabel.Visible = false;
-            this.WrongLoginCredentialsLabel.VisitedLinkColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
             // 
             // LoginRegister
             // 

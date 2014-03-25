@@ -24,7 +24,7 @@ namespace KMS.Desktop.Views {
         }
 
         private void LetsGoButton_Click(object sender, EventArgs e) {
-            this.LetsGoClicked.CrossInvoke(
+            this.LetsGoClicked(
                 this,
                 e
             );

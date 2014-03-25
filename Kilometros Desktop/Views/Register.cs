@@ -106,7 +106,7 @@ namespace KMS.Desktop.Views {
         }
 
         private void RegisterButton_Click(object sender, EventArgs e) {
-            if ( string.IsNullOrEmpty(this.NameTextBox.Text) ) {
+            if ( string.IsNullOrEmpty(this.NameTextBox.Text.Trim()) ) {
                 this.NameTextBox.Parent.BackColor
                     = this.AttentionColor;
                 this.NameTextBox.Text
@@ -120,7 +120,7 @@ namespace KMS.Desktop.Views {
                     = this.OriginalLineColor;
             }
 
-            if ( string.IsNullOrEmpty(this.LastNameTextBox.Text) ) {
+            if ( string.IsNullOrEmpty(this.LastNameTextBox.Text.Trim()) ) {
                 this.LastNameTextBox.Parent.BackColor
                     = this.AttentionColor;
                 this.LastNameTextBox.Text
@@ -134,7 +134,7 @@ namespace KMS.Desktop.Views {
                     = this.OriginalLineColor;
             }
 
-            if ( string.IsNullOrEmpty(this.EmailTextBox.Text) ) {
+            if ( string.IsNullOrEmpty(this.EmailTextBox.Text.Trim()) ) {
                 this.EmailTextBox.Parent.BackColor
                     = this.AttentionColor;
                 this.Email2TextBox.Parent.BackColor
@@ -153,7 +153,7 @@ namespace KMS.Desktop.Views {
                     = this.OriginalLineColor;
             }
 
-            if ( string.IsNullOrEmpty(this.Email2TextBox.Text) ) {
+            if ( string.IsNullOrEmpty(this.Email2TextBox.Text.Trim()) ) {
                 this.Email2TextBox.Parent.BackColor
                     = this.AttentionColor;
 
@@ -165,7 +165,7 @@ namespace KMS.Desktop.Views {
                 return;
             }
 
-            if ( this.EmailRegex.IsMatch(this.EmailTextBox.Text) ) {
+            if ( this.EmailRegex.IsMatch(this.EmailTextBox.Text.Trim()) ) {
                 this.EmailTextBox.Parent.BackColor
                     = this.OriginalLineColor;
                 this.EmailTextBox.ForeColor
@@ -178,7 +178,7 @@ namespace KMS.Desktop.Views {
                 return;
             }
 
-            if ( this.EmailTextBox.Text == this.Email2TextBox.Text ) {
+            if ( this.EmailTextBox.Text.ToLowerInvariant().Trim() == this.Email2TextBox.Text.ToLowerInvariant().Trim() ) {
                 this.Email2TextBox.Parent.BackColor
                     = this.OriginalLineColor;
                 this.Email2TextBox.ForeColor
@@ -244,9 +244,11 @@ namespace KMS.Desktop.Views {
                             this.LastNameTextBox.Text
                         ),
                     Email
-                        = this.EmailTextBox.Text.ToLower(),
+                        = this.EmailTextBox.Text.ToLower().Trim(),
                     BirthDate
                         = birthDate,
+                    CultureCode
+                        = "es",
                     RegionCode
                         = "mx-mex",
                     Gender
@@ -259,7 +261,7 @@ namespace KMS.Desktop.Views {
                                 new char[]{' '},
                                 2
                             )[0]
-                        ),
+                        ) * 1000,
                     Height
                         = (int)(float.Parse(
                             ((string)this.HeightComboBox.SelectedItem).Split(
@@ -269,7 +271,7 @@ namespace KMS.Desktop.Views {
                         ) * 100)
                 };
 
-            this.RegisterContinue.CrossInvoke(
+            this.RegisterContinue(
                 this,
                 new RegisterContinueEventArgs(registerData)
             );

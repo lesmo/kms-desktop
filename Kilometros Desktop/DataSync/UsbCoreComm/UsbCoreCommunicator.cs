@@ -76,7 +76,16 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
             int readCount
                 = 0;
             int writeCount
-                = this._device.Write(writeCommand);
+                = 0;
+            try {
+                writeCount
+                    = this._device.Write(writeCommand);
+            } catch ( USBXpressNETException ex ) {
+                if ( ex.Message.Contains("TIME") )
+                    throw new UsbCoreCommandWriteTimeout();
+                else
+                    throw new UsbCoreCommandWriteException();
+            }
 
             if ( writeCount == 0 )
                 throw new UsbCoreCommandWriteException();
@@ -87,6 +96,8 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
             } catch ( USBXpressNETException ex ) {
                 if ( ex.Message.Contains("TIME") )
                     throw new UsbCoreCommandWriteTimeout();
+                else
+                    throw new UsbCoreCommandWriteException();
             }
 
             byte[] returnBytes
@@ -124,7 +135,8 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
         }
 
         ~UsbCoreCommunicator() {
-            this._device.Close();
+            if ( this._device != null )
+                this._device.Close();
         }
     }
 }

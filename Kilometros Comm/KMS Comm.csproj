@@ -49,6 +49,7 @@
     <Compile Include="Cloud\KMSScrewYou.cs" />
     <Compile Include="Cloud\KMSWrongUserCredentials.cs" />
     <Compile Include="Cloud\OAuth3rdParties.cs" />
+    <Compile Include="Cloud\ResponseModels\DataTotalResponse.cs" />
     <Compile Include="InnerCore\CommandRequest\FactoryResetRequest.cs" />
     <Compile Include="InnerCore\CommandRequest\ReadDataRequest.cs" />
     <Compile Include="InnerCore\CommandResponse\FactoryResetResponse.cs" />

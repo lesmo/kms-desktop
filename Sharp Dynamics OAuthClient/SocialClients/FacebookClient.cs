@@ -35,7 +35,7 @@ namespace SharpDynamics.OAuthClient.SocialClients {
                 this._token
                     = value;
                 this.CurrentlyHasAccessToken
-                    = true;
+                    = this._token != null;
             }
         }
         private OAuthCryptoSet _token;
@@ -147,13 +147,13 @@ namespace SharpDynamics.OAuthClient.SocialClients {
 
             return new Uri(
                 string.Format(
-                    "{0}?client_id={1}&redirect_uri={2}&response_type={3}&scope={4}",
+                    "{0}?client_id={1}&redirect_uri={2}&response_type={3}&scope={4}&display=popup",
                     this.ClientUris.AuthorizationResource,
                     this.ConsumerCredentials.Key,
                     Uri.EscapeDataString(
                         this.ClientUris.CallbackRequestTokenUri == null
-                        ? "https://www.facebook.com/connect/login_success.html"
-                        : this.ClientUris.CallbackRequestTokenUri.AbsoluteUri
+                            ? "https://www.facebook.com/connect/login_success.html"
+                            : this.ClientUris.CallbackRequestTokenUri.AbsoluteUri
                     ),
                     responseTypeString,
                     scopeStringBuilder.ToString().Remove(

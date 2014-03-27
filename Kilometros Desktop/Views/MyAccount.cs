@@ -9,8 +9,19 @@ using System.Windows.Forms;
 
 namespace KMS.Desktop.Views {
     public partial class MyAccount : UserControl {
+        public event EventHandler SyncClick;
+        public event EventHandler ResetClick;
+
         public MyAccount() {
             InitializeComponent();
+        }
+
+        private void SyncButton_Click(object sender, EventArgs e) {
+            this.SyncClick(this, e);
+        }
+
+        private void ResetButton_Click(object sender, EventArgs e) {
+            this.ResetClick(this, e);
         }
     }
 }

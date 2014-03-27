@@ -55,9 +55,9 @@ namespace KMS.Desktop {
                     RequestTokenResource
                         = "oauth/request_token",
                     AuthorizationResource
-                        = "oauth/authorize",
+                        = "oauth/authorize-basic",
                     KmsSessionResource
-                        = "session",
+                        = "oauth/session",
                     KmsOAuth3rdLogin
                         = "oauth/3rd/{0}/login",
                     KmsRegisterAccountResource
@@ -103,8 +103,11 @@ namespace KMS.Desktop {
                     jumpTo
                 );
             } else {
-                //this.LoginPane_Go();
-                this.PrepareDevice_Go();
+                if ( this.CloudAPI.SessionIsValid() ) {
+                    this.MyAccount_Go();
+                } else {
+                    this.LoginPane_Go();
+                }
             }
         }
 
@@ -279,7 +282,12 @@ namespace KMS.Desktop {
         }
 
         internal void MyAccount_Go() {
-            throw new NotImplementedException();
+            this.NextPane(
+                new Controllers.MyAccountController(
+                    this,
+                    new Views.MyAccount()
+                )
+            );
         }
 
         private void Main_Load(object sender, EventArgs e) {

@@ -54,6 +54,8 @@
             // 
             // ContentPanel
             // 
+            this.ContentPanel.BackgroundImage = global::KMS.Desktop.Properties.Resources.KMSClock;
+            this.ContentPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ContentPanel.Location = new System.Drawing.Point(0, 50);
             this.ContentPanel.Margin = new System.Windows.Forms.Padding(0);

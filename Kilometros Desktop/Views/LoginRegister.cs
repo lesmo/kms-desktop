@@ -70,6 +70,8 @@ namespace KMS.Desktop.Views {
 
                 this.EmailTextBox.Focus();
                 this.EmailTextBox.SelectAll();
+                
+                return;
             } else {
                 this.EmailTextBox.Parent.BackColor
                     = this.OriginalLineColor;
@@ -86,6 +88,8 @@ namespace KMS.Desktop.Views {
 
                 this.PasswordTextBox.Focus();
                 this.PasswordTextBox.SelectAll();
+
+                return;
             } else {
                 this.PasswordTextBox.Parent.BackColor
                     = this.OriginalLineColor;

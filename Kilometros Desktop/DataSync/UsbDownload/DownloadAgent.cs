@@ -79,10 +79,11 @@ namespace KMS.Desktop.DataSync.UsbDownload {
 
         void DownloadDataAsync_ProgressChanged(object sender, ProgressChangedEventArgs e) {
             if ( e.ProgressPercentage == 1 && e.UserState is USBDevice ) {
-                this.OnDeviceFound(
-                    this,
-                    new DeviceFoundEventArgs(e.UserState as USBDevice)
-                );
+                if ( this.OnDeviceFound != null )
+                    this.OnDeviceFound(
+                        this,
+                        new DeviceFoundEventArgs(e.UserState as USBDevice)
+                    );
             } else {
                 this.OnProgressChanged(
                     this,

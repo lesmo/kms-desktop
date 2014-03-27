@@ -88,7 +88,10 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\LoginFacebookController.cs" />
     <Compile Include="Controllers\LoginTwitterController.cs" />
+    <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="DataSync\CloudUpload\CloudUploadAgent.cs" />
+    <Compile Include="DataSync\CloudUpload\CloudUploadExceptionEventArgs.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCableNotFound.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandCrcInvalid.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandException.cs" />
@@ -139,6 +142,12 @@
     <Compile Include="Views\DevicePrepareInProgress.Designer.cs">
       <DependentUpon>DevicePrepareInProgress.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\DeviceResetDialog.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\DeviceResetDialog.Designer.cs">
+      <DependentUpon>DeviceResetDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\DeviceSyncing.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -146,6 +155,7 @@
       <DependentUpon>DeviceSyncing.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Events\BasicLoginEventArgs.cs" />
+    <Compile Include="Views\Events\DialogEventArgs.cs" />
     <Compile Include="Views\Events\RegisterContinueEventArgs.cs" />
     <Compile Include="Views\Events\SetPasswordEventArgs.cs" />
     <Compile Include="Views\LoginRegister.cs">
@@ -239,6 +249,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\DevicePrepareInProgress.resx">
       <DependentUpon>DevicePrepareInProgress.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\DeviceResetDialog.resx">
+      <DependentUpon>DeviceResetDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\DeviceSyncing.resx">
       <DependentUpon>DeviceSyncing.cs</DependentUpon>

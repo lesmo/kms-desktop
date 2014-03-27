@@ -13,6 +13,9 @@ namespace KMS.Desktop.Utils {
             Exception exception,
             Action retryMethod = null
         ) {
+            if ( exception == null )
+                return;
+
             if ( exception is WebException ) {
                 Views.WebException webExceptionView
                     = new Views.WebException();

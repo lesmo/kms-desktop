@@ -23,10 +23,10 @@ namespace KMS.Desktop.Views {
 
         public string Status {
             get {
-                return this.ProgressLabel.Text;
+                return this.StatusLabel.Text;
             }
             set {
-                this.ProgressLabel.Text
+                this.StatusLabel.Text
                     = value;
             }
         }

@@ -67,10 +67,6 @@ namespace KMS.Desktop.Controllers {
                 e.Result
                     = DateTime.UtcNow.AddDays(-7);
             }
-
-            Settings.Default.KmsDataLastModified
-                = (DateTime)e.Result;
-            Settings.Default.Save();
         }
 
         void LastTimestampWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {

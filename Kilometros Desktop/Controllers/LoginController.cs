@@ -20,8 +20,6 @@ namespace KMS.Desktop.Controllers {
         private event EventHandler<EventArgs> LoginSuccessful;
         private event EventHandler<Events.LoginUnsuccessfulEventArgs> LoginUnsuccessful;
 
-        private Synchronized<Main> SyncedMain
-            = new Synchronized<Main>();
         private Views.LoginInProgress LoginInProgressView
             = new Views.LoginInProgress();
 
@@ -30,10 +28,7 @@ namespace KMS.Desktop.Controllers {
         private BackgroundWorker Login3rdWorker
             = new BackgroundWorker();
 
-        public LoginController(Main main, Views.LoginRegister view) : base(main, view) {
-            this.SyncedMain.Value
-                = main;
-            
+        public LoginController(Main main, Views.LoginRegister view) : base(main, view) {    
             view.BasicLoginClick
                 += BasicLoginButton_Click;
             view.FacebookLoginClick
@@ -59,7 +54,7 @@ namespace KMS.Desktop.Controllers {
 
         void LoginWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
             if ( e.Error == null ) {
-                this.Main.SyncDevice_Go();
+                this.Main.MyAccount_Go();
             } else if ( e.Error is KMSWrongUserCredentials ) {
                 this.View.ShowWrongCredentials();
 

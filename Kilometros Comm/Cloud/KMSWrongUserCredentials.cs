@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 
 namespace KMS.Comm.Cloud {
-    public class KMSWrongUserCredentials : Exception{
+    public class KMSWrongUserCredentials : Exception {
     }
 }

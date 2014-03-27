@@ -76,6 +76,8 @@ namespace KMS.Comm.Cloud {
         public bool SessionIsValid() {
             if ( this.Token == null )
                 return false;
+            if ( this.CurrentlyHasAccessToken )
+                return true;
 
             OAuthResponse<string> response
                 = this.RequestString(
@@ -116,6 +118,8 @@ namespace KMS.Comm.Cloud {
 
             request.Method
                 = "POST";
+            request.ContentLength
+                = 0;
             request.Headers.Add(
                 HttpRequestHeader.Authorization,
                 "Basic " + authorizationLoginString
@@ -125,16 +129,27 @@ namespace KMS.Comm.Cloud {
                 CultureInfo.CurrentCulture.Name
             );
 
-            HttpWebResponse response
-                = (HttpWebResponse)request.GetResponse();
+            HttpWebResponse response;
+            try {
+                response
+                    = (HttpWebResponse)request.GetResponse();
+            } catch ( WebException ex )  {
+                response
+                    = (HttpWebResponse)ex.Response;
+            }
 
-            if ( response.StatusCode == HttpStatusCode.Unauthorized )
+            if ( response.StatusCode == HttpStatusCode.Unauthorized ) {
                 throw new KMSWrongUserCredentials();
-
-            if ( response.StatusCode == HttpStatusCode.Forbidden )
+            } else if ( response.StatusCode == HttpStatusCode.Forbidden ) {
                 throw new KMSScrewYou(
                     response.Headers[HttpRequestHeader.Warning]
                 );
+            } else if (
+                response.StatusCode != HttpStatusCode.OK
+                && response.StatusCode != HttpStatusCode.Created
+            ) {
+                throw new KMSScrewYou();
+            }
 
             StringBuilder responseStringBuilder
                 = new StringBuilder();
@@ -164,7 +179,7 @@ namespace KMS.Comm.Cloud {
             } while ( count > 0 );
 
             return this.ExchangeRequestToken(
-                responseStringBuilder.ToString()
+                responseStringBuilder.ToString().Trim()
             );
         }
 

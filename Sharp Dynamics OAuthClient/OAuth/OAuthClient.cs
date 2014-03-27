@@ -217,6 +217,8 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public OAuthCryptoSet GetRequestToken(Dictionary<string, string> extraParameters = null) {
             Dictionary<string, string> oAuthExtraParameters
                 = new Dictionary<string,string>();
+            this.Token
+                = null;
 
             if ( this.ClientUris == null )
                 throw new OAuthUnexpectedRequest();
@@ -260,7 +262,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         ///     Devuelve la URI a través de la cual el Usuario autoriza a la Aplicación el acceso a su información.
         /// </returns>
         public Uri GetAuthorizationUri() {
-            if ( this.Token != null && this.CurrentlyHasAccessToken )
+            if ( this.CurrentlyHasAccessToken )
                 throw new OAuthUnexpectedRequest();
 
             OAuthCryptoSet requestToken
@@ -310,8 +312,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
                     this.ClientUris.ExchangeTokenResource,
                     new Dictionary<string,string> {
                         {"oauth_verifier", verifier}
-                    },
-                    null
+                    }
                 );
 
             string token
@@ -390,7 +391,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
                     {"oauth_version", this.Version}
                 };
 
-            if ( this.Token != null )
+            if ( this.Token != null && this.Token.Key != null )
                 oAuthSortedParameters.Add("oauth_token", this.Token.Key);
 
             // -- Parámetros ordenados alfabéticamente por Key --

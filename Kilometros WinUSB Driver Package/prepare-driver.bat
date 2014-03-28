@@ -8,7 +8,7 @@ echo ""
 echo ""
 
 echo == Signing Drivers ==
-"C:\Program Files (x86)\Windows Kits\8.0\bin\x64\signtool.exe" sign /s KmsMxCertStore /r "KMS Mexico" /n "KMS Protype Drivers" /t http://timestamp.verisign.com/scripts/timestamp.dll .\kmsdevice.cat
+"C:\Program Files (x86)\Windows Kits\8.0\bin\x64\signtool.exe" sign /s KmsInventCertStore /n "KMS Invent Software Certificate" /t http://timestamp.verisign.com/scripts/timestamp.dll .\kmsdevice.cat /d "KMS Invent USB Device Sync Cable Driver"
 echo ""
 echo ""
 echo ALL DONE

@@ -7,7 +7,7 @@ Class       = USBDevice
 ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider    = %KmsProvider%
 CatalogFile = kmsdevice.cat
-DriverVer   = 02/04/2014, 1.0.0.5
+DriverVer   = 02/04/2014, 1.0.1.0
 
 ; ========== Manufacturer/Models sections ===========
 [Manufacturer]

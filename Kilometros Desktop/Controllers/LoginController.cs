@@ -17,9 +17,6 @@ namespace KMS.Desktop.Controllers {
     }
 
     class LoginController : IController<Views.LoginRegister> {
-        private event EventHandler<EventArgs> LoginSuccessful;
-        private event EventHandler<Events.LoginUnsuccessfulEventArgs> LoginUnsuccessful;
-
         private Views.LoginInProgress LoginInProgressView
             = new Views.LoginInProgress();
 

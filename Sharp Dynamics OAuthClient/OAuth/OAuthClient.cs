@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using System.IO;
 using System.Collections.Specialized;
 using SharpDynamics.OAuthClient;
+using SharpDynamics.OAuthClient.Utils;
 
 namespace SharpDynamics.OAuthClient.OAuth {
     /// <summary>
@@ -114,7 +115,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         /// <param name="requestUri">
         ///     URI a la que se realiza la petición OAuth. Debe ser posible obtener el AbsoluteUri de éste.
         /// </param>
-        /// <param name="oAuthSortedParameters">
+        /// <param name="parameters">
         ///     Diccionario que contiene los parámetros ordenados, incluyendo todos los necesarios por OAuth,
         ///     para generar la Firma de Petición.
         /// </param>
@@ -125,24 +126,26 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public byte[] GetSignatureBase(
             HttpRequestMethod requestMethod,
             Uri requestUri,
-            SortedDictionary<string, string> oAuthSortedParameters
+            NameValueCollection parameters
         ) {
             StringBuilder parameterStringBuilder
                 = new StringBuilder();
 
-            foreach ( KeyValuePair<string, string> param in oAuthSortedParameters )
-                parameterStringBuilder.Append(
-                    string.Format(
-                        "{0}={1}&",
-                        Uri.EscapeDataString(param.Key),
-                        Uri.EscapeDataString(param.Value)
-                    )
-                );
+            foreach ( string key in parameters.SortByName() ) {
+                foreach ( string value in parameters.GetValues(key) )
+                    parameterStringBuilder.Append(
+                        string.Format(
+                            "{0}={1}&",
+                            Uri.EscapeDataString(key),
+                            Uri.EscapeDataString(value).Replace("!","%21")
+                        )
+                    );
+            }
 
             string parameterString
                 = parameterStringBuilder
                     .ToString()
-                    .Substring(0, parameterStringBuilder.Length - 1);
+                    .Remove(parameterStringBuilder.Length - 1);
 
             string signatureBaseString
                 =  string.Format(
@@ -175,7 +178,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public string GetSignature(
             HttpRequestMethod requestMethod,
             Uri requestUri,
-            SortedDictionary<string, string> oAuthSortedParameters
+            NameValueCollection parameters
         ) {
             if ( this.ConsumerCredentials == null )
                 throw new OAuthConsumerKeySetInvalid();
@@ -184,14 +187,15 @@ namespace SharpDynamics.OAuthClient.OAuth {
                 = this.GetSignatureBase(
                     requestMethod,
                     requestUri,
-                    oAuthSortedParameters
+                    parameters
                 );
             string signatureKey
-                = this.ConsumerCredentials.Secret + "&"
-                + (
+                = string.Format(
+                    "{0}&{1}",
+                    this.ConsumerCredentials.Secret,
                     this.Token == null
                         ? ""
-                        : this.Token.Secret  
+                        : this.Token.Secret
                 );
             
             HMACSHA1 hmacsha1
@@ -215,11 +219,11 @@ namespace SharpDynamics.OAuthClient.OAuth {
         ///     Devuelve un conjunto de Request Token y Token Secret
         /// </returns>
         public OAuthCryptoSet GetRequestToken(Dictionary<string, string> extraParameters = null) {
-            Dictionary<string, string> oAuthExtraParameters
-                = new Dictionary<string,string>();
+            NameValueCollection oAuthExtraParameters
+                = new NameValueCollection();
             this.Token
                 = null;
-
+            
             if ( this.ClientUris == null )
                 throw new OAuthUnexpectedRequest();
 
@@ -238,8 +242,8 @@ namespace SharpDynamics.OAuthClient.OAuth {
                 = this.RequestSimpleNameValue(
                     HttpRequestMethod.POST,
                     this.ClientUris.RequestTokenResource,
-                    extraParameters,
-                    oAuthExtraParameters
+                    oAuthExtraParameters,
+                    oAuthExtraParameters.ToDictionary(false)
                 );
 
             try {
@@ -310,7 +314,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
                 response = this.RequestSimpleNameValue(
                     HttpRequestMethod.POST,
                     this.ClientUris.ExchangeTokenResource,
-                    new Dictionary<string,string> {
+                    new NameValueCollection() {
                         {"oauth_verifier", verifier}
                     }
                 );
@@ -359,7 +363,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public HttpWebResponse Request(
             HttpRequestMethod requestMethod,
             string resource,
-            Dictionary<string, string> parameters = null,
+            NameValueCollection parameters = null,
             Dictionary<string, string> oAuthExtraParameters = null,
             Dictionary<HttpRequestHeader, string> requestHeaders = null
         ) {
@@ -376,44 +380,52 @@ namespace SharpDynamics.OAuthClient.OAuth {
             TimeSpan timestamp
                 = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
             // Calcular Nonce
+            byte[] nonceBytes
+                = new byte[16];
+
+            (new Random()).NextBytes(nonceBytes);
+
             string nonce
-                = (new Random()).Next().ToString();
+                = Convert.ToBase64String(nonceBytes);
 
             // Generar valores de cabecera Authorization: OAuth
-            SortedDictionary<string, string> oAuthSortedParameters
-                = new SortedDictionary<string,string>(
-                    oAuthExtraParameters ?? new Dictionary<string, string>()
-                ) {
+            NameValueCollection oAuthParameters
+                = new NameValueCollection();
+
+            if ( oAuthExtraParameters != null )
+                oAuthParameters.AddFromDictionary(
+                    oAuthExtraParameters
+                );
+
+            oAuthParameters.Add(
+                new NameValueCollection() {
                     {"oauth_consumer_key", this.ConsumerCredentials.Key},
                     {"oauth_nonce", nonce},
                     {"oauth_signature_method", this.SignatureMethod},
                     {"oauth_timestamp", ((int)timestamp.TotalSeconds).ToString()},
                     {"oauth_version", this.Version}
-                };
+                }
+            );
 
             if ( this.Token != null && this.Token.Key != null )
-                oAuthSortedParameters.Add("oauth_token", this.Token.Key);
-
-            // -- Parámetros ordenados alfabéticamente por Key --
-            SortedDictionary<string, string> sortedParameters
-                = new SortedDictionary<string, string>(
-                    parameters ?? new Dictionary<string, string>()
-                );
+                oAuthParameters.Add("oauth_token", this.Token.Key);
 
             // -- Generar base para Firma de Petición --
-            SortedDictionary<string, string> oAuthSignatureBaseSortedParameters
-                = new SortedDictionary<string, string>(sortedParameters);
+            NameValueCollection oAuthSignatureBaseParameters
+                = new NameValueCollection();
 
-            foreach ( KeyValuePair<string, string> param in oAuthSortedParameters )
-                oAuthSignatureBaseSortedParameters.Add(param.Key, param.Value);
+            oAuthSignatureBaseParameters.Add(oAuthParameters);
+
+            if ( parameters != null )
+                oAuthSignatureBaseParameters.Add(parameters);
 
             // -- Añadir Firma de Petición a cabecera Authorization: OAuth
-            oAuthSortedParameters.Add(
+            oAuthParameters.Add(
                 "oauth_signature",
                 this.GetSignature(
                     requestMethod,
                     requestUri,
-                    oAuthSignatureBaseSortedParameters
+                    oAuthSignatureBaseParameters
                 )
             );
 
@@ -422,21 +434,22 @@ namespace SharpDynamics.OAuthClient.OAuth {
             StringBuilder requestStringBuilder
                 = new StringBuilder();
 
-            foreach ( KeyValuePair<string, string> param in sortedParameters )
-                requestStringBuilder.Append(
-                    string.Format(
-                        "{0}={1}&",
-                        Uri.EscapeDataString(param.Key),
-                        Uri.EscapeDataString(param.Value)
-                    )
-                );
+            foreach ( string key in parameters.AllKeys ) {
+                foreach ( string value in parameters.GetValues(key) )
+                    requestStringBuilder.Append(
+                        string.Format(
+                            "{0}={1}&",
+                            Uri.EscapeDataString(key),
+                            Uri.EscapeDataString(value)
+                        )
+                    );
+            }
 
             string requestString
                 = "";
             if ( requestStringBuilder.Length > 0 )
                 requestString
-                    = requestStringBuilder.ToString().Substring(
-                        0,
+                    = requestStringBuilder.ToString().Remove(
                         requestStringBuilder.Length - 1
                     );
 
@@ -478,18 +491,21 @@ namespace SharpDynamics.OAuthClient.OAuth {
             }
 
             // Añadir cabecera Authorization: OAuth
-            string oAuthHeaderString
-                = oAuthSortedParameters.Aggregate(
-                    "OAuth ",
-                    (str, param) =>
-                        str + param.Key + "=\"" + Uri.EscapeDataString(param.Value) + "\", "
-                );
-            oAuthHeaderString
-                = oAuthHeaderString.Substring(0, oAuthHeaderString.Length - 2);
-            
+            StringBuilder oAuthHeaderString
+                = new StringBuilder("OAuth ");
+
+            foreach ( string key in oAuthParameters.AllKeys ) {
+                foreach ( string value in oAuthParameters.GetValues(key) )
+                    oAuthHeaderString.AppendFormat(
+                        "{0}=\"{1}\", ",
+                        key,
+                        Uri.EscapeDataString(value) 
+                    );
+            }
+
             request.Headers.Add(
                 HttpRequestHeader.Authorization,
-                oAuthHeaderString
+                oAuthHeaderString.ToString().Remove(oAuthHeaderString.Length - 2)
             );
 
             if ( requestMethod != HttpRequestMethod.GET ) {
@@ -516,10 +532,18 @@ namespace SharpDynamics.OAuthClient.OAuth {
             try {
                 return request.GetResponse() as HttpWebResponse;
             } catch ( WebException ex ) {
-                return ex.Response as HttpWebResponse;
+                HttpWebResponse response
+                    = ex.Response as HttpWebResponse;
+
+                if ( response.StatusCode == HttpStatusCode.Unauthorized )
+                    throw new OAuthTokenSetInvalid();
+                else if ( response.StatusCode == HttpStatusCode.Forbidden )
+                    throw new OAuthConsumerKeySetInvalid();
+                else
+                    return response;
             }
         }
-
+        
         /// <summary>
         ///     Realiza una nueva petición OAuth al recurso especificado, devolviendo la respuesta tal como viene
         ///     en una cadena.
@@ -545,7 +569,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public OAuthResponse<string> RequestString(
             HttpRequestMethod requestMethod,
             string resource,
-            Dictionary<string, string> parameters = null,
+            NameValueCollection parameters = null,
             Dictionary<string, string> oAuthExtraParameters = null,
             Dictionary<HttpRequestHeader, string> requestHeaders = null
         ) {
@@ -621,7 +645,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public OAuthResponse<NameValueCollection> RequestSimpleNameValue(
             HttpRequestMethod requestMethod,
             string resource,
-            Dictionary<string, string> parameters = null,
+            NameValueCollection parameters = null,
             Dictionary<string, string> oAuthExtraParameters = null,
             Dictionary<HttpRequestHeader, string> requestHeaders = null
         ) {
@@ -686,7 +710,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public OAuthResponse<T> RequestJson<T>(
             HttpRequestMethod requestMethod,
             string resource,
-            Dictionary<string, string> parameters = null,
+            NameValueCollection parameters = null,
             Dictionary<string, string> oAuthExtraParameters = null,
             Dictionary<HttpRequestHeader, string> requestHeaders = null
         ) {
@@ -738,7 +762,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
         public OAuthResponse<JObject> RequestJson(
             HttpRequestMethod requestMethod,
             string resource,
-            Dictionary<string, string> parameters = null,
+            NameValueCollection parameters = null,
             Dictionary<string, string> oAuthExtraParameters = null,
             Dictionary<HttpRequestHeader, string> requestHeaders = null
         ) {

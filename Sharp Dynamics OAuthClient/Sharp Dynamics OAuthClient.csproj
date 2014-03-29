@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\OAuthTokenSetInvalid.cs" />
     <Compile Include="HttpRequestMethod.cs" />
     <Compile Include="IOAuthClient.cs" />
     <Compile Include="OAuth2\OAuth2Client.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="SocialClients\IOAuthSocialClient.cs" />
     <Compile Include="SocialClients\TwitterClient.cs" />
     <Compile Include="Utils\EnumStringUnderlined.cs" />
+    <Compile Include="Utils\NameValueCollectionExpansion.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

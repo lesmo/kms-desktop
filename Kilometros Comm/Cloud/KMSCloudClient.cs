@@ -1,6 +1,7 @@
 ﻿using SharpDynamics.OAuthClient.OAuth;
 using SharpDynamics.OAuthClient;
 using KMS.Comm.Properties;
+using SharpDynamics.OAuthClient.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -31,10 +32,15 @@ namespace KMS.Comm.Cloud {
 
             this.GetRequestToken();
 
+            NameValueCollection parameters
+                = new NameValueCollection();
+
+            parameters.AddFromDictionary(accountData);
+
             OAuthResponse<NameValueCollection> response = this.RequestSimpleNameValue(
                 HttpRequestMethod.POST,
                 (this.ClientUris as KMSCloudUris).KmsRegisterAccountResource,
-                accountData,
+                parameters,
                 null,
                 new Dictionary<HttpRequestHeader, string>() {
                     {HttpRequestHeader.AcceptLanguage, CultureInfo.CurrentCulture.Name}
@@ -211,8 +217,8 @@ namespace KMS.Comm.Cloud {
             if ( this.Token != null || this.ConsumerCredentials == null )
                 throw new OAuthUnexpectedRequest();
 
-            Dictionary<string, string> requestParameters
-                = new Dictionary<string, string>() {
+            NameValueCollection requestParameters
+                = new NameValueCollection() {
                     {"oauth_token", oAuthToken.Key}
                 };
 

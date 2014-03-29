@@ -88,11 +88,29 @@ namespace KMS.Desktop {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Inicializando descarga de datos ....
+        ///   Looks up a localized string similar to Iniciando descarga de datos ....
         /// </summary>
         internal static string DownloadAgent_InitializingDownload {
             get {
                 return ResourceManager.GetString("DownloadAgent_InitializingDownload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Iniciando subida de datos ....
+        /// </summary>
+        internal static string UploadAgent_InitializingUpload {
+            get {
+                return ResourceManager.GetString("UploadAgent_InitializingUpload", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Subiendo datos ....
+        /// </summary>
+        internal static string UploadAgent_UploadingData {
+            get {
+                return ResourceManager.GetString("UploadAgent_UploadingData", resourceCulture);
             }
         }
     }

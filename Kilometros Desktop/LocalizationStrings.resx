@@ -127,6 +127,12 @@
     <value>Descagando datos ...</value>
   </data>
   <data name="DownloadAgent_InitializingDownload" xml:space="preserve">
-    <value>Inicializando descarga de datos ...</value>
+    <value>Iniciando descarga de datos ...</value>
+  </data>
+  <data name="UploadAgent_InitializingUpload" xml:space="preserve">
+    <value>Iniciando subida de datos ...</value>
+  </data>
+  <data name="UploadAgent_UploadingData" xml:space="preserve">
+    <value>Subiendo datos ...</value>
   </data>
 </root>

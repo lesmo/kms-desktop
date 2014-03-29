@@ -11,20 +11,27 @@
     <AssemblyName>KMS Desktop</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
-    <PublishUrl>publish\</PublishUrl>
+    <IsWebBootstrapper>true</IsWebBootstrapper>
+    <PublishUrl>Z:\KMS Deploy\windows\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Disk</InstallFrom>
-    <UpdateEnabled>false</UpdateEnabled>
+    <InstallFrom>Web</InstallFrom>
+    <UpdateEnabled>true</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <MapFileExtensions>false</MapFileExtensions>
+    <InstallUrl>http://get.kms.me/windows/</InstallUrl>
+    <TargetCulture>es</TargetCulture>
+    <ProductName>KMS Desktop</ProductName>
+    <PublisherName>KMS Invent</PublisherName>
+    <MinimumRequiredVersion>1.0.0.3</MinimumRequiredVersion>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <ApplicationRevision>15</ApplicationRevision>
+    <ApplicationVersion>0.7.8.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -55,16 +62,25 @@
     <ApplicationIcon>KMS Icon.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5295633C97FF012E43B9A7D53AE092FD9E652E72</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>D38298C6BF3B3B858C3AB6FB66FCED18A56259CA</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Kilometros Desktop_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>KMS Invent Software Certificate.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
     <SignManifests>true</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>Internet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -92,6 +108,7 @@
     <Compile Include="Controllers\RegisterController.cs" />
     <Compile Include="DataSync\CloudUpload\CloudUploadAgent.cs" />
     <Compile Include="DataSync\CloudUpload\CloudUploadExceptionEventArgs.cs" />
+    <Compile Include="DataSync\CloudUpload\CloudUploadProgressChangedEventArgs.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCableNotFound.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandCrcInvalid.cs" />
     <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandException.cs" />
@@ -289,7 +306,48 @@
     <EmbeddedResource Include="Views\WebView.resx">
       <DependentUpon>WebView.cs</DependentUpon>
     </EmbeddedResource>
+    <Content Include="..\Kilometros WinUSB Driver Package\amd64\WdfCoInstaller01009.dll">
+      <Link>Driver\amd64\WdfCoInstaller01009.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Kilometros WinUSB Driver Package\amd64\winusbcoinstaller2.dll">
+      <Link>Driver\amd64\winusbcoinstaller2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Kilometros WinUSB Driver Package\kmsdevice.inf">
+      <Link>Driver\kmsdevice.inf</Link>
+    </Content>
+    <Content Include="..\Kilometros WinUSB Driver Package\x86\WdfCoInstaller01009.dll">
+      <Link>Driver\x86\WdfCoInstaller01009.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Kilometros WinUSB Driver Package\x86\winusbcoinstaller2.dll">
+      <Link>Driver\x86\winusbcoinstaller2.dll</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\KMS Windows Driver Install\Certificates\KmsRoot.cer">
+      <Link>Certificates\KmsRoot.cer</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\KMS Windows Driver Install\Certificates\KmsSoftware.cer">
+      <Link>Certificates\KmsSoftware.cer</Link>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Kilometros WinUSB Driver Package\kmsdevice.cat">
+      <Link>Driver\kmsdevice.cat</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Kilometros WinUSB Driver Package\meta\4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms">
+      <Link>Driver\meta\4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Kilometros WinUSB Driver Package\meta\6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms">
+      <Link>Driver\meta\6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="app.config" />
+    <None Include="KMS Invent Software Certificate.pfx" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -309,12 +367,25 @@
       <Project>{e1b82fb5-2ab4-47f2-b36c-7b0a695378cf}</Project>
       <Name>KMS UsbX</Name>
     </ProjectReference>
+    <ProjectReference Include="..\KMS Windows Driver Install\KMS Desktop Windows Driver Install.csproj">
+      <Project>{8db8b173-81dd-42b9-b98f-4ce8218d8066}</Project>
+      <Name>KMS Desktop Windows Driver Install</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Sharp Dynamics OAuthClient\Sharp Dynamics OAuthClient.csproj">
       <Project>{ebd429ed-9168-4497-ae09-ef1dbeaa2186}</Project>
       <Name>Sharp Dynamics OAuthClient</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\Kilometros UsbX\KMS.Usb.Base.dll">
+      <Link>KMS.Usb.Base.dll</Link>
+    </Content>
+    <Content Include="Driver\ia64\WdfCoInstaller01009.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Driver\ia64\winusbcoinstaller2.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="KMS Icon.ico" />
     <Content Include="Resources\FacebookLogoWhite.png" />
     <Content Include="Resources\KMS-Clock.png" />
@@ -333,6 +404,53 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 4.5</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PublishFile Include="Resources\FacebookLogoWhite.png">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Resources\KMS-Clock.png">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Resources\KMS-ConnectDevice.png">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
+    <PublishFile Include="Resources\TwitterLogowhite.png">
+      <Visible>False</Visible>
+      <Group>
+      </Group>
+      <TargetPath>
+      </TargetPath>
+      <PublishState>Exclude</PublishState>
+      <IncludeHash>True</IncludeHash>
+      <FileType>File</FileType>
+    </PublishFile>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

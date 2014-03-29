@@ -93,5 +93,17 @@ namespace KMS.Desktop.Properties {
                 this["KmsDataLastModified"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool WindowsDriverInstalled {
+            get {
+                return ((bool)(this["WindowsDriverInstalled"]));
+            }
+            set {
+                this["WindowsDriverInstalled"] = value;
+            }
+        }
     }
 }

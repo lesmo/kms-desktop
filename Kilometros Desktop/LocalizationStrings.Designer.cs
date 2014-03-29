@@ -113,5 +113,23 @@ namespace KMS.Desktop {
                 return ResourceManager.GetString("UploadAgent_UploadingData", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to desconocido [{1}].
+        /// </summary>
+        internal static string Windows_DriverInstall_GenericNumberError {
+            get {
+                return ResourceManager.GetString("Windows_DriverInstall_GenericNumberError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to autorización denegada.
+        /// </summary>
+        internal static string Windows_DriverInstall_PermissionDenied {
+            get {
+                return ResourceManager.GetString("Windows_DriverInstall_PermissionDenied", resourceCulture);
+            }
+        }
     }
 }

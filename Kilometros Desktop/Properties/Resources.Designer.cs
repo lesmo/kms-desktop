@@ -103,6 +103,16 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        public static System.Drawing.Bitmap ShieldWhite {
+            get {
+                object obj = ResourceManager.GetObject("ShieldWhite", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         public static System.Drawing.Bitmap TwitterLogowhite {
             get {
                 object obj = ResourceManager.GetObject("TwitterLogowhite", resourceCulture);

@@ -117,28 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="DownloadAgent_AwaitingDevice" xml:space="preserve">
-    <value>Esperando dispositivo ...</value>
-  </data>
-  <data name="DownloadAgent_ConnectingToCloud" xml:space="preserve">
-    <value>Conectando con servidores KMS ...</value>
-  </data>
-  <data name="DownloadAgent_DownloadingData" xml:space="preserve">
-    <value>Descagando datos ...</value>
-  </data>
-  <data name="DownloadAgent_InitializingDownload" xml:space="preserve">
-    <value>Iniciando descarga de datos ...</value>
-  </data>
-  <data name="UploadAgent_InitializingUpload" xml:space="preserve">
-    <value>Iniciando subida de datos ...</value>
-  </data>
-  <data name="UploadAgent_UploadingData" xml:space="preserve">
-    <value>Subiendo datos ...</value>
-  </data>
-  <data name="Windows_DriverInstall_GenericNumberError" xml:space="preserve">
-    <value>desconocido [{1}]</value>
-  </data>
-  <data name="Windows_DriverInstall_PermissionDenied" xml:space="preserve">
-    <value>autorización denegada</value>
+  <data name="label3.Text" xml:space="preserve">
+    <value>¡Hola! Ya está instalada la aplicación de Sincronización de Datos de KMS para Windows, sólo nos falta instalar el Controlador que nos permitirá reconocer, configurar y obtener datos de tu Pulsera KMS.
+
+Para este proceso, es necesario que tengas permisos de Administración en éste equipo y únicamente es necesario esta vez. Las actualizaciones lanzadas en el futuro no requerirán de estos permisos.</value>
   </data>
 </root>

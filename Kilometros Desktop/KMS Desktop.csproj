@@ -51,7 +51,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;WindowsDeployment</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -104,6 +104,7 @@
     <Compile Include="Controllers\LoginTwitterController.cs" />
     <Compile Include="Controllers\MyAccountController.cs" />
     <Compile Include="Controllers\RegisterController.cs" />
+    <Compile Include="Controllers\WindowsDriverInstallController.cs" />
     <Compile Include="DataSync\CloudUpload\CloudUploadAgent.cs" />
     <Compile Include="DataSync\CloudUpload\CloudUploadExceptionEventArgs.cs" />
     <Compile Include="DataSync\CloudUpload\CloudUploadProgressChangedEventArgs.cs" />
@@ -239,6 +240,12 @@
     <Compile Include="Views\WebView.Designer.cs">
       <DependentUpon>WebView.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\WindowsDriverInstall.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\WindowsDriverInstall.Designer.cs">
+      <DependentUpon>WindowsDriverInstall.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="LocalizationStrings.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>LocalizationStrings.Designer.cs</LastGenOutput>
@@ -343,6 +350,9 @@
       <Link>Driver\meta\6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Views\WindowsDriverInstall.resx">
+      <DependentUpon>WindowsDriverInstall.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="app.config" />
     <None Include="KMS Invent Software Certificate.pfx" />
     <None Include="Properties\Settings.settings">
@@ -386,6 +396,7 @@
     <Content Include="Resources\FacebookLogoWhite.png" />
     <Content Include="Resources\KMS-Clock.png" />
     <Content Include="Resources\KMS-ConnectDevice.png" />
+    <Content Include="Resources\ShieldWhite.png" />
     <Content Include="Resources\TwitterLogowhite.png" />
     <None Include="Resources\KMS-Logo.png" />
   </ItemGroup>

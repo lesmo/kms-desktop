@@ -50,17 +50,26 @@ namespace KMS.Desktop.Windows.DriverInstall {
             certStore.Close();
         }
         
-        static void Main(string[] args) {
+        static int Main(string[] args) {
+            bool silent
+                = args.Contains("-Silent");
+            
             if ( !IsAdministrator() ) {
                 string exeName
-                    = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                    = Process.GetCurrentProcess().MainModule.FileName;
                 ProcessStartInfo startInfo
                     = new ProcessStartInfo(exeName);
                 startInfo.Verb
                     = "runas";
 
-                System.Diagnostics.Process.Start(startInfo);
-                return;
+                if ( silent )
+                    startInfo.Arguments
+                        = "-Silent";
+
+                Process process
+                    = Process.Start(startInfo);
+
+                return process.ExitCode;
             }
 
             DialogResult dialogResult
@@ -74,6 +83,9 @@ namespace KMS.Desktop.Windows.DriverInstall {
                     dialogResult
                         = DialogResult.Cancel;
                 } catch ( Exception ex ) {
+                    if ( silent )
+                        return 1;
+
                     dialogResult
                         =  MessageBox.Show(
                             string.Format(
@@ -87,7 +99,7 @@ namespace KMS.Desktop.Windows.DriverInstall {
                         );
 
                     if ( dialogResult == DialogResult.Cancel )
-                        return;
+                        return 1;
                 }
             } while ( dialogResult == DialogResult.Retry );
 
@@ -103,14 +115,17 @@ namespace KMS.Desktop.Windows.DriverInstall {
                         =  DriverPackagePreinstall(InstallDir.FullName + @"\Driver\kmsdevice.inf", 0);
 
                     // El controlador ya está instalado en ésta versión
-                    if ( result == 183 )
+                    if ( result == 183 ) {
+                        result
+                            = 0;
                         break;
+                    }
 
                     exception
-                        = "Preinstaller #" + result.ToString();
+                        = "E[" + result.ToString("X") + "]";
                 } catch ( Exception ex ) {
                     result
-                        = -1;
+                        = 0xA;
                     exception
                         = ex.Message;
                 }
@@ -118,6 +133,9 @@ namespace KMS.Desktop.Windows.DriverInstall {
                 if ( result == 0 ) {
                     break;
                 } else {
+                    if ( silent )
+                        return result;
+
                     dialogResult
                         =  MessageBox.Show(
                             string.Format(
@@ -131,11 +149,11 @@ namespace KMS.Desktop.Windows.DriverInstall {
                         );
 
                     if ( dialogResult == DialogResult.Cancel )
-                        return;
+                        return result;
                 }
             } while ( dialogResult == DialogResult.Retry && result != 0 );
 
-            if ( ! args.Contains("-Silent") ) {
+            if ( ! silent ) {
                 MessageBox.Show(
                     KMSWindowsDriverInstall.SuccessMessage,
                     KMSWindowsDriverInstall.SucessTitle,
@@ -143,6 +161,8 @@ namespace KMS.Desktop.Windows.DriverInstall {
                     MessageBoxIcon.Information
                 );
             }
+
+            return result;
         }
     }
 }

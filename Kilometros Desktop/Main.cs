@@ -98,10 +98,15 @@ namespace KMS.Desktop {
         }
 
         public void InitPane(Controllers.IController jumpTo = null) {
+            #if WindowsDeployment
+            if ( jumpTo is Controllers.WindowsDriverInstallController ) {
+                this.NextPane(jumpTo);
+                return;
+            }
+            #endif
+
             if ( jumpTo != null && this.CloudAPI.CurrentlyHasAccessToken ) {
-                this.NextPane(
-                    jumpTo
-                );
+                this.NextPane(jumpTo);
             } else {
                 if ( this.CloudAPI.SessionIsValid() ) {
                     this.MyAccount_Go();

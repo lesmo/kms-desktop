@@ -1,4 +1,5 @@
 ﻿using KMS.Desktop.Properties;
+using SharpDynamics.OAuthClient;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,10 +17,22 @@ namespace KMS.Desktop.Utils {
             if ( exception == null )
                 return;
 
-            if ( exception is WebException ) {
+            if ( exception is OAuthTokenSetInvalid ) {
+                Views.LoginRegister view
+                    = new Views.LoginRegister();
+
+                view.ShowWrongCredentials();
+
+                main.NextPane(
+                    new Controllers.LoginController(
+                        main,
+                        view
+                    )
+                );
+            } else if ( exception is WebException ) {
                 Views.WebException webExceptionView
                     = new Views.WebException();
-
+                
                 webExceptionView.TryAgainClick
                     += (object sender, EventArgs e) => {
                         main.AnimatePanes(
@@ -39,8 +52,6 @@ namespace KMS.Desktop.Utils {
                     webExceptionView,
                     Main.PaneAnimation.PushLeft
                 );
-            } else if ( Debugger.IsAttached ) {
-                throw exception;
             } else {
                 string exceptionBase64
                     =  Utils.StringEncrypt.Encrypt(

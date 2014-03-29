@@ -7,6 +7,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Security.Cryptography.X509Certificates;
 using System.Security;
+using System.Management;
+using System.Security.Principal;
+using System.Diagnostics;
 
 namespace KMS.Desktop.Windows.DriverInstall {
     class Program {
@@ -15,6 +18,12 @@ namespace KMS.Desktop.Windows.DriverInstall {
 
         [DllImport("DIFXApi.dll", CharSet = CharSet.Unicode)]
         static extern Int32 DriverPackagePreinstall(string DriverPackageInfPath, Int32 Flags);
+
+        private static bool IsAdministrator() {
+            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsPrincipal principal = new WindowsPrincipal(identity);
+            return principal.IsInRole(WindowsBuiltInRole.Administrator);
+        }
 
         static void AddCertificate(StoreName store, string name) {
             X509Store certStore = new X509Store(
@@ -42,6 +51,18 @@ namespace KMS.Desktop.Windows.DriverInstall {
         }
         
         static void Main(string[] args) {
+            if ( !IsAdministrator() ) {
+                string exeName
+                    = System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName;
+                ProcessStartInfo startInfo
+                    = new ProcessStartInfo(exeName);
+                startInfo.Verb
+                    = "runas";
+
+                System.Diagnostics.Process.Start(startInfo);
+                return;
+            }
+
             DialogResult dialogResult
                 = DialogResult.Cancel;
 
@@ -77,8 +98,14 @@ namespace KMS.Desktop.Windows.DriverInstall {
 
             do {
                 try {
+                    // Ref: http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx
                     result
                         =  DriverPackagePreinstall(InstallDir.FullName + @"\Driver\kmsdevice.inf", 0);
+
+                    // El controlador ya está instalado en ésta versión
+                    if ( result == 183 )
+                        break;
+
                     exception
                         = "Preinstaller #" + result.ToString();
                 } catch ( Exception ex ) {

@@ -364,10 +364,6 @@
       <Project>{e1b82fb5-2ab4-47f2-b36c-7b0a695378cf}</Project>
       <Name>KMS UsbX</Name>
     </ProjectReference>
-    <ProjectReference Include="..\KMS Windows Driver Install\KMS Desktop Windows Driver Install.csproj">
-      <Project>{8db8b173-81dd-42b9-b98f-4ce8218d8066}</Project>
-      <Name>KMS Desktop Windows Driver Install</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Sharp Dynamics OAuthClient\Sharp Dynamics OAuthClient.csproj">
       <Project>{ebd429ed-9168-4497-ae09-ef1dbeaa2186}</Project>
       <Name>Sharp Dynamics OAuthClient</Name>
@@ -384,6 +380,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="KMS Icon.ico" />
+    <Content Include="KMS.Desktop.Windows.DriverInstall.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Resources\FacebookLogoWhite.png" />
     <Content Include="Resources\KMS-Clock.png" />
     <Content Include="Resources\KMS-ConnectDevice.png" />

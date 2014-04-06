@@ -39,6 +39,8 @@ namespace KMS.Desktop.Controllers {
             Process process
                 = Process.Start(startInfo);
 
+            process.WaitForExit();
+
             e.Result
                 = process.ExitCode;
         }

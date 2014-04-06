@@ -85,18 +85,21 @@ namespace KMS.Comm.Cloud {
             if ( this.CurrentlyHasAccessToken )
                 return true;
 
-            OAuthResponse<string> response
-                = this.RequestString(
-                    HttpRequestMethod.GET,
-                    (this.ClientUris as KMSCloudUris).KmsSessionResource
-                );
+            try {
+                OAuthResponse<string> response
+                    = this.RequestString(
+                        HttpRequestMethod.GET,
+                        (this.ClientUris as KMSCloudUris).KmsSessionResource
+                    );
+                if ( response.StatusCode == HttpStatusCode.OK ) {
+                    this.CurrentlyHasAccessToken
+                        = true;
 
-            if ( response.StatusCode == HttpStatusCode.OK ) {
-                this.CurrentlyHasAccessToken
-                    = true;
-
-                return true;
-            } else {
+                    return true;
+                } else {
+                    return false;
+                }
+            } catch ( OAuthUnauthorized ) {
                 return false;
             }
         }

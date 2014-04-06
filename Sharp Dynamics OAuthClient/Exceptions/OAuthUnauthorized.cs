@@ -4,6 +4,6 @@ using System.Linq;
 using System.Text;
 
 namespace SharpDynamics.OAuthClient {
-    public class OAuthTokenSetInvalid : OAuthUnexpectedResponse {
+    public class OAuthUnauthorized : OAuthUnexpectedResponse {
     }
 }

@@ -433,6 +433,9 @@ namespace SharpDynamics.OAuthClient.OAuth {
             // Generar cuerpo de petición
             StringBuilder requestStringBuilder
                 = new StringBuilder();
+            
+            if ( parameters == null )
+                parameters = new NameValueCollection();
 
             foreach ( string key in parameters.AllKeys ) {
                 foreach ( string value in parameters.GetValues(key) )
@@ -536,9 +539,7 @@ namespace SharpDynamics.OAuthClient.OAuth {
                     = ex.Response as HttpWebResponse;
 
                 if ( response.StatusCode == HttpStatusCode.Unauthorized )
-                    throw new OAuthTokenSetInvalid();
-                else if ( response.StatusCode == HttpStatusCode.Forbidden )
-                    throw new OAuthConsumerKeySetInvalid();
+                    throw new OAuthUnauthorized();
                 else
                     return response;
             }

@@ -42,7 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\OAuthTokenSetInvalid.cs" />
+    <Compile Include="Exceptions\OAuthUnauthorized.cs" />
     <Compile Include="HttpRequestMethod.cs" />
     <Compile Include="IOAuthClient.cs" />
     <Compile Include="OAuth2\OAuth2Client.cs" />

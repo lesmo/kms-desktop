@@ -6,6 +6,7 @@ using KMS.Desktop.Properties;
 
 #if WindowsDeployment
 using System.Deployment.Application;
+using System.Diagnostics;
 #endif
 
 namespace KMS.Desktop {
@@ -24,8 +25,16 @@ namespace KMS.Desktop {
                 = false;
 
             #if WindowsDeployment
-            if ( ApplicationDeployment.CurrentDeployment.IsFirstRun ) {
-                if ( ! Settings.Default.WindowsDriverInstalled ) {
+            // TODO: Determinar si el Driver recibió una actualización 
+
+            if (
+                ( !Debugger.IsAttached && ApplicationDeployment.CurrentDeployment.IsFirstRun)
+                || args.Contains("-ForceDriverInstall")
+            ) {
+                if ( 
+                    !Settings.Default.WindowsDriverInstalled
+                    || args.Contains("-ForceDriverInstall")
+                ) {
                     main.InitPane(
                         new Controllers.WindowsDriverInstallController(
                             main,
@@ -39,7 +48,7 @@ namespace KMS.Desktop {
             }
             #endif
 
-            if ( !skipNormalInit ) {
+            if ( ! skipNormalInit ) {
                 if (
                     args.Length > 0
                     && args.Contains("-sync")

@@ -23,13 +23,13 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>false</MapFileExtensions>
     <InstallUrl>http://get.kms.me/windows/</InstallUrl>
-    <TargetCulture>es</TargetCulture>
+    <TargetCulture>es-MX</TargetCulture>
     <ProductName>KMS Desktop</ProductName>
     <PublisherName>KMS Invent</PublisherName>
     <MinimumRequiredVersion>1.0.0.3</MinimumRequiredVersion>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>15</ApplicationRevision>
-    <ApplicationVersion>0.7.8.%2a</ApplicationVersion>
+    <ApplicationRevision>20</ApplicationRevision>
+    <ApplicationVersion>0.7.10.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -41,7 +41,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WindowsDeployment</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -65,7 +65,8 @@
     <ManifestCertificateThumbprint>D38298C6BF3B3B858C3AB6FB66FCED18A56259CA</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>KMS Invent Software Certificate.pfx</ManifestKeyFile>
+    <ManifestKeyFile>
+    </ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -79,6 +80,12 @@
   <PropertyGroup />
   <PropertyGroup>
     <TargetZone>Internet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -321,6 +328,7 @@
     </Content>
     <Content Include="..\Kilometros WinUSB Driver Package\kmsdevice.inf">
       <Link>Driver\kmsdevice.inf</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\Kilometros WinUSB Driver Package\x86\WdfCoInstaller01009.dll">
       <Link>Driver\x86\WdfCoInstaller01009.dll</Link>
@@ -355,6 +363,7 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="KMS Invent Software Certificate.pfx" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

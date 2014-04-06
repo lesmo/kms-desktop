@@ -113,8 +113,8 @@
             this.InstallingDriversLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.InstallingDriversLabel.AutoSize = true;
             this.InstallingDriversLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(205)))), ((int)(((byte)(219)))));
-            this.InstallingDriversLabel.Location = new System.Drawing.Point(20, 177);
-            this.InstallingDriversLabel.Margin = new System.Windows.Forms.Padding(20, 0, 20, 0);
+            this.InstallingDriversLabel.Location = new System.Drawing.Point(20, 197);
+            this.InstallingDriversLabel.Margin = new System.Windows.Forms.Padding(20, 20, 20, 0);
             this.InstallingDriversLabel.Name = "InstallingDriversLabel";
             this.InstallingDriversLabel.Size = new System.Drawing.Size(599, 17);
             this.InstallingDriversLabel.TabIndex = 17;
@@ -127,8 +127,8 @@
             this.ErrorLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.ErrorLabel.AutoSize = true;
             this.ErrorLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(96)))), ((int)(((byte)(99)))));
-            this.ErrorLabel.Location = new System.Drawing.Point(20, 194);
-            this.ErrorLabel.Margin = new System.Windows.Forms.Padding(20, 0, 20, 0);
+            this.ErrorLabel.Location = new System.Drawing.Point(20, 234);
+            this.ErrorLabel.Margin = new System.Windows.Forms.Padding(20, 20, 20, 0);
             this.ErrorLabel.Name = "ErrorLabel";
             this.ErrorLabel.Size = new System.Drawing.Size(599, 17);
             this.ErrorLabel.TabIndex = 18;

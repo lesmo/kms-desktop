@@ -17,7 +17,7 @@ namespace KMS.Desktop.Utils {
             if ( exception == null )
                 return;
 
-            if ( exception is OAuthTokenSetInvalid ) {
+            if ( exception is OAuthUnauthorized ) {
                 Views.LoginRegister view
                     = new Views.LoginRegister();
 

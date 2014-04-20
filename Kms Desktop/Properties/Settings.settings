@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KMS.Desktop.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="KmsApiOAuthKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">97c666e0a1f4487fb7321a7654ac4a68</Value>
+    </Setting>
+    <Setting Name="KmsApiOAuthSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">e25e5ec5fd8d476a878326524c625aac</Value>
+    </Setting>
+    <Setting Name="KmsUsbPids" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">60000,60001,35148</Value>
+    </Setting>
+    <Setting Name="KmsCloudToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="KmsCloudTokenSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="KmsCloudUri" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:25695/</Value>
+    </Setting>
+    <Setting Name="KmsDataLastModified" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="WindowsDriverInstalled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

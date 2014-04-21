@@ -70,27 +70,20 @@ namespace KMS.Desktop.Controllers {
         }
 
         void Login3rdWorker_DoWork(object sender, DoWorkEventArgs e) {
-            object[] arguments
-                = e.Argument as object[];
-            KMSCloudClient cloudAPI
-                = arguments[0] as KMSCloudClient;
-            Events.Login3rdSuccessfulEventArgs loginEventArgs
-                = arguments[1] as Events.Login3rdSuccessfulEventArgs;
-            
-            OAuthCryptoSet tokenSet
-                = cloudAPI.Login3rdParty(
-                    loginEventArgs.Party,
-                    loginEventArgs.Client.Token
-                );
+            object[] arguments =
+                e.Argument as object[];
+            KMSCloudClient cloudAPI =
+                arguments[0] as KMSCloudClient;
+            Events.Login3rdSuccessfulEventArgs loginEventArgs =
+                arguments[1] as Events.Login3rdSuccessfulEventArgs;
+            OAuthCryptoSet tokenSet =
+                cloudAPI.Login3rdParty(loginEventArgs.Client);
 
-            Settings.Default.KmsCloudToken
-                = tokenSet.Key;
-            Settings.Default.KmsCloudTokenSecret
-                = tokenSet.Secret;
+            Settings.Default.KmsCloudToken       = tokenSet.Key;
+            Settings.Default.KmsCloudTokenSecret = tokenSet.Secret;
             Settings.Default.Save();
 
-            e.Result
-                = tokenSet;
+            e.Result = tokenSet;
         }
 
         void LoginBasicWorker_DoWork(object sender, DoWorkEventArgs e) {

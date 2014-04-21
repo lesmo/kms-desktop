@@ -11,6 +11,7 @@ using System.Windows.Forms;
 using KMS.Desktop.Properties;
 using System.Net;
 using System.ComponentModel;
+using Kms.Interop.OAuth.SocialClients;
 
 namespace KMS.Desktop.Controllers {
     class RegisterController : IController<Views.Register> {
@@ -66,26 +67,26 @@ namespace KMS.Desktop.Controllers {
         }
 
         void RegisterWorker_DoWork(object sender, DoWorkEventArgs e) {
-            object[] arguments
-                = e.Argument as object[];
-            KMSCloudClient cloudAPI
-                = arguments[0] as KMSCloudClient;
-            Dictionary<string, string> registerPayload
-                = arguments[1] as Dictionary<string, string>;
+            var arguments       = e.Argument   as object[];
+            var cloudAPI        = arguments[0] as KMSCloudClient;
+            var registerPayload = arguments[1] as Dictionary<string, string>;
+            var facebookApi     = arguments[2] as FacebookClient;
+            var twitterApi      = arguments[3] as TwitterClient;
 
-            OAuthCryptoSet tokenSet
-                    = cloudAPI.RegisterAccount(
-                        registerPayload
-                    );
+            var tokenSet = cloudAPI.RegisterAccount(registerPayload);
 
-            Settings.Default.KmsCloudToken
-                = tokenSet.Key;
-            Settings.Default.KmsCloudTokenSecret
-                = tokenSet.Secret;
+            // Almacenar Token de KMS, por si el agregar las redes sociales causa
+            // un crash podemos reiniciar la aplicacion con sesión iniciada.
+            Settings.Default.KmsCloudToken       = tokenSet.Key;
+            Settings.Default.KmsCloudTokenSecret = tokenSet.Secret;
             Settings.Default.Save();
 
-            e.Result
-                = tokenSet;
+            if ( facebookApi.CurrentlyHasAccessToken )
+                cloudAPI.AddOAuth3rd<FacebookClient>(facebookApi);
+            if ( twitterApi.CurrentlyHasAccessToken )
+                cloudAPI.AddOAuth3rd<TwitterClient>(twitterApi);
+
+            e.Result = tokenSet;
         }
 
         void View_RegisterContinue(object sender, Views.Events.RegisterContinueEventArgs e) {
@@ -215,7 +216,9 @@ namespace KMS.Desktop.Controllers {
             this.RegisterWorker.RunWorkerAsync(
                 new object[] {
                     this.Main.CloudAPI,
-                    this.RegisterPayload
+                    this.RegisterPayload,
+                    this.Main.FacebookAPI,
+                    this.Main.TwitterAPI
                 }
             );
         }

@@ -402,6 +402,7 @@
     <Content Include="KMS.Desktop.Windows.DriverInstall.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\CornerLoading.gif" />
     <Content Include="Resources\FacebookLogoWhite.png" />
     <Content Include="Resources\KMS-Clock.png" />
     <Content Include="Resources\KMS-ConnectDevice.png" />

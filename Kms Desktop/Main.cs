@@ -60,6 +60,8 @@ namespace KMS.Desktop {
                         = "oauth/session",
                     KmsOAuth3rdLogin
                         = "oauth/3rd/{0}/login",
+                    KmsOAuth3rdAdd
+                        = "oauth/3rd/{0}/add",
                     KmsRegisterAccountResource
                         = "account"
                 },
@@ -136,81 +138,54 @@ namespace KMS.Desktop {
         ) {
             if ( this.AnimatingPanes )
                 return;
-            else
-                this.AnimatingPanes
-                    = true;
+                
+            this.AnimatingPanes = true;
 
-            newPane.Parent
-                = this.ContentPanel;
-            newPane.Size
-                = new Size(
-                    this.ContentPanel.Width,
-                    this.ContentPanel.Height
-                );
+            newPane.Parent = this.ContentPanel;
+            newPane.Size   = new Size(this.ContentPanel.Width, this.ContentPanel.Height);
             newPane.Show();
 
             if ( oldPane != null ) {
-                oldPane.Parent
-                    = this.ContentPanel;
+                oldPane.Parent = this.ContentPanel;
                 oldPane.Show();
             }
 
             if ( animation == PaneAnimation.PushLeft ) {
-                newPane.Location
-                    = new Point(this.ContentPanel.Width, 0);
+                newPane.Location = new Point(this.ContentPanel.Width, 0);
 
                 for ( int frame = 6, distance = 40; newPane.Location.X - distance > 0; frame++ ) {
-                    newPane.Location
-                        = new Point(
-                            newPane.Location.X - distance,
-                            0
-                        );
+                    newPane.Location = new Point(newPane.Location.X - distance, 0);
 
                     if ( oldPane != null )
-                        oldPane.Location
-                            = new Point(
-                                oldPane.Location.X - distance,
-                                0
-                            );
-
+                        oldPane.Location = new Point(oldPane.Location.X - distance, 0);
 
                     this.ContentPanel.Invalidate();
                     Application.DoEvents();
                 }
             } else if ( animation == PaneAnimation.PushRight ) {
-                newPane.Location
-                    = new Point(0 - this.ContentPanel.Width, 0);
+                newPane.Location = new Point(0 - this.ContentPanel.Width, 0);
 
                 for ( int frame = 6, distance = 40; newPane.Location.X + distance < 0; frame++ ) {
-                    newPane.Location
-                        = new Point(
-                            newPane.Location.X + distance,
-                            0
-                        );
+                    newPane.Location = new Point(newPane.Location.X + distance, 0);
 
                     if ( oldPane != null )
                         oldPane.Location
-                            = new Point(
-                                oldPane.Location.X + distance * 100 / 1,
-                                0
-                            );
+                            = new Point(oldPane.Location.X + distance * 100 / 1, 0);
 
                     this.ContentPanel.Invalidate();
                     Application.DoEvents();
                 }
             }
 
-            newPane.Location
-                = new Point(0, 0);
+            newPane.Location = new Point(0, 0);
 
             if ( oldPane != null ) {
-                oldPane.Parent
-                    = null;
+                oldPane.Parent = null;
                 oldPane.Hide();
             }
 
-            this.AnimatingPanes
-                = false;
+            this.AnimatingPanes = false;
+            this.HideLoadingIcon();
         }
 
         internal Controllers.IController NextPane(
@@ -305,6 +280,13 @@ namespace KMS.Desktop {
 
         private void Main_Load(object sender, EventArgs e) {
             
+        }
+
+        public void ShowLoadingIcon() {
+            this.LoadingIcon.Show();
+        }
+        public void HideLoadingIcon() {
+            this.LoadingIcon.Hide();
         }
     }
 }

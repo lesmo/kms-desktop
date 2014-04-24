@@ -95,22 +95,17 @@ namespace KMS.Desktop.DataSync.UsbDownload {
         }
 
         void DownloadDataAsync_DoWork(object sender, DoWorkEventArgs e) {
-            BackgroundWorker worker
-                = sender as BackgroundWorker;
-            DownloadAgentSettings settings
-                = e.Argument as DownloadAgentSettings;
+            var worker   = sender     as BackgroundWorker;
+            var settings = e.Argument as DownloadAgentSettings;
 
             // -- Buscar el dispositivo --
-            UsbCoreCommunicator device
-                = null;
+            UsbCoreCommunicator device = null;
 
             while ( device == null && !worker.CancellationPending ) {
                 try {
-                    device
-                        = new UsbCoreCommunicator();
+                    device = UsbCoreCommunicator.Instance;
                 } catch ( UsbCoreCableNotFound ) {
-                    device
-                        = null;
+                    device = null;
                 }
             }
 
@@ -118,51 +113,41 @@ namespace KMS.Desktop.DataSync.UsbDownload {
             worker.ReportProgress(1, device.Device);
 
             // --- Preparar cálculos calendáricos ---
-            int diff
-                = DateTime.Now.DayOfWeek - settings.StartWeekday;
+            var diff = DateTime.Now.DayOfWeek - settings.StartWeekday;
             if ( diff > 0 )
                 throw new ArgumentException();
 
-            int startDay
-                = DateTime.Now.AddDays(diff).Day;
-            DateTime startDate
-                = new DateTime(
-                    DateTime.Now.Year,
-                    DateTime.Now.Month,
-                    startDay,
-                    settings.Time.Hours,
-                    settings.Time.Minutes,
-                    0
-                );
-            DateTime endDate
-                = DateTime.Now;
+            var startDay  = DateTime.Now.AddDays(diff).Day;
+            var startDate = new DateTime(
+                DateTime.Now.Year,
+                DateTime.Now.Month,
+                startDay,
+                settings.Time.Hours,
+                settings.Time.Minutes,
+                0
+            );
+            var endDate = DateTime.Now;
 
             // --- Realizar descarga de datos ---
-            List<Data> dataRaw
-                = new List<Data>();
-            double totalMinutes
-                = (endDate - startDate).TotalMinutes;
+            var dataRaw      = new List<Data>();
+            var totalMinutes = (endDate - startDate).TotalMinutes;
             
             for (
                 DateTime currentDate = startDate;
                 currentDate < endDate && ! worker.CancellationPending;
                 currentDate = currentDate.AddHours(3)
             ) {
-                ReadDataRequest commandRequest
-                    = new ReadDataRequest(
-                        new DataReadTimeSpan() {
-                            DayOfWeek
-                                = currentDate.DayOfWeek,
-                            Hour
-                                = (short)currentDate.Hour
-                        }
-                    );
+                var commandRequest = new ReadDataRequest(
+                    new DataReadTimeSpan() {
+                        DayOfWeek = currentDate.DayOfWeek,
+                        Hour      = (short)currentDate.Hour
+                    }
+                );
 
-                Data[] data
-                    = device.Request<DataReadTimeSpan, Data[]>(
-                        commandRequest,
-                        new ReadDataResponse()
-                    );
+                var data = device.Request<DataReadTimeSpan, Data[]>(
+                    commandRequest,
+                    new ReadDataResponse(currentDate)
+                );
 
                 dataRaw.AddRange(data);
                 
@@ -171,11 +156,10 @@ namespace KMS.Desktop.DataSync.UsbDownload {
                 );
             }
 
-            e.Result
-                = new DownloadCompleteEventArgs(
-                    device.Device,
-                    dataRaw.ToArray()
-                );
+            e.Result = new DownloadCompleteEventArgs(
+                device.Device,
+                dataRaw.ToArray()
+            );
         }
     }
 }

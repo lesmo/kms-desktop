@@ -8,6 +8,17 @@ using System.Text;
 
 namespace KMS.Desktop.DataSync.UsbCoreComm {
     class UsbCoreCommunicator : ICoreCommunicator {
+        private static UsbCoreCommunicator _instance;
+
+        public static UsbCoreCommunicator Instance {
+            get {
+                if ( UsbCoreCommunicator._instance == null )
+                    UsbCoreCommunicator._instance = new UsbCoreCommunicator();
+
+                return UsbCoreCommunicator._instance;
+            }
+        }
+
         public USBDevice Device {
             get {
                 return this._device;
@@ -15,7 +26,7 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
         }
         private USBDevice _device;
 
-        public UsbCoreCommunicator() {
+        private UsbCoreCommunicator() {
             string[] usbPids
                 = Settings.Default.KmsUsbPids.Split(
                     new char[] { ',' }
@@ -42,13 +53,17 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
             this.Init(usbDevice);
         }
 
-        public UsbCoreCommunicator(USBDevice usb) {
+        private UsbCoreCommunicator(USBDevice usb) {
             this.Init(usb);
         }
         
 
         private void Init(USBDevice usb) {
-            usb.Open();
+            try {
+                usb.Open();
+            } catch {
+                throw new UsbCoreCableNotFound();
+            }
 
             this._device
                 = usb;
@@ -60,26 +75,24 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
         }
 
         public override byte[] Request(byte[] writeCommand) {
-            if ( writeCommand.Length > 2 ) {
-                byte contentCrc
-                    = writeCommand[2];
+            if ( writeCommand.Length < 3 ) {
+                throw new UsbCoreCommandException();
+            } else if ( writeCommand.Length > 2 ) {
+                var contentCrc = writeCommand[2];
 
-                for ( short i = 3, s = 1; s < writeCommand[1]; i++, s++ )
+                for ( short i = 3; i < writeCommand.Length - 1; i++)
                     contentCrc = (byte)(contentCrc ^ writeCommand[i]);
 
                 if ( contentCrc != writeCommand[writeCommand.Length - 1] )
                     throw new UsbCoreCommandCrcInvalid();
             }
 
-            byte[] readBytes
-                = new byte[512];
-            int readCount
-                = 0;
-            int writeCount
-                = 0;
+            var readBytes = new byte[512];
+            var writeCount = 0;
+            var readCount = 0;
+
             try {
-                writeCount
-                    = this._device.Write(writeCommand);
+                writeCount = this._device.Write(writeCommand);
             } catch ( USBXpressNETException ex ) {
                 if ( ex.Message.Contains("TIME") )
                     throw new UsbCoreCommandWriteTimeout();
@@ -91,8 +104,7 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
                 throw new UsbCoreCommandWriteException();
 
             try {
-                readCount
-                    = this._device.Read(readBytes);
+                readCount = this._device.Read(readBytes);
             } catch ( USBXpressNETException ex ) {
                 if ( ex.Message.Contains("TIME") )
                     throw new UsbCoreCommandWriteTimeout();
@@ -100,17 +112,12 @@ namespace KMS.Desktop.DataSync.UsbCoreComm {
                     throw new UsbCoreCommandWriteException();
             }
 
-            byte[] returnBytes
-                = new byte[readBytes[1] + 2];
-            returnBytes[0]
-                = readBytes[0];
-            returnBytes[1]
-                = readBytes[1];
+            var returnBytes = new byte[readBytes[1] + 2];
+            returnBytes[0]  = readBytes[0];
+            returnBytes[1]  = readBytes[1];
 
-            for ( short i = 2; i < returnBytes[1] + 1; i++ ) {
-                returnBytes[i]
-                    = readBytes[i];
-            }
+            for ( short i = 2; i < returnBytes[1] + 1; i++ )
+                returnBytes[i] = readBytes[i];
 
             return returnBytes;
         }

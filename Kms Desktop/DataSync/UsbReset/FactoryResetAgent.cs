@@ -60,8 +60,7 @@ namespace KMS.Desktop.DataSync.UsbReset {
         }
 
         void DeviceFindWorker_DoWork(object sender, DoWorkEventArgs e) {
-            e.Result
-                = new UsbCoreCommunicator();
+            e.Result = UsbCoreCommunicator.Instance;
         }
 
         void DeviceFindWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {

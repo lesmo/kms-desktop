@@ -25,11 +25,12 @@
         private void InitializeComponent() {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ContentPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.ContentPanel = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.LoadingIcon = new System.Windows.Forms.PictureBox();
+            this.BackButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -54,17 +55,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(680, 470);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // ContentPanel
-            // 
-            this.ContentPanel.BackgroundImage = global::KMS.Desktop.Properties.Resources.KMSClock;
-            this.ContentPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.ContentPanel.Location = new System.Drawing.Point(0, 50);
-            this.ContentPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.ContentPanel.Name = "ContentPanel";
-            this.ContentPanel.Size = new System.Drawing.Size(680, 420);
-            this.ContentPanel.TabIndex = 1;
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(205)))), ((int)(((byte)(219)))));
@@ -84,14 +74,26 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel2.Controls.Add(this.pictureBox1, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.LoadingIcon, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.BackButton, 0, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel2.Size = new System.Drawing.Size(680, 50);
             this.tableLayoutPanel2.TabIndex = 0;
+            // 
+            // ContentPanel
+            // 
+            this.ContentPanel.BackgroundImage = global::KMS.Desktop.Properties.Resources.KMSClock;
+            this.ContentPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.ContentPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ContentPanel.Location = new System.Drawing.Point(0, 50);
+            this.ContentPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.ContentPanel.Name = "ContentPanel";
+            this.ContentPanel.Size = new System.Drawing.Size(680, 420);
+            this.ContentPanel.TabIndex = 1;
             // 
             // pictureBox1
             // 
@@ -116,6 +118,23 @@
             this.LoadingIcon.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
             this.LoadingIcon.TabIndex = 3;
             this.LoadingIcon.TabStop = false;
+            // 
+            // BackButton
+            // 
+            this.BackButton.BackgroundImage = global::KMS.Desktop.Properties.Resources.Back;
+            this.BackButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.BackButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BackButton.FlatAppearance.BorderSize = 0;
+            this.BackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.BackButton.ForeColor = System.Drawing.Color.White;
+            this.BackButton.Location = new System.Drawing.Point(3, 3);
+            this.BackButton.MaximumSize = new System.Drawing.Size(60, 60);
+            this.BackButton.MinimumSize = new System.Drawing.Size(60, 20);
+            this.BackButton.Name = "BackButton";
+            this.BackButton.Size = new System.Drawing.Size(60, 44);
+            this.BackButton.TabIndex = 4;
+            this.BackButton.UseVisualStyleBackColor = true;
+            this.BackButton.Click += new System.EventHandler(this.BackButton_Click);
             // 
             // Main
             // 
@@ -150,6 +169,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.PictureBox LoadingIcon;
+        private System.Windows.Forms.Button BackButton;
 
 
     }

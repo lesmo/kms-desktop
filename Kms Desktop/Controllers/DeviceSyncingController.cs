@@ -71,12 +71,10 @@ namespace KMS.Desktop.Controllers {
         }
 
         void LastTimestampWorker_DoWork(object sender, DoWorkEventArgs e) {
-            KMSCloudClient cloudAPI
-                = e.Argument as KMSCloudClient;
+            var cloudAPI = e.Argument as KMSCloudClient;
 
             if ( Settings.Default.KmsDataLastModified > DateTime.UtcNow.AddDays(-7) ) {
-                Dictionary<System.Net.HttpRequestHeader,string> requestHeaders
-                    = new Dictionary<System.Net.HttpRequestHeader,string>();
+                var requestHeaders = new Dictionary<System.Net.HttpRequestHeader,string>();
 
                 requestHeaders.Add(
                     System.Net.HttpRequestHeader.IfModifiedSince,
@@ -85,24 +83,20 @@ namespace KMS.Desktop.Controllers {
                     )
                 );
 
-                OAuthResponse<DataTotalResponse> response
-                    = cloudAPI.RequestJson<DataTotalResponse>(
-                        HttpRequestMethod.GET,
-                        "data/total",
-                        null,
-                        null,
-                        requestHeaders
-                    );
+                var response = cloudAPI.RequestJson<DataTotalResponse>(
+                    HttpRequestMethod.GET,
+                    "data/total",
+                    null,
+                    null,
+                    requestHeaders
+                );
 
                 if ( response.StatusCode == System.Net.HttpStatusCode.OK )
-                    e.Result
-                        = response.Response.LastModified;
+                    e.Result = response.Response.LastModified;
                 else
-                    e.Result
-                    = DateTime.UtcNow.AddDays(-7);
+                    e.Result = DateTime.Now.AddDays(-6);
             } else {
-                e.Result
-                    = DateTime.UtcNow.AddDays(-7);
+                e.Result = DateTime.Now.AddDays(-6);
             }
         }
 
@@ -131,20 +125,16 @@ namespace KMS.Desktop.Controllers {
         }
 
         private void InitSync(DayOfWeek startDay, TimeSpan startTime) {
-            this.View.Status
-                = LocalizationStrings.DownloadAgent_InitializingDownload;
+            this.View.Status = LocalizationStrings.DownloadAgent_InitializingDownload;
 
             this.UsbDownloadAgent.StartDataDownload(
                 new DownloadAgentSettings() {
-                    StartWeekday
-                        = startDay,
-                    Time
-                        = startTime
+                    StartWeekday = startDay,
+                    Time         = startTime
                 }
             );
 
-            this.View.Status
-                = LocalizationStrings.DownloadAgent_AwaitingDevice;
+            this.View.Status = LocalizationStrings.DownloadAgent_AwaitingDevice;
         }
 
         void UsbDownloadAgent_OnDownloadComplete(object sender, DownloadCompleteEventArgs e) {

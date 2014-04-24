@@ -118,9 +118,9 @@ namespace KMS.Desktop {
                     this.CloudAPI.Token
                         = null;
                     KMS.Desktop.Properties.Settings.Default.KmsCloudToken
-                        = null;
+                        = "";
                     KMS.Desktop.Properties.Settings.Default.KmsCloudTokenSecret
-                        = null;
+                        = "";
                     KMS.Desktop.Properties.Settings.Default.Save();
                 }
             }
@@ -195,13 +195,10 @@ namespace KMS.Desktop {
             if ( this.AnimatingPanes )
                 return null;
 
-            UserControl oldPane
-                = this.CurrentPane;
+            UserControl oldPane = this.CurrentPane;
 
             this.AnimatePanes(
-                oldPane == null
-                    ? null
-                    : oldPane,
+                oldPane,
                 newPane.ViewGeneric,
                 animation
             );
@@ -214,20 +211,22 @@ namespace KMS.Desktop {
         }
 
         internal Controllers.IController PreviousPane(PaneAnimation animation = PaneAnimation.PushRight) {
-            if ( this.PaneHistory.Count == 0 )
-                throw new IndexOutOfRangeException();
+            if ( this.AnimatingPanes )
+                return null;
 
-            UserControl currentPane
-                =  this.CurrentPane;
-            this.PaneHistory.Pop();
+            if ( this.PaneHistory.Count < 2 )
+                return null;
+
+            Controllers.IController oldController = this.PaneHistory.Pop();
+            Controllers.IController newController = this.PaneHistory.Peek();
             
             this.AnimatePanes(
-                currentPane,
-                this.PaneHistory.Peek().ViewGeneric,
+                oldController.ViewGeneric,
+                newController.ViewGeneric,
                 animation
             );
 
-            return this.PaneHistory.Peek();
+            return newController;
         }
 
         internal void LoginPane_Go() {
@@ -287,6 +286,10 @@ namespace KMS.Desktop {
         }
         public void HideLoadingIcon() {
             this.LoadingIcon.Hide();
+        }
+
+        private void BackButton_Click(object sender, EventArgs e) {
+            //this.PreviousPane();
         }
     }
 }

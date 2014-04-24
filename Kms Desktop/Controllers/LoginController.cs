@@ -70,14 +70,11 @@ namespace KMS.Desktop.Controllers {
         }
 
         void Login3rdWorker_DoWork(object sender, DoWorkEventArgs e) {
-            object[] arguments =
-                e.Argument as object[];
-            KMSCloudClient cloudAPI =
-                arguments[0] as KMSCloudClient;
-            Events.Login3rdSuccessfulEventArgs loginEventArgs =
-                arguments[1] as Events.Login3rdSuccessfulEventArgs;
-            OAuthCryptoSet tokenSet =
-                cloudAPI.Login3rdParty(loginEventArgs.Client);
+            var arguments      = e.Argument as object[];
+            var cloudAPI       = arguments[0] as KMSCloudClient;
+            var loginEventArgs = arguments[1] as Events.Login3rdSuccessfulEventArgs;
+
+            var tokenSet = cloudAPI.Login3rdParty(loginEventArgs.Client);
 
             Settings.Default.KmsCloudToken       = tokenSet.Key;
             Settings.Default.KmsCloudTokenSecret = tokenSet.Secret;
@@ -87,27 +84,18 @@ namespace KMS.Desktop.Controllers {
         }
 
         void LoginBasicWorker_DoWork(object sender, DoWorkEventArgs e) {
-            object[] arguments
-                = e.Argument as object[];
-            KMSCloudClient cloudAPI
-                = arguments[0] as KMSCloudClient;
-            BasicCredentials credentials
-                = arguments[1] as BasicCredentials;
+            var arguments   = e.Argument as object[];
+            var cloudAPI    = arguments[0] as KMSCloudClient;
+            var credentials = arguments[1] as BasicCredentials;
 
-            OAuthCryptoSet tokenSet
-                = cloudAPI.LoginBasic(
-                    credentials.Email,
-                    credentials.Password
-                );
+            OAuthCryptoSet tokenSet =
+                cloudAPI.LoginBasic(credentials.Email, credentials.Password);
 
-            Settings.Default.KmsCloudToken
-                = tokenSet.Key;
-            Settings.Default.KmsCloudTokenSecret
-                = tokenSet.Secret;
+            Settings.Default.KmsCloudToken       = tokenSet.Key;
+            Settings.Default.KmsCloudTokenSecret = tokenSet.Secret;
             Settings.Default.Save();
 
-            e.Result
-                = tokenSet;
+            e.Result = tokenSet;
         }
 
         private void TwitterLoginButton_Click(object sender, EventArgs e) {
@@ -164,14 +152,13 @@ namespace KMS.Desktop.Controllers {
                 Desktop.Main.PaneAnimation.PushLeft
             );
 
+            this.Main.ShowLoadingIcon();
             this.LoginBasicWorker.RunWorkerAsync(
                 new object[] {
                     this.Main.CloudAPI,
                     new BasicCredentials() {
-                        Email
-                            =  this.View.EmailTextBox.Text,
-                        Password
-                            = this.View.PasswordTextBox.Text
+                        Email    = this.View.EmailTextBox.Text,
+                        Password = this.View.PasswordTextBox.Text
                     }
                 }
             );

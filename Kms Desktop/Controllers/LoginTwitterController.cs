@@ -43,18 +43,14 @@ namespace KMS.Desktop.Controllers {
                 };
             this.TwitterTokenRetrievalWorker.DoWork
                 += (object sender, DoWorkEventArgs e) => {
-                    TwitterClient twitterClient
-                        = (e.Argument as object[])[0] as TwitterClient;
-                    string verifier
-                        = (e.Argument as object[])[1] as string;
+                    var arguments     = e.Argument as object[];
+                    var twitterClient = arguments[0] as TwitterClient;
+                    var verifier      = arguments[1] as string;
 
-                    OAuthCryptoSet twitterTokenSet
-                        = twitterClient.ExchangeRequestToken(
-                            verifier
-                        );
+                    OAuthCryptoSet twitterTokenSet =
+                        twitterClient.ExchangeRequestToken(verifier);
 
-                    e.Result
-                        = twitterTokenSet;
+                    e.Result = twitterTokenSet;
                 };
         }
 
@@ -113,10 +109,14 @@ namespace KMS.Desktop.Controllers {
                         code[0].InnerText
                     }
                 );
+            } else {
+                this.Main.HideLoadingIcon();
             }
         }
 
         void Web_Navigating(object sender, System.Windows.Forms.WebBrowserNavigatingEventArgs e) {
+            this.Main.ShowLoadingIcon();
+
             if ( e.Url.AbsolutePath != this.TwitterAuthorizationUri.AbsolutePath ) {
                 System.Diagnostics.Process.Start(e.Url.AbsoluteUri);
 

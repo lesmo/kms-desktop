@@ -15,23 +15,23 @@ using Kms.Interop.OAuth.SocialClients;
 
 namespace KMS.Desktop.Controllers {
     class RegisterController : IController<Views.Register> {
-        private Views.RegisterAddSocial AddSocialView
-            = new Views.RegisterAddSocial();
-        private Views.RegisterCreatePassword CreatePasswordView
-            = new Views.RegisterCreatePassword();
-        private Views.RegisterInProgress RegisterInProgressView
-            = new Views.RegisterInProgress();
+        private Views.RegisterAddSocial AddSocialView = 
+            new Views.RegisterAddSocial();
+        private Views.RegisterCreatePassword CreatePasswordView =
+            new Views.RegisterCreatePassword();
+        private Views.RegisterInProgress RegisterInProgressView = 
+            new Views.RegisterInProgress();
 
-        private Dictionary<string, string> RegisterPayload
-            = new Dictionary<string, string>();
+        private Dictionary<string, string> RegisterPayload =
+            new Dictionary<string, string>();
 
-        public Synchronized<OAuthCryptoSet> RegisterFacebookTokenSet
-            = new Synchronized<OAuthCryptoSet>();
-        public Synchronized<OAuthCryptoSet> TwitterTokenSet
-            = new Synchronized<OAuthCryptoSet>();
+        public Synchronized<OAuthCryptoSet> RegisterFacebookTokenSet = 
+            new Synchronized<OAuthCryptoSet>();
+        public Synchronized<OAuthCryptoSet> TwitterTokenSet = 
+            new Synchronized<OAuthCryptoSet>();
         
-        private BackgroundWorker RegisterWorker
-            = new BackgroundWorker();
+        private BackgroundWorker RegisterWorker = 
+            new BackgroundWorker();
 
         public RegisterController(Main main, Views.Register view) : base(main, view) {
             this.View.RegisterContinue
@@ -213,6 +213,7 @@ namespace KMS.Desktop.Controllers {
         }
 
         void RegisterAsync() {
+            this.Main.ShowLoadingIcon();
             this.RegisterWorker.RunWorkerAsync(
                 new object[] {
                     this.Main.CloudAPI,

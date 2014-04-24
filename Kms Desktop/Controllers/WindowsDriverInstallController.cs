@@ -10,10 +10,10 @@ using System.Windows.Forms;
 
 namespace KMS.Desktop.Controllers {
     class WindowsDriverInstallController : IController<Views.WindowsDriverInstall> {
-        private BackgroundWorker DriverInstallWorker
-            = new BackgroundWorker();
-        private DirectoryInfo InstallDir
-            = new DirectoryInfo(Application.StartupPath);
+        private BackgroundWorker DriverInstallWorker =
+            new BackgroundWorker();
+        private DirectoryInfo InstallDir = 
+            new DirectoryInfo(Application.StartupPath);
 
         public WindowsDriverInstallController(Main main, Views.WindowsDriverInstall view) : base(main, view) {
             view.InstallDriversClick
@@ -46,11 +46,12 @@ namespace KMS.Desktop.Controllers {
         }
 
         void DriverInstallWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
+            this.Main.HideLoadingIcon();
+
             if ( e.Error == null ) {
                 switch ( (int)e.Result ) {
                     case 0:
-                        Settings.Default.WindowsDriverInstalled
-                            = true;
+                        Settings.Default.WindowsDriverInstalled = true;
                         Settings.Default.Save();
 
                         this.Main.InitPane();
@@ -81,6 +82,7 @@ namespace KMS.Desktop.Controllers {
         }
 
         void view_InstallDriversClick(object sender, EventArgs e) {
+            this.Main.ShowLoadingIcon();
             this.DriverInstallWorker.RunWorkerAsync();
         }
     }

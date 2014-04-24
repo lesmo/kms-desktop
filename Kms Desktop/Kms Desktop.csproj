@@ -41,7 +41,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WindowsDeployment</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;WindowsDeployment, DEBUG</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
@@ -153,6 +153,7 @@
     <Compile Include="Utils\GenericWorkerExceptionHandler.cs" />
     <Compile Include="Utils\StringEncrypt.cs" />
     <Compile Include="Utils\Synchronized.cs" />
+    <Compile Include="Utils\UriExpansion.cs" />
     <Compile Include="Views\DevicePrepare.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -402,6 +403,7 @@
     <Content Include="KMS.Desktop.Windows.DriverInstall.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\Back.png" />
     <Content Include="Resources\CornerLoading.gif" />
     <Content Include="Resources\FacebookLogoWhite.png" />
     <Content Include="Resources\KMS-Clock.png" />

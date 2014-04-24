@@ -16,6 +16,7 @@ namespace KMS.Desktop.Controllers {
 
     abstract class IController<T> : IController where T : UserControl {
         protected Main Main;
+        
         public UserControl ViewGeneric {
             get {
                 return (UserControl)this.View;
@@ -28,10 +29,8 @@ namespace KMS.Desktop.Controllers {
         }
 
         public IController(Main main, T view) {
-            this.Main
-                = main;
-            this.View
-                = view;
+            this.Main = main;
+            this.View = view;
         }
 
         public void Dispose() {

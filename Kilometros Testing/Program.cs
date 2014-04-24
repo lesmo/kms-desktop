@@ -133,10 +133,16 @@ namespace Kilometros_Testing {
                                 : (byte)short.Parse(parameters[s]);
                         }
 
-                        for ( int i = 2, s = 3; i - 2  < parameters.Length; i++, s++ ) {
+                        writeBytes[parameters.Length + 2] = writeBytes[2];
+                        for ( int i = 3; i < writeBytes.Length - 1; i++ ) {
                             writeBytes[parameters.Length + 2]
-                                = (byte)(writeBytes[i] ^ writeBytes[s]);
+                                = (byte)(writeBytes[parameters.Length + 2] ^ writeBytes[i]);
                         }
+                        //writeBytes[parameters.Length + 2] = writeBytes[0];
+                        //for ( int i = 0; i < writeBytes.Length - 1; i++ ) {
+                        //    writeBytes[parameters.Length + 2]
+                        //        = (byte)(writeBytes[parameters.Length + 2] ^ writeBytes[i]);
+                        //}
                     }
 
                     foreach ( string s in writeBytes.Select(b => b.ToString().PadRight(3)) )
@@ -151,9 +157,9 @@ namespace Kilometros_Testing {
                     response
                         = new byte[responseBuffer[1]];
 
-                    for ( short i = 0; i < responseBuffer[1] + 2; i++ ) {
+                    for ( short i = 0, s = 2; s < responseBuffer[1] + 2; i++,s++ ) {
                         response[i]
-                            = responseBuffer[i];
+                            = responseBuffer[s];
                     }
 
                     bytesInt

@@ -34,6 +34,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -44,9 +45,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Kilometros UsbX\KMS UsbX.csproj">
+    <ProjectReference Include="..\Kms UsbX\Kms UsbX.csproj">
       <Project>{e1b82fb5-2ab4-47f2-b36c-7b0a695378cf}</Project>
-      <Name>KMS UsbX</Name>
+      <Name>Kms UsbX</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

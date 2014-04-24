@@ -74,11 +74,7 @@ namespace KMS.Desktop.Views {
             this.CountrySubdivisionComboBox.SelectedIndex = 0;
 
             // Generar lista de peso
-            for (
-                int i = 30;
-                i < 301;
-                i++
-            ) {
+            for ( int i = 30; i < 301; i++ ) {
                 this.WeightComboBox.Items.Add(
                     string.Format(
                         "{0} kg",
@@ -89,7 +85,7 @@ namespace KMS.Desktop.Views {
 
             // Generar lista de altura
             for (
-                short i = 30;
+                short i = 40;
                 i < 231;
                 i++
             ) {

@@ -50,6 +50,7 @@ namespace KMS.Desktop.DataSync.CloudUpload {
         }
 
         public void UploadDataAsync(KMSCloudClient cloudAPI, Data[] data) {
+            this.CloudUploadWorker.WorkerReportsProgress = true;
             this.CloudUploadWorker.RunWorkerAsync(
                 new object[] {
                     cloudAPI,
@@ -59,47 +60,54 @@ namespace KMS.Desktop.DataSync.CloudUpload {
         }
 
         void CloudUploadWorker_DoWork(object sender, DoWorkEventArgs e) {
-            BackgroundWorker worker
-                = sender as BackgroundWorker;
-            object[] arguments
-                = e.Argument as object[];
-            KMSCloudClient cloudAPI
-                = arguments[0] as KMSCloudClient;
-            Data[] data
-                = arguments[1] as Data[];
-            NameValueCollection payload
-                = new NameValueCollection();
+            var worker    = sender as BackgroundWorker;
+            var arguments = e.Argument as object[];
+            var cloudAPI  = arguments[0] as KMSCloudClient;
+            var data      = arguments[1] as Data[];
+            var payload   = new NameValueCollection();
                 
-            for ( int i = 0; i < data.Length; i++ ) {
+            for ( int i = 0, nextChunk = 1; i < data.Length; i++ ) {
                 payload.Add(
-                    "Timestamp[]",
+                    "Timestamp[" + i.ToString() + "]",
                     data[i].Timestamp.ToString(
                         (new DateTimeFormatInfo()).RFC1123Pattern
                     )
                 );
                 payload.Add(
-                    "Activity[]",
+                    "Activity[" + i.ToString() + "]",
                     data[i].Activity.ToString()
                 );
                 payload.Add(
-                    "Steps[]",
+                    "Steps[" + i.ToString() + "]",
                     data[i].Steps.ToString()
                 );
                 
-                if ( payload.Count >= 512 ) {
-                    OAuthResponse<string> response
-                        = cloudAPI.RequestString(
-                            HttpRequestMethod.POST,
-                            "data/bulk",
-                            payload
-                        );
+                if ( Math.Floor((double)(i / 128d)) == nextChunk ) {
+                    OAuthResponse<string> response = cloudAPI.RequestString(
+                        HttpRequestMethod.POST,
+                        "data/bulk",
+                        payload
+                    );
 
-                    payload
-                        = new NameValueCollection();
+                    payload = new NameValueCollection();
+                    nextChunk++;
+
+                    worker.ReportProgress(
+                        (i / data.Length) * 100,
+                        LocalizationStrings.UploadAgent_UploadingData
+                    );
                 }
+            }
+
+            if ( payload.Count > 0 ) {
+                OAuthResponse<string> response = cloudAPI.RequestString(
+                    HttpRequestMethod.POST,
+                    "data/bulk",
+                    payload
+                );
 
                 worker.ReportProgress(
-                    (i / data.Length) * 100,
+                    100,
                     LocalizationStrings.UploadAgent_UploadingData
                 );
             }

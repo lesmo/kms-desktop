@@ -1,5 +1,5 @@
 ; KMS Device Driver
-; Copyright (c) 2013, Sharp Dynamics S de RL de CV
+; Copyright (C) 2014, KMS Invent S de SAPI de CV
 
 [Version]
 Signature   = "$Windows NT$"
@@ -7,41 +7,113 @@ Class       = USBDevice
 ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider    = %KmsProvider%
 CatalogFile = kmsdevice.cat
-DriverVer   = 02/04/2014, 1.0.1.0
+DriverVer   = 04/23/2014, 1.3.0.2
 
 ; ========== Manufacturer/Models sections ===========
 [Manufacturer]
 %KmsProvider% = KMS_WinUSB,NTx86,NTamd64,NTia64,NTx86.6.1,NTamd64.6.1,NTia64.6.1
 
 [KMS_WinUSB.NTx86]
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_894C
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_03
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_EA60
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_03
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_EA61
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTamd64]
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_894C
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_03
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_EA60
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_03
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_EA61
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTia64]
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_894C
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_03
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_EA60
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA60&MI_03
+%KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_EA61
+%KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_00
+%KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_01
+%KmsDevice_IO2% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_02
+%KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTx86.6.1]
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_894C&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_894C&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_894C&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_894C&MI_03
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_EA60&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_EA60&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_EA60&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA60&MI_03
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_EA61&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_EA61&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_EA61&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTamd64.6.1]
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_894C&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_894C&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_894C&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_894C&MI_03
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_EA60&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_EA60&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_EA60&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA60&MI_03
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_EA61&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_EA61&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_EA61&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTia64.6.1]
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_894C
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA61
-%KmsDevice% = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_894C
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_894C&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_894C&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_894C&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_894C&MI_03
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_EA60
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_EA60&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_EA60&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_EA60&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA60&MI_03
+%KmsDevice%     = USB_Install, USB\VID_10C4&PID_EA61
+%KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_EA61&MI_00
+%KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_EA61&MI_01
+%KmsDevice_IO2% = USB_Install, USB\VID_10C4&PID_EA61&MI_02
+%KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA61&MI_03
 
 ; =================== Class definition ===================
 [ClassInstall32]
@@ -55,7 +127,7 @@ HKR,,IconPath,0x00010000,"%systemroot%\system32\setupapi.dll,-20"
 HKR,,LowerLogoVersion,,5.2
 
 [KMS_DeviceModel]
-DeviceModel,,,,"%KmsDevice% RC1"
+DeviceModel,,,,"%KmsDevice% RC2"
 
 [KMS_DeviceVendorWebsite]
 DeviceVendorWebsite,,,,"http://www.kms.me"
@@ -63,7 +135,44 @@ DeviceVendorWebsite,,,,"http://www.kms.me"
 [KMS_DeviceDetailedDescription]
 DeviceDetailedDescription,,,,"%DevDescription%"
 
-; =================== Installation ===================
+; =================== Installation (All Windows versions shared) ===================
+[WinUSB_ServiceInstall]
+DisplayName   = %KmsWinUSB%
+ServiceType   = 1
+StartType     = 3
+ErrorControl  = 1
+ServiceBinary = %12%\winusb.sys
+
+[WinUSB_Install]
+KmdfLibraryVersion = 1.9
+
+[Dev_AddReg]
+HKR,,DeviceInterfaceGUIDs,0x10000,"{3C5E1462-5695-4e18-876B-F3F3D08AAF18}"
+
+[CoInstallers_AddReg]
+HKR,,CoInstallers32,0x00010000,"WdfCoInstaller01009.dll,WdfCoInstaller","WinUSBCoInstaller2.dll"
+
+; =================== Installation (Windows XP and Vista) ===================
+; XP and Vista aren't completely de-coupled, so yeah... we support XP!
+[USB_Install_XP]
+Include   = winusb.inf
+Needs     = WINUSB.NT
+
+[USB_Install_XP.Services]
+Include    = winusb.inf
+AddService = WinUSB,0x00000002,WinUSB_ServiceInstall
+
+[USB_Install_XP.Wdf]
+KmdfService = WINUSB, WinUSB_Install
+
+[USB_Install_XP.HW]
+AddReg = Dev_AddReg
+
+[USB_Install_XP.CoInstallers]
+AddReg    = CoInstallers_AddReg
+CopyFiles = CoInstallers_CopyFiles
+
+; =================== Installation (Windows 7 and higher) ===================
 [USB_Install]
 Include   = winusb.inf
 Needs     = WINUSB.NT
@@ -72,41 +181,24 @@ Needs     = WINUSB.NT
 Include    = winusb.inf
 AddService = WinUSB,0x00000002,WinUSB_ServiceInstall
 
-[WinUSB_ServiceInstall]
-DisplayName     = %KmsWinUSB%
-ServiceType     = 1
-StartType       = 3
-ErrorControl    = 1
-ServiceBinary   = %12%\winusb.sys
-
 [USB_Install.Wdf]
 KmdfService = WINUSB, WinUsb_Install
-
-[WinUSB_Install]
-KmdfLibraryVersion = 1.9
 
 [USB_Install.HW]
 AddReg = Dev_AddReg
 
-[Dev_AddReg]
-HKR,,DeviceInterfaceGUIDs,0x10000,"{3C5E1462-5695-4e18-876B-F3F3D08AAF18}"
-;HKR,,DeviceInterfaceGUIDs,0x10000,"{6b6d736d-0f03-439b-a842-3921144fc13b}"
-
 [USB_Install.CoInstallers]
 AddReg    = CoInstallers_AddReg
 CopyFiles = CoInstallers_CopyFiles
+CopyFiles = Metadata_EN_CopyFiles
+CopyFiles = Metadata_ES_CopyFiles
 
-[CoInstallers_AddReg]
-HKR,,CoInstallers32,0x00010000,"WdfCoInstaller01009.dll,WdfCoInstaller","WinUSBCoInstaller2.dll"
-
-[CoInstallers_CopyFiles]
-WinUSBCoInstaller2.dll
-WdfCoInstaller01009.dll
-
+; ================= Files Sources and Destinations =====================
 [DestinationDirs]
 CoInstallers_CopyFiles = 11
+Metadata_EN = 24, \ProgramData\Microsoft\Windows\DeviceMetadataStore\EN
+Metadata_ES = 24, \ProgramData\Microsoft\Windows\DeviceMetadataStore\ES
 
-; ================= Source Media Section =====================
 [SourceDisksNames]
 1 = %KmsDisk%,,,\x86
 2 = %KmsDisk%,,,\amd64
@@ -116,29 +208,79 @@ CoInstallers_CopyFiles = 11
 [SourceDisksFiles.x86]
 WinUSBCoInstaller2.dll  = 1
 WdfCoInstaller01009.dll = 1
+4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms = 4
+6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms = 4
 
 [SourceDisksFiles.amd64]
 WinUSBCoInstaller2.dll  = 2
 WdfCoInstaller01009.dll = 2
+4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms = 4
+6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms = 4
 
 [SourceDisksFiles.ia64]
 WinUSBCoInstaller2.dll  = 3
 WdfCoInstaller01009.dll = 3
+4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms = 4
+6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms = 4
+
+[CoInstallers_CopyFiles]
+WinUSBCoInstaller2.dll
+WdfCoInstaller01009.dll
+
+[Metadata_EN_CopyFiles]
+4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms,,,0x00000800
+
+[Metadata_ES_CopyFiles]
+6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms,,,0x00000800
 
 ; =================== Strings ===================
 [Strings]
-KmsProvider    = "KMS Mexico"
+KmsProvider    = "KMS Invent"
 KmsDevice      = "KMS Device Sync Cable"
+KmsDevice_IO0  = "KMS Device Sync Cable IO:0"
+KmsDevice_IO1  = "KMS Device Sync Cable IO:1"
+KmsDevice_IO2  = "KMS Device Sync Cable IO:2"
+KmsDevice_IO3  = "KMS Device Sync Cable IO:3"
 KmsClassName   = "KMS Device Sync Bus"
 KmsWinUSB      = "KMS Device Sync Bus WinUSB Service"
 KmsDisk        = "KMS Device Sync Drivers Disk"
 DevDescription = "Physical activity tracking device used by KMS Apps"
 
-; Spanish
+;English (United States)
+[Strings.0409]
+KmsProvider    = "KMS Invent"
+KmsDevice      = "KMS Device Sync Cable"
+KmsDevice_IO0  = "KMS Device Sync Cable IO:0"
+KmsDevice_IO1  = "KMS Device Sync Cable IO:1"
+KmsDevice_IO2  = "KMS Device Sync Cable IO:2"
+KmsDevice_IO3  = "KMS Device Sync Cable IO:3"
+KmsClassName   = "KMS Device Sync Bus"
+KmsWinUSB      = "KMS Device Sync Bus WinUSB Service"
+KmsDisk        = "KMS Device Sync Drivers Disk"
+DevDescription = "Physical activity tracking device used by KMS Apps"
+
+;English (United Kingdom)
+[Strings.0809]
+KmsProvider    = "KMS Invent"
+KmsDevice      = "KMS Device Sync Cable"
+KmsDevice_IO0  = "KMS Device Sync Cable IO:0"
+KmsDevice_IO1  = "KMS Device Sync Cable IO:1"
+KmsDevice_IO2  = "KMS Device Sync Cable IO:2"
+KmsDevice_IO3  = "KMS Device Sync Cable IO:3"
+KmsClassName   = "KMS Device Sync Bus"
+KmsWinUSB      = "KMS Device Sync Bus WinUSB Service"
+KmsDisk        = "KMS Device Sync Drivers Disk"
+DevDescription = "Physical activity tracking device used by KMS Apps"
+
+; Spanish (Invariant)
 [Strings.0c0a]
-KmsProvider    = "KMS México"
-KmsDevice      = "Cable de Sincronización de Dispositivo KMS"
-KmsClassName   = "Bus de Sincronización de Dispositivo KMS"
-KmsWinUSB      = "Servicio WinUSB de Bus de Sincronización de Dispositivo KMS"
-KmsDisk        = "Disco de Controladores de Bus Sincronización de Dispositivo KMS"
-DevDescription = "Dispositivo de monitoreo de actividad física utilizado por las Apps de KMS"
+KmsProvider    = "KMS Invent"
+KmsDevice      = "Cable de Sincronizacion de Dispositivo KMS"
+KmsDevice_IO0  = "Cable de Sincronizacion de Dispositivo KMS IO:0"
+KmsDevice_IO1  = "Cable de Sincronizacion de Dispositivo KMS IO:1"
+KmsDevice_IO2  = "Cable de Sincronizacion de Dispositivo KMS IO:2"
+KmsDevice_IO3  = "Cable de Sincronizacion de Dispositivo KMS IO:3"
+KmsClassName   = "Bus de Sincronizacion de Dispositivo KMS"
+KmsWinUSB      = "Servicio WinUSB de Bus de Sincronizacion de Dispositivo KMS"
+KmsDisk        = "Disco de Controladores de Bus Sincronizacion de Dispositivo KMS"
+DevDescription = "Dispositivo de monitoreo de actividad fisica utilizado por las Apps de KMS"

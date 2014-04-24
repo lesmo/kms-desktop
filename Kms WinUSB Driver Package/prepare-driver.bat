@@ -1,5 +1,5 @@
 @echo off
-cd /D "F:\Sharp Dynamics\Kilometros for Windows\Kilometros WinUSB Driver Package"
+cd /D "F:\KMS Invent\KMS Desktop\Kms WinUSB Driver Package"
 
 echo == Generating new *.cat ==
 @del .\kmsdevice.cat

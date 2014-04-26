@@ -65,50 +65,58 @@ namespace KMS.Desktop.DataSync.CloudUpload {
             var cloudAPI  = arguments[0] as KMSCloudClient;
             var data      = arguments[1] as Data[];
             var payload   = new NameValueCollection();
+
+            var a = data.Where(w => w.Steps > 0);
                 
-            for ( int i = 0, nextChunk = 1; i < data.Length; i++ ) {
+            for ( int i = 0, s = 0, nextChunk = 1; i < data.Length; i++,s++ ) {
                 payload.Add(
-                    "Timestamp[" + i.ToString() + "]",
+                    "[" + s.ToString() + "][TimeStamp]",
                     data[i].Timestamp.ToString(
                         (new DateTimeFormatInfo()).RFC1123Pattern
                     )
                 );
                 payload.Add(
-                    "Activity[" + i.ToString() + "]",
+                    "[" + s.ToString() + "][Activity]",
                     data[i].Activity.ToString()
                 );
                 payload.Add(
-                    "Steps[" + i.ToString() + "]",
+                    "[" + s.ToString() + "][Steps]",
                     data[i].Steps.ToString()
                 );
                 
                 if ( Math.Floor((double)(i / 128d)) == nextChunk ) {
+                    worker.ReportProgress(
+                        (i / data.Length) * 100,
+                        LocalizationStrings.UploadAgent_UploadingData
+                    );
+
                     OAuthResponse<string> response = cloudAPI.RequestString(
                         HttpRequestMethod.POST,
                         "data/bulk",
                         payload
                     );
 
-                    payload = new NameValueCollection();
+                    payload.Clear();
                     nextChunk++;
-
+                    s = 0;
+                } else {
                     worker.ReportProgress(
                         (i / data.Length) * 100,
-                        LocalizationStrings.UploadAgent_UploadingData
+                        LocalizationStrings.UploadAgent_PreparingData
                     );
                 }
             }
 
             if ( payload.Count > 0 ) {
+                worker.ReportProgress(
+                    99,
+                    LocalizationStrings.UploadAgent_UploadingData
+                );
+
                 OAuthResponse<string> response = cloudAPI.RequestString(
                     HttpRequestMethod.POST,
                     "data/bulk",
                     payload
-                );
-
-                worker.ReportProgress(
-                    100,
-                    LocalizationStrings.UploadAgent_UploadingData
                 );
             }
         }

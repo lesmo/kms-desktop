@@ -60,21 +60,23 @@ namespace KMS.Desktop.Controllers {
         }
 
         void CloudUploadAgent_OnUploadSuccessful(object sender, EventArgs e) {
+            Settings.Default.KmsDataLastModified = DateTime.Now;
+            Settings.Default.Save();
             this.Main.MyAccount_Go();
         }
 
         void CloudUploadAgent_OnUploadProgress(object sender, CloudUploadProgressChangedEventArgs e) {
-            this.View.Progress
-                = (short)(50 + (e.Progress / 2));
-            this.View.Status
-                = e.Status;
+            this.View.Progress = (short)(50 + (e.Progress / 2));
+            this.View.Status   = string.IsNullOrEmpty(e.Status)
+                ? LocalizationStrings.UploadAgent_PreparingData
+                : e.Status;
         }
 
         void LastTimestampWorker_DoWork(object sender, DoWorkEventArgs e) {
             var cloudAPI = e.Argument as KMSCloudClient;
 
             if ( Settings.Default.KmsDataLastModified > DateTime.UtcNow.AddDays(-7) ) {
-                var requestHeaders = new Dictionary<System.Net.HttpRequestHeader,string>();
+                var requestHeaders = new Dictionary<System.Net.HttpRequestHeader, string>();
 
                 requestHeaders.Add(
                     System.Net.HttpRequestHeader.IfModifiedSince,
@@ -117,8 +119,7 @@ namespace KMS.Desktop.Controllers {
         }
 
         public void SyncAsync() {
-            this.View.Status
-                = LocalizationStrings.DownloadAgent_ConnectingToCloud;
+            this.View.Status = LocalizationStrings.DownloadAgent_ConnectingToCloud;
             this.LastTimestampWorker.RunWorkerAsync(
                 this.Main.CloudAPI
             );
@@ -145,10 +146,8 @@ namespace KMS.Desktop.Controllers {
         }
 
         void UsbDownloadAgent_OnProgressChanged(object sender, DownloadProgressChangedEventArgs e) {
-            this.View.Progress
-                = (short)(e.Progress / 2);
-            this.View.Status
-                = LocalizationStrings.DownloadAgent_DownloadingData;
+            this.View.Progress = (short)(e.Progress / 2);
+            this.View.Status   = LocalizationStrings.DownloadAgent_DownloadingData;
         }
     }
 }

@@ -113,20 +113,20 @@ namespace KMS.Desktop.DataSync.UsbDownload {
             worker.ReportProgress(1, device.Device);
 
             // --- Preparar cálculos calendáricos ---
-            var diff = DateTime.Now.DayOfWeek - settings.StartWeekday;
+            var diff = DateTime.UtcNow.DayOfWeek - settings.StartWeekday;
             if ( diff > 0 )
                 throw new ArgumentException();
 
-            var startDay  = DateTime.Now.AddDays(diff).Day;
+            var startDay  = DateTime.UtcNow.AddDays(diff).Day;
             var startDate = new DateTime(
-                DateTime.Now.Year,
-                DateTime.Now.Month,
+                DateTime.UtcNow.Year,
+                DateTime.UtcNow.Month,
                 startDay,
                 settings.Time.Hours,
                 settings.Time.Minutes,
                 0
             );
-            var endDate = DateTime.Now;
+            var endDate = DateTime.UtcNow;
 
             // --- Realizar descarga de datos ---
             var dataRaw      = new List<Data>();

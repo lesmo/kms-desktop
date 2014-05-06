@@ -8,35 +8,10 @@ using System.Text;
 namespace KMS.Desktop.Utils {
     static class StringEncrypt {
         public static string Encrypt(string input, string password) {
-            byte[] passwordBytes
-                = Convert.FromBase64String(password);
-            DESCryptoServiceProvider cryptoProvider
-                    = new DESCryptoServiceProvider();
-            MemoryStream memoryStream
-                = new MemoryStream();
-            CryptoStream cryptoStream
-                = new CryptoStream(
-                    memoryStream,
-                    cryptoProvider.CreateEncryptor(
-                        passwordBytes,
-                        passwordBytes
-                    ), 
-                    CryptoStreamMode.Write
-                );
-            StreamWriter writer
-                = new StreamWriter(cryptoStream);
+            // TODO: Rehabilitar cifrado de entrada. Se deshabilitó durante Alpha-Testing because reasons.
 
-            writer.Write(input);
-            writer.Flush();
-
-            cryptoStream.FlushFinalBlock();
-            writer.Flush();
-
-            return Convert.ToBase64String(
-                memoryStream.GetBuffer(),
-                0,
-                (int)memoryStream.Length
-            );
+            var stringBytes = Encoding.UTF8.GetBytes(input);
+            return Convert.ToBase64String(stringBytes);
         }
 
         public static string Decrypt(string input, string password) {

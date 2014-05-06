@@ -71,16 +71,16 @@ namespace KMS.Desktop {
                 )
             );
 
-            if (
-                !string.IsNullOrEmpty(Settings.Default.KmsCloudToken)
-                && !string.IsNullOrEmpty(Settings.Default.KmsCloudTokenSecret)
-            ) {
-                this.CloudAPI.Token
-                    = new OAuthCryptoSet(
-                        Settings.Default.KmsCloudToken,
-                        Settings.Default.KmsCloudTokenSecret
-                    );
-            }
+            //if (
+            //    !string.IsNullOrEmpty(Settings.Default.KmsCloudToken)
+            //    && !string.IsNullOrEmpty(Settings.Default.KmsCloudTokenSecret)
+            //) {
+            //    this.CloudAPI.Token
+            //        = new OAuthCryptoSet(
+            //            Settings.Default.KmsCloudToken,
+            //            Settings.Default.KmsCloudTokenSecret
+            //        );
+            //}
 
             this.TwitterAPI
                 = new TwitterClient(

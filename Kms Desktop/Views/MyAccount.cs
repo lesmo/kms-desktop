@@ -23,5 +23,9 @@ namespace KMS.Desktop.Views {
         private void ResetButton_Click(object sender, EventArgs e) {
             this.ResetClick(this, e);
         }
+
+        private void ViewProfileButton_Click(object sender, EventArgs e) {
+            System.Diagnostics.Process.Start("http://app.kms.me");
+        }
     }
 }

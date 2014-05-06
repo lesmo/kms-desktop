@@ -28,7 +28,7 @@ namespace KMS.Desktop {
             // TODO: Determinar si el Driver recibió una actualización 
 
             if (
-                ( !Debugger.IsAttached && ApplicationDeployment.CurrentDeployment.IsFirstRun)
+                ( !Debugger.IsAttached && ApplicationDeployment.CurrentDeployment.IsFirstRun )
                 || args.Contains("-ForceDriverInstall")
             ) {
                 if ( 

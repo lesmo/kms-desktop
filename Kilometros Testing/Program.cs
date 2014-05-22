@@ -26,7 +26,7 @@ namespace Kilometros_Testing {
                 USBDevice device
                     = (
                         from d in USBDevice.DeviceList.Values
-                        where d.PID == "ea60"
+                        where d.VID == "10c4"
                         select d
                     ).FirstOrDefault();
 
@@ -40,6 +40,32 @@ namespace Kilometros_Testing {
         }
 
         static void Main(string[] args) {
+            var lusbdev = LibUsbDotNet.UsbDevice.OpenUsbDevice(p => p.Vid == 0x10c4);
+            byte[] buff = new byte[256];
+            int tl = 0;
+
+            var control = new LibUsbDotNet.Main.UsbSetupPacket(0x40, 0x00, short.MaxValue, 0, 0);
+            lusbdev.ControlTransfer(ref control, buff, 256, out tl);
+
+            var epw1 = lusbdev.OpenEndpointWriter(LibUsbDotNet.Main.WriteEndpointID.Ep01);
+            epw1.Reset();
+
+            var epr1 = lusbdev.OpenEndpointReader(LibUsbDotNet.Main.ReadEndpointID.Ep01, 256);
+            epr1.Reset();
+
+            control = new LibUsbDotNet.Main.UsbSetupPacket(0x40, 0x02, 0x0002, 0, 0);
+            lusbdev.ControlTransfer(ref control, buff, 256, out tl);
+
+            epw1.Write(new byte[] {0x89, 0x0, 0x0}, 5000, out tl);
+            
+            byte[] readBuffer = new byte[256];
+            epr1.Read(readBuffer, 500, out tl);
+
+            control = new LibUsbDotNet.Main.UsbSetupPacket(0x40, 0x02, 0x0004, 0, 0);
+            lusbdev.ControlTransfer(ref control, buff, 256, out tl);
+
+            return;
+
             WriteHelp();
 
             USBDevice device
@@ -102,9 +128,9 @@ namespace Kilometros_Testing {
                         response
                             = new byte[responseBuffer[1]];
 
-                        for ( short i = 0; i < responseBuffer[1] + 2; i++ ) {
+                        for ( short i = 0, s = 2; s < responseBuffer[1] + 2; i++, s++ ) {
                             response[i]
-                                = responseBuffer[i];
+                                = responseBuffer[s];
                         }
 
                         bytesInt

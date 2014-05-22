@@ -1,0 +1,47 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="KMS.Desktop.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="KmsApiOAuthKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">97c666e0a1f4487fb7321a7654ac4a68</Value>
+    </Setting>
+    <Setting Name="KmsApiOAuthSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">e25e5ec5fd8d476a878326524c625aac</Value>
+    </Setting>
+    <Setting Name="KmsCloudToken" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="KmsCloudTokenSecret" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="KmsCloudUri" Type="System.Uri" Scope="User">
+      <Value Profile="(Default)">https://api.kms.me/</Value>
+    </Setting>
+    <Setting Name="KmsDataLastModified" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="FacebookApiKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">671595709566936</Value>
+    </Setting>
+    <Setting Name="TwitterApiKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">rxYNTbTkssfQHC5lgag</Value>
+    </Setting>
+    <Setting Name="TwitterApiSecret" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">085mxc60cNcrozw2Hh0P6UdIhqIvVE87qMJYXd2TIc</Value>
+    </Setting>
+    <Setting Name="KmsUsbTimeout" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">5000</Value>
+    </Setting>
+    <Setting Name="KmsUsbVid" Type="System.Int32" Scope="Application">
+      <Value Profile="(Default)">4292</Value>
+    </Setting>
+    <Setting Name="KmsUsbPids" Type="System.Int32[]" Scope="Application">
+      <Value Profile="(Default)">&lt;?xml version="1.0" encoding="utf-16"?&gt;
+&lt;ArrayOfInt xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;int&gt;60000&lt;/int&gt;
+  &lt;int&gt;60001&lt;/int&gt;
+  &lt;int&gt;35148&lt;/int&gt;
+&lt;/ArrayOfInt&gt;</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

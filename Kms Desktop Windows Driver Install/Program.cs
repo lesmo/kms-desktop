@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -13,31 +12,27 @@ using System.Diagnostics;
 
 namespace KMS.Desktop.Windows.DriverInstall {
     class Program {
-        static DirectoryInfo InstallDir
-            = (new DirectoryInfo(Application.StartupPath));
+        static DirectoryInfo InstallDir = (new DirectoryInfo(Application.StartupPath));
 
-        [DllImport("DIFXApi.dll", CharSet = CharSet.Unicode)]
+        [DllImport("DIFXApi", CharSet = CharSet.Unicode)]
         static extern Int32 DriverPackagePreinstall(string DriverPackageInfPath, Int32 Flags);
 
         private static bool IsAdministrator() {
-            WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            WindowsIdentity identity   = WindowsIdentity.GetCurrent();
             WindowsPrincipal principal = new WindowsPrincipal(identity);
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
         static void AddCertificate(StoreName store, string name) {
-            X509Store certStore = new X509Store(
-                store,
-                StoreLocation.LocalMachine
-            );            
-            X509Certificate2 cert
-                = new X509Certificate2(
-                    InstallDir.FullName + @"\Certificates\" + name
-                );
+            var certStore = new X509Store(store, StoreLocation.LocalMachine);
+            var cert      = new X509Certificate2(InstallDir.FullName + @"\Certificates\" + name);
 
             certStore.Open(OpenFlags.ReadOnly);
-            X509Certificate2Collection certSearchResult
-                = certStore.Certificates.Find(X509FindType.FindByThumbprint, cert.Thumbprint, true);
+            var certSearchResult = certStore.Certificates.Find(
+                X509FindType.FindByThumbprint,
+                cert.Thumbprint,
+                true
+            );
 
             if ( certSearchResult.Count > 0 )
                 return;
@@ -51,85 +46,77 @@ namespace KMS.Desktop.Windows.DriverInstall {
         }
         
         static int Main(string[] args) {
-            bool silent
-                = args.Contains("-Silent");
+            var silent = false;
+            foreach ( var arg in args ) {
+                if ( arg.ToUpper().Replace('/', '-') == "-SILENT" ) {
+                    silent = true;
+                    break;
+                }
+            }
             
-            if ( !IsAdministrator() ) {
-                string exeName
-                    = Process.GetCurrentProcess().MainModule.FileName;
-                ProcessStartInfo startInfo
-                    = new ProcessStartInfo(exeName);
-                startInfo.Verb
-                    = "runas";
+            if ( ! IsAdministrator() ) {
+                var exeName    = Process.GetCurrentProcess().MainModule.FileName;
+                var startInfo  = new ProcessStartInfo(exeName);
+                startInfo.Verb = "runas";
 
                 if ( silent )
-                    startInfo.Arguments
-                        = "-Silent";
-
-                Process process
-                    = Process.Start(startInfo);
-
-                process.WaitForExit();
-
-                return process.ExitCode;
+                    startInfo.Arguments = "-SILENT";
+                
+                var process  = Process.Start(startInfo);
+                try {
+                    process.WaitForExit();
+                    return process.ExitCode;
+                } catch {
+                    return 0xE00;
+                }
             }
 
-            DialogResult dialogResult
-                = DialogResult.Cancel;
+            var dialogResult = DialogResult.Cancel;
 
             do {
                 try {
-                    AddCertificate(StoreName.AuthRoot, "KmsRoot.cer");
-                    AddCertificate(StoreName.TrustedPublisher, "KmsSoftware.cer");
+                    AddCertificate(StoreName.AuthRoot, "KMS Invent Authority.cer");
+                    AddCertificate(StoreName.TrustedPublisher, "KMS Invent Software.cer");
                     
-                    dialogResult
-                        = DialogResult.Cancel;
+                    dialogResult = DialogResult.Cancel;
                 } catch ( Exception ex ) {
                     if ( silent )
                         return 1;
 
-                    dialogResult
-                        =  MessageBox.Show(
-                            string.Format(
-                                "{0}\n\n{1}",
-                                KMSWindowsDriverInstall.FailedCertMessage,
-                                ex.Message
-                            ),
-                            KMSWindowsDriverInstall.FailedTitle,
-                            MessageBoxButtons.RetryCancel,
-                            MessageBoxIcon.Error
-                        );
+                    dialogResult = MessageBox.Show(
+                        string.Format(
+                            "{0}\n\n{1}",
+                            KMSWindowsDriverInstall.FailedCertMessage,
+                            ex.Message
+                        ),
+                        KMSWindowsDriverInstall.FailedTitle,
+                        MessageBoxButtons.RetryCancel,
+                        MessageBoxIcon.Error
+                    );
 
                     if ( dialogResult == DialogResult.Cancel )
                         return 1;
                 }
             } while ( dialogResult == DialogResult.Retry );
 
-            int result
-                = 0;
-            string exception
-                = "";
+            int result    = 0;
+            var exception = "";
 
             do {
                 try {
                     // Ref: http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx
-                    result
-                        =  DriverPackagePreinstall(InstallDir.FullName + @"\Driver\kmsdevice.inf", 0);
+                    result =  DriverPackagePreinstall(InstallDir.FullName + @"\Driver\kmsdevice.inf", 0);
 
                     // El controlador ya está instalado en ésta versión
                     if ( result == 183 ) {
-                        result
-                            = 0;
+                        result = 0;
                         break;
                     }
 
-                    exception
-                        = "E[" + result.ToString("X") + "]";
+                    exception = "E[" + result.ToString("X") + "]";
                 } catch ( Exception ex ) {
-                    result
-                        = 0xA;
-                    exception
-                        = ex.Message;
+                    result    = 0xA;
+                    exception = ex.Message;
                 }
                 
                 if ( result == 0 ) {
@@ -138,17 +125,16 @@ namespace KMS.Desktop.Windows.DriverInstall {
                     if ( silent )
                         return result;
 
-                    dialogResult
-                        =  MessageBox.Show(
-                            string.Format(
-                                "{0}\n\n{1}",
-                                KMSWindowsDriverInstall.FailedMessage,
-                                exception
-                            ),
-                            KMSWindowsDriverInstall.FailedTitle,
-                            MessageBoxButtons.RetryCancel,
-                            MessageBoxIcon.Error
-                        );
+                    dialogResult = MessageBox.Show(
+                        string.Format(
+                            "{0}\n\n{1}",
+                            KMSWindowsDriverInstall.FailedMessage,
+                            exception
+                        ),
+                        KMSWindowsDriverInstall.FailedTitle,
+                        MessageBoxButtons.RetryCancel,
+                        MessageBoxIcon.Error
+                    );
 
                     if ( dialogResult == DialogResult.Cancel )
                         return result;

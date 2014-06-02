@@ -4,96 +4,63 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{09B267C0-7707-43BE-B9C2-DF80897691C7}</ProjectGuid>
+    <ProjectGuid>{3B14D7A6-12F9-4D81-8576-D91AAD3F7EA4}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>KMS.Desktop</RootNamespace>
-    <AssemblyName>KMS Desktop</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <AssemblyName>KMS</AssemblyName>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>true</IsWebBootstrapper>
-    <PublishUrl>F:\KMS Invent\KMS Desktop\Kms Desktop\Publish\</PublishUrl>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
-    <InstallFrom>Web</InstallFrom>
-    <UpdateEnabled>true</UpdateEnabled>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
     <UpdateMode>Foreground</UpdateMode>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>false</MapFileExtensions>
-    <InstallUrl>http://get.kms.me/windows/</InstallUrl>
-    <TargetCulture>es</TargetCulture>
-    <ProductName>KMS Desktop</ProductName>
-    <PublisherName>KMS Invent</PublisherName>
-    <MinimumRequiredVersion>1.0.0.3</MinimumRequiredVersion>
-    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-    <ApplicationRevision>29</ApplicationRevision>
-    <ApplicationVersion>0.7.11.%2a</ApplicationVersion>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
-    <CreateDesktopShortcut>true</CreateDesktopShortcut>
-    <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;WindowsDeployment</DefineConstants>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>WindowsDeployment</DefineConstants>
+    <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>KMS.Desktop.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>KMS Icon.ico</ApplicationIcon>
   </PropertyGroup>
-  <PropertyGroup>
-    <ManifestCertificateThumbprint>D38298C6BF3B3B858C3AB6FB66FCED18A56259CA</ManifestCertificateThumbprint>
-  </PropertyGroup>
-  <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
-  </PropertyGroup>
-  <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignManifests>false</SignManifests>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>false</SignAssembly>
-  </PropertyGroup>
   <PropertyGroup />
-  <PropertyGroup>
-    <TargetZone>Internet</TargetZone>
-  </PropertyGroup>
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup />
-  <PropertyGroup>
-    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LinqBridge">
+      <HintPath>..\packages\LinqBridge.1.3.0\lib\net20\LinqBridge.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\net20\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -101,280 +68,342 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\DevicePrepareController.cs" />
-    <Compile Include="Controllers\DeviceSyncingController.cs" />
-    <Compile Include="Controllers\Events\Login3rdSuccessfulEventArgs.cs" />
-    <Compile Include="Controllers\Events\LoginUnsuccessfulEventArgs.cs" />
-    <Compile Include="Controllers\Events\RegisterUnsuccessfulEventArgs.cs" />
-    <Compile Include="Controllers\IController.cs" />
-    <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\LoginFacebookController.cs" />
-    <Compile Include="Controllers\LoginTwitterController.cs" />
-    <Compile Include="Controllers\MyAccountController.cs" />
-    <Compile Include="Controllers\RegisterController.cs" />
-    <Compile Include="Controllers\WindowsDriverInstallController.cs" />
-    <Compile Include="DataSync\CloudUpload\CloudUploadAgent.cs" />
-    <Compile Include="DataSync\CloudUpload\CloudUploadExceptionEventArgs.cs" />
-    <Compile Include="DataSync\CloudUpload\CloudUploadProgressChangedEventArgs.cs" />
-    <Compile Include="DataSync\UsbCoreComm\UsbCoreCableNotFound.cs" />
-    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandCrcInvalid.cs" />
-    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandException.cs" />
-    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteException.cs" />
-    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommandWriteTimeout.cs" />
-    <Compile Include="DataSync\UsbCoreComm\UsbCoreCommunicator.cs" />
-    <Compile Include="DataSync\UsbDownload\DownloadExceptionEventArgs.cs" />
-    <Compile Include="DataSync\UsbReset\FactoryResetAgent.cs" />
-    <Compile Include="DataSync\UsbReset\FactoryResetExceptionEventArgs.cs" />
-    <Compile Include="LocalizationStrings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>LocalizationStrings.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Main.cs">
+    <Compile Include="Animation\Animator.cs" />
+    <Compile Include="Animation\EaseInOutBack.cs" />
+    <Compile Include="Animation\EaseInOutElastic.cs" />
+    <Compile Include="Animation\IAnimationEasing.cs" />
+    <Compile Include="HardException.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="HardException.Designer.cs">
+      <DependentUpon>HardException.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KmsExceptions.cs" />
+    <Compile Include="KmsUsbDevice.Find.cs">
+      <DependentUpon>KmsUsbDevice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KmsUsbDevice.OpenClose.cs">
+      <DependentUpon>KmsUsbDevice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KmsUsbDeviceRequestAsync.cs" />
+    <Compile Include="Localization\DeviceInteractionStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DeviceInteractionStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\ExceptionHandlingStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ExceptionHandlingStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\LoadingPanelStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>LoadingPanelStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\MutexStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MutexStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\QuestionPanelStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>QuestionPanelStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\RegisterCompletePanelStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegisterCompletePanelStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Localization\RegisterPanelStrings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>RegisterPanelStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainWindow.Designer.cs">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MainWindow.Navigation.cs">
+      <SubType>Form</SubType>
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\CancelableLoadingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\DeviceSyncPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\DeviceSyncPanel.Designer.cs">
+      <DependentUpon>DeviceSyncPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\LoadingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\QuestionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\QuestionPanel.Designer.cs">
+      <DependentUpon>QuestionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\Exceptions\GenericExceptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\Exceptions\GenericExceptionPanel.Designer.cs">
+      <DependentUpon>GenericExceptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\Exceptions\IExceptionPanel.cs" />
+    <Compile Include="Panels\Exceptions\InternetExceptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\Exceptions\InternetExceptionPanel.Designer.cs">
+      <DependentUpon>InternetExceptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\Exceptions\UpdateRequiredExceptionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\Exceptions\UpdateRequiredExceptionPanel.Designer.cs">
+      <DependentUpon>UpdateRequiredExceptionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\IOAuthLoginPanel.cs" />
+    <Compile Include="Panels\IPanel.cs" />
+    <Compile Include="Panels\LoadingPanelBase.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\LoadingPanelBase.Designer.cs">
+      <DependentUpon>LoadingPanelBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\LoginFacebook.AuthorizationUri.cs">
+      <DependentUpon>LoginFacebookPanel.cs</DependentUpon>
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\LoginFacebookPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\LoginFacebookPanel.Designer.cs">
+      <DependentUpon>LoginFacebookPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\LoginRegisterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\LoginRegisterPanel.Designer.cs">
+      <DependentUpon>LoginRegisterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\LoginRegisterPanel.LoginProcess.cs">
+      <SubType>UserControl</SubType>
+      <DependentUpon>LoginRegisterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\LoginTwitter.AuthorizationUri.cs">
+      <SubType>UserControl</SubType>
+      <DependentUpon>LoginTwitterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\LoginTwitterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\LoginTwitterPanel.Designer.cs">
+      <DependentUpon>LoginTwitterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\ProfilePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\ProfilePanel.Designer.cs">
+      <DependentUpon>ProfilePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\RegisterCompletePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\RegisterCompletePanel.Designer.cs">
+      <DependentUpon>RegisterCompletePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\RegisterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Panels\RegisterPanel.Designer.cs">
+      <DependentUpon>RegisterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\RegisterPanel.GeographyAsync.cs">
+      <SubType>UserControl</SubType>
+      <DependentUpon>RegisterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\RegisterPanel.RegisterProcess.cs">
+      <SubType>UserControl</SubType>
+      <DependentUpon>RegisterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Panels\RegisterPanel.Validation.cs">
+      <SubType>UserControl</SubType>
+      <DependentUpon>RegisterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.ExceptionHandling.cs">
+      <DependentUpon>Program.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.KmsCloudApi.cs">
+      <DependentUpon>Program.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KmsUsbDevice.cs" />
+    <Compile Include="Program.WindowsFonts.cs" />
+    <Compile Include="UserControls\UnderlineTextBox.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UnderlineTextBox.Designer.cs">
+      <DependentUpon>UnderlineTextBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\FlatProgressBar.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\FlatProgressBar.Designer.cs">
+      <DependentUpon>FlatProgressBar.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="DataSync\UsbDownload\DeviceFoundEventArgs.cs" />
-    <Compile Include="DataSync\UsbDownload\DownloadAgent.cs" />
-    <Compile Include="DataSync\UsbDownload\DownloadCompleteEventArgs.cs" />
-    <Compile Include="DataSync\UsbDownload\DownloadAgentSettings.cs" />
-    <Compile Include="DataSync\UsbDownload\DownloadProgressChangedEventArgs.cs" />
-    <Compile Include="UserControls\KMSFlatProgressBar.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="UserControls\KMSFlatProgressBar.Designer.cs">
-      <DependentUpon>KMSFlatProgressBar.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Utils\DelegateExpansion.cs" />
     <Compile Include="Utils\ExceptionSerializer.cs" />
-    <Compile Include="Utils\GenericWorkerExceptionHandler.cs" />
-    <Compile Include="Utils\StringEncrypt.cs" />
-    <Compile Include="Utils\Synchronized.cs" />
+    <Compile Include="Utils\ObjectAnimation.cs" />
+    <Compile Include="Utils\DelegateExpansion.cs" />
+    <Compile Include="Utils\ExtensionMethodsFix.cs" />
     <Compile Include="Utils\UriExpansion.cs" />
-    <Compile Include="Views\DevicePrepare.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\DevicePrepare.Designer.cs">
-      <DependentUpon>DevicePrepare.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DevicePrepareInProgress.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\DevicePrepareInProgress.Designer.cs">
-      <DependentUpon>DevicePrepareInProgress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DeviceResetDialog.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\DeviceResetDialog.Designer.cs">
-      <DependentUpon>DeviceResetDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DeviceSyncing.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\DeviceSyncing.Designer.cs">
-      <DependentUpon>DeviceSyncing.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Events\BasicLoginEventArgs.cs" />
-    <Compile Include="Views\Events\DialogEventArgs.cs" />
-    <Compile Include="Views\Events\RegisterContinueEventArgs.cs" />
-    <Compile Include="Views\Events\SetPasswordEventArgs.cs" />
-    <Compile Include="Views\LoginRegister.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\LoginRegister.Designer.cs">
-      <DependentUpon>LoginRegister.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MyAccount.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\MyAccount.Designer.cs">
-      <DependentUpon>MyAccount.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Register.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\Register.Designer.cs">
-      <DependentUpon>Register.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RegisterAddSocial.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\RegisterAddSocial.Designer.cs">
-      <DependentUpon>RegisterAddSocial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RegisterCreatePassword.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\RegisterCreatePassword.Designer.cs">
-      <DependentUpon>RegisterCreatePassword.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\LoginInProgress.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\LoginInProgress.Designer.cs">
-      <DependentUpon>LoginInProgress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RegisterError.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\RegisterError.Designer.cs">
-      <DependentUpon>RegisterError.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\RegisterInProgress.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\RegisterInProgress.Designer.cs">
-      <DependentUpon>RegisterInProgress.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UnhandledException.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\UnhandledException.Designer.cs">
-      <DependentUpon>UnhandledException.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WebException.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\WebException.Designer.cs">
-      <DependentUpon>WebException.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WebView.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\WebView.Designer.cs">
-      <DependentUpon>WebView.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Views\WindowsDriverInstall.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Views\WindowsDriverInstall.Designer.cs">
-      <DependentUpon>WindowsDriverInstall.cs</DependentUpon>
-    </Compile>
-    <EmbeddedResource Include="LocalizationStrings.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>LocalizationStrings.Designer.cs</LastGenOutput>
+    <EmbeddedResource Include="HardException.resx">
+      <DependentUpon>HardException.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
+    <EmbeddedResource Include="Localization\DeviceInteractionStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>DeviceInteractionStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\ExceptionHandlingStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ExceptionHandlingStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\LoadingPanelStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>LoadingPanelStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\MutexStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>MutexStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\QuestionPanelStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>QuestionPanelStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\RegisterCompletePanelStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RegisterCompletePanelStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localization\RegisterPanelStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>RegisterPanelStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainWindow.resx">
+      <DependentUpon>MainWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\DeviceSyncPanel.resx">
+      <DependentUpon>DeviceSyncPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\QuestionPanel.resx">
+      <DependentUpon>QuestionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\Exceptions\GenericExceptionPanel.resx">
+      <DependentUpon>GenericExceptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\Exceptions\InternetExceptionPanel.resx">
+      <DependentUpon>InternetExceptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\Exceptions\UpdateRequiredExceptionPanel.resx">
+      <DependentUpon>UpdateRequiredExceptionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\LoadingPanelBase.resx">
+      <DependentUpon>LoadingPanelBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\LoginFacebookPanel.resx">
+      <DependentUpon>LoginFacebookPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\LoginRegisterPanel.resx">
+      <DependentUpon>LoginRegisterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\LoginTwitterPanel.resx">
+      <DependentUpon>LoginTwitterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\ProfilePanel.resx">
+      <DependentUpon>ProfilePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\RegisterCompletePanel.resx">
+      <DependentUpon>RegisterCompletePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Panels\RegisterPanel.resx">
+      <DependentUpon>RegisterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\UnderlineTextBox.resx">
+      <DependentUpon>UnderlineTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UserControls\FlatProgressBar.resx">
+      <DependentUpon>FlatProgressBar.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
-      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="UserControls\KMSFlatProgressBar.resx">
-      <DependentUpon>KMSFlatProgressBar.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\DevicePrepare.resx">
-      <DependentUpon>DevicePrepare.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\DevicePrepareInProgress.resx">
-      <DependentUpon>DevicePrepareInProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\DeviceResetDialog.resx">
-      <DependentUpon>DeviceResetDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\DeviceSyncing.resx">
-      <DependentUpon>DeviceSyncing.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\LoginRegister.resx">
-      <DependentUpon>LoginRegister.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\MyAccount.resx">
-      <DependentUpon>MyAccount.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Register.resx">
-      <DependentUpon>Register.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\RegisterAddSocial.resx">
-      <DependentUpon>RegisterAddSocial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\RegisterCreatePassword.resx">
-      <DependentUpon>RegisterCreatePassword.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\LoginInProgress.resx">
-      <DependentUpon>LoginInProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\RegisterError.resx">
-      <DependentUpon>RegisterError.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\RegisterInProgress.resx">
-      <DependentUpon>RegisterInProgress.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\UnhandledException.resx">
-      <DependentUpon>UnhandledException.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\WebException.resx">
-      <DependentUpon>WebException.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\WebView.resx">
-      <DependentUpon>WebView.cs</DependentUpon>
-    </EmbeddedResource>
-    <Content Include="..\Kms WinUSB Driver Package\amd64\WdfCoInstaller01009.dll">
-      <Link>Driver\amd64\WdfCoInstaller01009.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms WinUSB Driver Package\amd64\winusbcoinstaller2.dll">
-      <Link>Driver\amd64\winusbcoinstaller2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms WinUSB Driver Package\kmsdevice.inf">
-      <Link>Driver\kmsdevice.inf</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms WinUSB Driver Package\x86\WdfCoInstaller01009.dll">
-      <Link>Driver\x86\WdfCoInstaller01009.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms WinUSB Driver Package\x86\winusbcoinstaller2.dll">
-      <Link>Driver\x86\winusbcoinstaller2.dll</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms Desktop Windows Driver Install\Certificates\KmsRoot.cer">
-      <Link>Certificates\KmsRoot.cer</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms Desktop Windows Driver Install\Certificates\KmsSoftware.cer">
-      <Link>Certificates\KmsSoftware.cer</Link>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms WinUSB Driver Package\kmsdevice.cat">
-      <Link>Driver\kmsdevice.cat</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms WinUSB Driver Package\meta\4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms">
-      <Link>Driver\meta\4b8eab5c-2557-4ea1-a5bf-0ddbfd6cd9a0.devicemetadata-ms</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="..\Kms WinUSB Driver Package\meta\6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms">
-      <Link>Driver\meta\6d0270cb-b2a5-4cbf-98a2-cfd81f54a3bf.devicemetadata-ms</Link>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EmbeddedResource Include="Views\WindowsDriverInstall.resx">
-      <DependentUpon>WindowsDriverInstall.cs</DependentUpon>
-    </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="KMS Invent Software Certificate.pfx" />
-    <None Include="Properties\app.manifest" />
+    <None Include="Fonts\OpenSans-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-BoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-ExtraBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-ExtraBoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-LightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-Semibold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Fonts\OpenSans-SemiboldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\KMS Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="KMS Icon.ico" />
+    <Content Include="Resources\Back.png" />
+    <Content Include="Resources\Indeterminate.gif" />
+    <Content Include="Resources\InputError.ico" />
+    <Content Include="Resources\KMS ConnectDevice.png" />
+    <None Include="Resources\ProfileNoPicture Female.jpg" />
+    <None Include="Resources\ProfileNoPicture Male.jpg" />
+    <Content Include="Resources\ProfilePicutreMask.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\KMS Interop\Kms Interop OAuth Client\Kms Interop Cloud Api Client.csproj">
@@ -385,36 +414,10 @@
       <Project>{599494b1-8d7f-44df-9d70-f0e2b8d118f0}</Project>
       <Name>Kms Interop</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Kms UsbX\Kms UsbX.csproj">
-      <Project>{e1b82fb5-2ab4-47f2-b36c-7b0a695378cf}</Project>
-      <Name>Kms UsbX</Name>
+    <ProjectReference Include="..\LibUsbDotNet\LibUsbDotNet.csproj">
+      <Project>{0a78f6ff-5586-4052-8104-e23ff83a7ce1}</Project>
+      <Name>LibUsbDotNet</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="..\Kms UsbX\KMS.Usb.Base.dll">
-      <Link>KMS.Usb.Base.dll</Link>
-    </Content>
-    <Content Include="Driver\ia64\WdfCoInstaller01009.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Driver\ia64\winusbcoinstaller2.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="KMS Icon.ico" />
-    <Content Include="KMS.Desktop.Windows.DriverInstall.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Resources\Back.png" />
-    <Content Include="Resources\CornerLoading.gif" />
-    <Content Include="Resources\FacebookLogoWhite.png" />
-    <Content Include="Resources\KMS-Clock.png" />
-    <Content Include="Resources\KMS-ConnectDevice.png" />
-    <Content Include="Resources\Profile-Mask.png" />
-    <None Include="Resources\ProfileNoPicture-Male.jpg" />
-    <None Include="Resources\ProfileNoPicture-Female.jpg" />
-    <Content Include="Resources\ShieldWhite.png" />
-    <Content Include="Resources\TwitterLogowhite.png" />
-    <None Include="Resources\KMS-Logo.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -427,55 +430,7 @@
       <ProductName>.NET Framework 3.5 SP1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Windows.Installer.4.5">
-      <Visible>False</Visible>
-      <ProductName>Windows Installer 4.5</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <PublishFile Include="Resources\FacebookLogoWhite.png">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Resources\KMS-Clock.png">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Resources\KMS-ConnectDevice.png">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-    <PublishFile Include="Resources\TwitterLogowhite.png">
-      <Visible>False</Visible>
-      <Group>
-      </Group>
-      <TargetPath>
-      </TargetPath>
-      <PublishState>Exclude</PublishState>
-      <IncludeHash>True</IncludeHash>
-      <FileType>File</FileType>
-    </PublishFile>
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

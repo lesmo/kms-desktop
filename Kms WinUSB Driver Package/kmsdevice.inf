@@ -7,13 +7,17 @@ Class       = USBDevice
 ClassGUID   = {88BAE032-5A81-49f0-BC3D-A4FF138216D6}
 Provider    = %KmsProvider%
 CatalogFile = kmsdevice.cat
-DriverVer   = 04/23/2014, 1.3.0.2
+DriverVer   = 05/01/2014, 1.4.0.1
 
 ; ========== Manufacturer/Models sections ===========
 [Manufacturer]
 %KmsProvider% = KMS_WinUSB,NTx86,NTamd64,NTia64,NTx86.6.1,NTamd64.6.1,NTia64.6.1
 
+[KMS_WinUSB]
+; Empty, no support for Windows 2000
+
 [KMS_WinUSB.NTx86]
+; Windows XP x86 and later, but before Windows 7
 %KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_894C
 %KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_00
 %KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_01
@@ -31,6 +35,7 @@ DriverVer   = 04/23/2014, 1.3.0.2
 %KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTamd64]
+; Windows XP x64 and later, but before Windows 7
 %KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_894C
 %KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_00
 %KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_01
@@ -48,6 +53,7 @@ DriverVer   = 04/23/2014, 1.3.0.2
 %KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTia64]
+; Windows XP ia64 and later, but before Windows 7
 %KmsDevice%     = USB_Install_XP, USB\VID_10C4&PID_894C
 %KmsDevice_IO0% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_00
 %KmsDevice_IO1% = USB_Install_XP, USB\VID_10C4&PID_894C&MI_01
@@ -65,6 +71,7 @@ DriverVer   = 04/23/2014, 1.3.0.2
 %KmsDevice_IO3% = USB_Install_XP, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTx86.6.1]
+; Windows 7 x86 and later
 %KmsDevice%     = USB_Install, USB\VID_10C4&PID_894C
 %KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_894C&MI_00
 %KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_894C&MI_01
@@ -82,6 +89,7 @@ DriverVer   = 04/23/2014, 1.3.0.2
 %KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTamd64.6.1]
+; Windows 7 x64 and later
 %KmsDevice%     = USB_Install, USB\VID_10C4&PID_894C
 %KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_894C&MI_00
 %KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_894C&MI_01
@@ -99,6 +107,7 @@ DriverVer   = 04/23/2014, 1.3.0.2
 %KmsDevice_IO3% = USB_Install, USB\VID_10C4&PID_EA61&MI_03
 
 [KMS_WinUSB.NTia64.6.1]
+; Windows 7 ia64 and later (actually, just 7 since ia64 support was killed on 8)
 %KmsDevice%     = USB_Install, USB\VID_10C4&PID_894C
 %KmsDevice_IO0% = USB_Install, USB\VID_10C4&PID_894C&MI_00
 %KmsDevice_IO1% = USB_Install, USB\VID_10C4&PID_894C&MI_01
@@ -147,7 +156,7 @@ ServiceBinary = %12%\winusb.sys
 KmdfLibraryVersion = 1.9
 
 [Dev_AddReg]
-HKR,,DeviceInterfaceGUIDs,0x10000,"{3C5E1462-5695-4e18-876B-F3F3D08AAF18}"
+HKR,,DeviceInterfaceGUIDs,0x10000,"{0D7708BB-BF17-4F14-A808-9872E3AB905C}"
 
 [CoInstallers_AddReg]
 HKR,,CoInstallers32,0x00010000,"WdfCoInstaller01009.dll,WdfCoInstaller","WinUSBCoInstaller2.dll"
@@ -189,9 +198,7 @@ AddReg = Dev_AddReg
 
 [USB_Install.CoInstallers]
 AddReg    = CoInstallers_AddReg
-CopyFiles = CoInstallers_CopyFiles
-CopyFiles = Metadata_EN_CopyFiles
-CopyFiles = Metadata_ES_CopyFiles
+CopyFiles = CoInstallers_CopyFiles, Metadata_EN_CopyFiles, Metadata_ES_CopyFiles
 
 ; ================= Files Sources and Destinations =====================
 [DestinationDirs]

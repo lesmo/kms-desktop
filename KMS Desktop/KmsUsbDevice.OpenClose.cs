@@ -8,6 +8,10 @@ using System.Text;
 namespace KMS.Desktop {
     partial class KmsUsbDevice {
         private Boolean m_deviceInitialized = false;
+        public TimeSpan DeviceDateTimeUtcOffset {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// 
@@ -54,8 +58,7 @@ namespace KMS.Desktop {
 
             // Necesario para iniciar la comunicación con el dispostivo
             try {
-                Request<DateTime>(device, Interop.Blockity.RequestCommands.GetDateTime());
-                Request<Interop.Blockity.BlockityPin>(device, Interop.Blockity.RequestCommands.SetDateTime(DateTime.UtcNow));
+                DeviceDateTimeUtcOffset = Request<DateTime>(device, Interop.Blockity.RequestCommands.GetDateTime()) - DateTime.UtcNow;
             } catch ( KmsUsbDeviceException ex ) {
                 throw new KmsUsbDeviceException(
                     this,

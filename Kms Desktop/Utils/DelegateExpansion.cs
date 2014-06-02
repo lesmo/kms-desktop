@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -20,8 +19,8 @@ namespace KMS.Desktop.Utils {
                     }
                 );
             }
-            
-            return delgt.Method.Invoke(delgt.Target, new object[] { sender, e });
+
+            throw new InvalidOperationException("Cannot Cross-Invoke delegates whose target isn't a Control.");
         }
 
         public static object CrossInvoke(this Delegate delgt, object argument) {

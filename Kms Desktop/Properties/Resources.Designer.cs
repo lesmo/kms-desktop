@@ -22,7 +22,7 @@ namespace KMS.Desktop.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    public class Resources {
+    internal class Resources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace KMS.Desktop.Properties {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Resources.ResourceManager ResourceManager {
+        internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("KMS.Desktop.Properties.Resources", typeof(Resources).Assembly);
@@ -51,7 +51,7 @@ namespace KMS.Desktop.Properties {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        public static global::System.Globalization.CultureInfo Culture {
+        internal static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap Back {
+        internal static System.Drawing.Bitmap Back {
             get {
                 object obj = ResourceManager.GetObject("Back", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,9 +73,29 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap CornerLoading {
+        internal static System.Drawing.Bitmap Indeterminate {
             get {
-                object obj = ResourceManager.GetObject("CornerLoading", resourceCulture);
+                object obj = ResourceManager.GetObject("Indeterminate", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon InputError {
+            get {
+                object obj = ResourceManager.GetObject("InputError", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap KMS_ConnectDevice {
+            get {
+                object obj = ResourceManager.GetObject("KMS_ConnectDevice", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -83,9 +103,9 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap FacebookLogoWhite {
+        internal static System.Drawing.Bitmap KMS_Logo {
             get {
-                object obj = ResourceManager.GetObject("FacebookLogoWhite", resourceCulture);
+                object obj = ResourceManager.GetObject("KMS_Logo", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -93,9 +113,9 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap KMSClock {
+        internal static System.Drawing.Bitmap ProfileNoPicture_Female {
             get {
-                object obj = ResourceManager.GetObject("KMSClock", resourceCulture);
+                object obj = ResourceManager.GetObject("ProfileNoPicture_Female", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -103,9 +123,9 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap KMSConnectDevice {
+        internal static System.Drawing.Bitmap ProfileNoPicture_Male {
             get {
-                object obj = ResourceManager.GetObject("KMSConnectDevice", resourceCulture);
+                object obj = ResourceManager.GetObject("ProfileNoPicture_Male", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -113,39 +133,9 @@ namespace KMS.Desktop.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap KMSLogo {
+        internal static System.Drawing.Bitmap ProfilePicutreMask {
             get {
-                object obj = ResourceManager.GetObject("KMSLogo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap ProfileMask {
-            get {
-                object obj = ResourceManager.GetObject("ProfileMask", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap ShieldWhite {
-            get {
-                object obj = ResourceManager.GetObject("ShieldWhite", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap TwitterLogowhite {
-            get {
-                object obj = ResourceManager.GetObject("TwitterLogowhite", resourceCulture);
+                object obj = ResourceManager.GetObject("ProfilePicutreMask", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

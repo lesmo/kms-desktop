@@ -41,15 +41,6 @@ namespace KMS.Desktop.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("60000,60001,35148")]
-        public string KmsUsbPids {
-            get {
-                return ((string)(this["KmsUsbPids"]));
-            }
-        }
-        
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
@@ -74,12 +65,15 @@ namespace KMS.Desktop.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("https://api.kms.me/")]
-        public string KmsCloudUri {
+        public global::System.Uri KmsCloudUri {
             get {
-                return ((string)(this["KmsCloudUri"]));
+                return ((global::System.Uri)(this["KmsCloudUri"]));
+            }
+            set {
+                this["KmsCloudUri"] = value;
             }
         }
         
@@ -94,15 +88,59 @@ namespace KMS.Desktop.Properties {
             }
         }
         
-        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool WindowsDriverInstalled {
+        [global::System.Configuration.DefaultSettingValueAttribute("671595709566936")]
+        public string FacebookApiKey {
             get {
-                return ((bool)(this["WindowsDriverInstalled"]));
+                return ((string)(this["FacebookApiKey"]));
             }
-            set {
-                this["WindowsDriverInstalled"] = value;
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("rxYNTbTkssfQHC5lgag")]
+        public string TwitterApiKey {
+            get {
+                return ((string)(this["TwitterApiKey"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("085mxc60cNcrozw2Hh0P6UdIhqIvVE87qMJYXd2TIc")]
+        public string TwitterApiSecret {
+            get {
+                return ((string)(this["TwitterApiSecret"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5000")]
+        public int KmsUsbTimeout {
+            get {
+                return ((int)(this["KmsUsbTimeout"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("4292")]
+        public int KmsUsbVid {
+            get {
+                return ((int)(this["KmsUsbVid"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("<?xml version=\"1.0\" encoding=\"utf-16\"?>\r\n<ArrayOfInt xmlns:xsi=\"http://www.w3.org" +
+            "/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">\r\n  <int>" +
+            "60000</int>\r\n  <int>60001</int>\r\n  <int>35148</int>\r\n</ArrayOfInt>")]
+        public int[] KmsUsbPids {
+            get {
+                return ((int[])(this["KmsUsbPids"]));
             }
         }
     }

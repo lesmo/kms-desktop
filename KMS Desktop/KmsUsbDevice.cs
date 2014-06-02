@@ -11,7 +11,7 @@ using System.Diagnostics;
 
 namespace KMS.Desktop {
     class KmsUsbDeviceException : UsbException {
-        public new Exception InnerException {
+        public new Exception InternalException {
             get;
             private set;
         }
@@ -29,7 +29,7 @@ namespace KMS.Desktop {
         public KmsUsbDeviceException(Object sender, ErrorCode errorCode, Exception innerException)
             : base(sender, innerException.Message) {
             UsbErrorCode = errorCode;
-            InnerException = innerException;
+            InternalException = innerException;
         }
 
         public KmsUsbDeviceException(Object sender, ErrorCode errorCode, String description)
@@ -39,7 +39,7 @@ namespace KMS.Desktop {
 
         public KmsUsbDeviceException(Object sender, ErrorCode errorCode, String description, Exception innerException)
             : base(sender, description) {
-            InnerException = innerException;
+            InternalException = innerException;
             UsbErrorCode = errorCode;
         }
     }
@@ -54,7 +54,7 @@ namespace KMS.Desktop {
             }
         }
 
-        private T Request<T>(UsbDevice device, KMS.Interop.Blockity.BlockityCommand<T> command, Int32 timeout = 0) {
+        private T Request<T>(UsbDevice device, KMS.Interop.Blockity.IBlockityCommand<T> command, Int32 timeout = 0) {
             if ( device == null || ! device.IsOpen )
                 throw new InvalidOperationException("Cannot initiate request when device is not open.");
 

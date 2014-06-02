@@ -5,27 +5,20 @@ using System.Text;
 
 namespace KMS.Desktop.Utils {
     static class ExceptionSerializer {
-        public static string ExceptionToString(Exception exception) {
-            StringBuilder stringBuilder
-                = new StringBuilder();
-            Exception innerException
-                = exception;
+        public static String ToKmsExceptionString(this Exception exception) {
+            var stringBuilder = new StringBuilder();
+            var innerException = exception;
 
-            while ( true ) {
+            do {
+                stringBuilder.Append("\n\r\n\r------ Inner Exception ------\n\r\n\r");
                 stringBuilder.AppendFormat(
                     "Message: {0}\n\rStack Trace:\n\r{1}",
                     innerException.Message,
                     innerException.StackTrace
                 );
 
-                if ( innerException.InnerException == null ) {
-                    break;
-                } else {
-                    innerException = innerException.InnerException;
-
-                    stringBuilder.Append("\n\r\n\r------ Inner Exception ------\n\r\n\r");
-                }
-            }
+                innerException = innerException.InnerException;
+            } while ( innerException != null );
 
             return stringBuilder.ToString();
         }

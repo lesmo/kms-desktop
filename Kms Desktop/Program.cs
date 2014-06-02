@@ -1,70 +1,77 @@
-﻿using System;
+﻿using KMS.Desktop.Properties;
+using KMS.Desktop.Utils;
+using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.ComponentModel;
+using System.Threading;
 using System.Windows.Forms;
-using KMS.Desktop.Properties;
-
-#if WindowsDeployment
-using System.Deployment.Application;
-using System.Diagnostics;
-#endif
 
 namespace KMS.Desktop {
-    static class Program {
+    static partial class Program {
+        /// <summary>
+        ///     Ésta es la cadena Mutex que representa éste Ensamblado. Esto hace
+        ///     que la instancia de KMS sea la única ejecutándose.
+        /// </summary>
+        private const String MutexString = ".@?jH?%C??T*?G?";
+        public static Mutex Mutex {
+            get;
+            private set;
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main(string[] args) {
+        private static int Main() {
+            // Inicializar el Mutex
+            Program.Mutex = new Mutex(true, Program.MutexString);
+            if ( !Program.Mutex.WaitOne(0, true) ) {
+                MessageBox.Show(
+                    Localization.MutexStrings.MessageBox_Text,
+                    Localization.MutexStrings.MessageBox_Title,
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Asterisk
+                );
+
+                return 1;
+            }
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Main main
-                = new Main();
-            bool skipNormalInit
-                = false;
+            Application.ThreadException += Application_ThreadException;
+            AppDomain.CurrentDomain.UnhandledException += Application_FailsafeException;
 
-            #if WindowsDeployment
-            // TODO: Determinar si el Driver recibió una actualización 
+            InitializeFontLoading();
 
-            if (
-                ( !Debugger.IsAttached && ApplicationDeployment.CurrentDeployment.IsFirstRun )
-                || args.Contains("-ForceDriverInstall")
-            ) {
-                if ( 
-                    !Settings.Default.WindowsDriverInstalled
-                    || args.Contains("-ForceDriverInstall")
-                ) {
-                    main.InitPane(
-                        new Controllers.WindowsDriverInstallController(
-                            main,
-                            new Views.WindowsDriverInstall()
-                        )
-                    );
+            MainWindow.Instance.Show();
 
-                    skipNormalInit
-                        = true;
-                }
+            var loginRegisterPanel = MainWindow.Instance.NextPanel<Panels.LoginRegisterPanel>();
+
+            if ( ! String.IsNullOrEmpty(Settings.Default.KmsCloudToken) ) {
+                KmsCloudApi.Token = new Kms.Interop.OAuth.OAuthCryptoSet(
+                    Settings.Default.KmsApiOAuthKey,
+                    Settings.Default.KmsApiOAuthSecret
+                );
+
+                loginRegisterPanel.CheckKmsOAuthToken();
             }
-            #endif
+            
+            Application.Run(MainWindow.Instance);
 
-            if ( ! skipNormalInit ) {
-                if (
-                    args.Length > 0
-                    && args.Contains("-sync")
-                ) {
-                    main.InitPane(
-                        new Controllers.DeviceSyncingController(
-                            main,
-                            new Views.DeviceSyncing()
-                        )
-                    );
-                } else {
-                    main.InitPane();
-                }
-            }
+            return 0;
+        }
 
-            Application.Run(main);
+        // TODO: Perhaps move into Utils namespace.
+        public static void ReportExceptionEmail(Exception ex) {
+            System.Diagnostics.Process.Start(
+                "mailto:" + Localization.ExceptionHandlingStrings.EmailTo
+                + "&subject=" + Uri.EscapeDataString(Localization.ExceptionHandlingStrings.EmailSubject)
+                + "&body=" + Uri.EscapeDataString(
+                    Localization.ExceptionHandlingStrings.EmailBody
+                    + ex.ToKmsExceptionString()
+                )
+            );
         }
     }
 }

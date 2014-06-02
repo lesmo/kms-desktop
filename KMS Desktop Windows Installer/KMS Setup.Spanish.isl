@@ -333,6 +333,7 @@ AutoStartProgramGroupDescription=Inicio:
 AutoStartProgram=Iniciar automáticamente %1
 AddonHostProgramNotFound=%1 no pudo ser localizado en la carpeta seleccionada.%n%n¿deseas continuar de todas formas?
 
+KmsAppName=la App de KMS para Windows
 InstallKmsDriver=Instalar Driver del Dispositivo KMS
 InstallingKmsDriver=Instalando Driver del Dispositivo KMS
 InstallKmsDriverFail=No tienes instalado el Driver del Dispositivo KMS en tu equipo, y no fue posible instalarlo. Necesitas permisos de administrador para instalar o actualizar el Driver del Dispositivo KMS.%n%nError: %1

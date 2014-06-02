@@ -1,24 +1,24 @@
-#define KmsAppName "KMS Desktop"
+#define KmsAppInstallerName "KMS App"
 #define KmsAppVersion "1.1.0.0"
 #define KmsAppPublisher "KMS Invent S.A.P.I. de C.V."
 #define KmsAppURL "http://www.kms.me"
 #define KmsAppExeName "KMS.exe"
-#define KmsDriverInstallerExeName "KMS DWDI.exe"
+#define KmsDriverInstallerExeName "KMS Driver Installer.exe"
 #define KmsAppMutex ".@?jH?%C??T*?G?"
 
 [Setup]
 AppId={{F9E0A2BD-1201-4775-8523-F98051B7C076}
-AppName={#KmsAppName}
+AppName={cm:KmsAppName}
 AppVersion={#KmsAppVersion}
-AppVerName={#KmsAppName} v{#KmsAppVersion}
+AppVerName=KMS v{#KmsAppVersion}
 AppPublisher={#KmsAppPublisher}
 AppPublisherURL={#KmsAppURL}
 AppSupportURL={#KmsAppURL}
 AppUpdatesURL={#KmsAppURL}
-DefaultDirName={userpf}\{#KmsAppName}
-DefaultGroupName={#KmsAppName}
+DefaultDirName={userpf}\{#KmsAppInstallerName}
+DefaultGroupName={cm:KmsAppName}
 DisableProgramGroupPage=yes
-OutputBaseFilename={#KmsAppName} v{#KmsAppVersion} Setup
+OutputBaseFilename={#KmsAppInstallerName} v{#KmsAppVersion} Setup
 Compression=lzma2/ultra64
 SolidCompression=yes
 DisableReadyPage=True
@@ -32,6 +32,7 @@ WizardImageFile=BannerLeft.bmp
 WizardSmallImageFile=MiniTop.bmp
 WizardImageBackColor=clWhite
 InternalCompressLevel=ultra
+ShowLanguageDialog=auto
 
 [Languages]
 Name: "english"; MessagesFile: "KMS Setup.English.isl"
@@ -42,14 +43,14 @@ Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"
 
 [Files]
 Source: "..\Kms Desktop Windows Driver Install\bin\Release\*"; DestDir: "{tmp}"; Flags: dontcopy recursesubdirs
-Source: "..\KMS Desktop 2\bin\Release\*"; DestDir: "{app}"; Flags: ignoreversion createallsubdirs recursesubdirs
+Source: "..\KMS Desktop\bin\Release\*"; DestDir: "{app}"; Flags: ignoreversion createallsubdirs recursesubdirs
 
 [Icons]
-Name: "{group}\{#KmsAppName}"; Filename: "{app}\{#KmsAppExeName}"
-Name: "{userdesktop}\{#KmsAppName}"; Filename: "{app}\{#KmsAppExeName}"; Tasks: desktopicon
+Name: "{group}\{cm:KmsAppName}"; Filename: "{app}\{#KmsAppExeName}"
+Name: "{userdesktop}\{cm:KmsAppName}"; Filename: "{app}\{#KmsAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#KmsAppExeName}"; Flags: nowait postinstall skipifsilent; Description: "{cm:LaunchProgram,{#StringChange(KmsAppName, '&', '&&')}}"
+Filename: "{app}\{#KmsAppExeName}"; Flags: nowait postinstall skipifsilent; Description: "{cm:LaunchProgram, KMS}"
 
 [Code]
 function PrepareToInstall(var NeedsRestart: Boolean): String;

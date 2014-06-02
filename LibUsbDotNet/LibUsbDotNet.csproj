@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>LibUsbDotNet</RootNamespace>
-    <AssemblyName>Kilometros.Usb</AssemblyName>
+    <AssemblyName>KMS.Usb</AssemblyName>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <OldToolsVersion>3.5</OldToolsVersion>
@@ -52,7 +52,7 @@
     <DefineConstants>TRACE;LIBUSBDOTNET</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>..\bin\Release\Kilometros.Usb.xml</DocumentationFile>
+    <DocumentationFile>..\bin\Release\KMS.Usb.xml</DocumentationFile>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
     <RegisterForComInterop>false</RegisterForComInterop>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>

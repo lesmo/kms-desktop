@@ -243,7 +243,9 @@
       <DependentUpon>Program.cs</DependentUpon>
     </Compile>
     <Compile Include="KmsUsbDevice.cs" />
-    <Compile Include="Program.WindowsFonts.cs" />
+    <Compile Include="Program.WindowsFonts.cs">
+      <DependentUpon>Program.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\UnderlineTextBox.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -126,7 +126,7 @@ namespace KMS.Desktop.Panels {
 
         private void KmsUsbDeviceResetWorker_DoWork(object sender, DoWorkEventArgs e) {
             lock ( m_device ) using ( m_device ) {
-                m_device.Request<Boolean>(Interop.Blockity.RequestCommands.FactoryReset(), 15000);
+                m_device.Request<Boolean>(Interop.Blockity.RequestCommands.FactoryReset(), 20000);
                 m_device.Request<Interop.Blockity.BlockityPin>(
                     Interop.Blockity.RequestCommands.SetDateTime(DateTime.UtcNow)
                 );
@@ -142,6 +142,10 @@ namespace KMS.Desktop.Panels {
 
             MainWindow.Instance.RemoveFromHistory<QuestionPanel>();
             MainWindow.Instance.HideLoadingPanel();
+        }
+
+        private void SyncButton_Click(object sender, EventArgs e) {
+            MainWindow.Instance.NextPanel<Panels.DeviceSyncPanel>();
         }
 
     }

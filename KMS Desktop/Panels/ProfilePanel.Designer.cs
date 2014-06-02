@@ -182,6 +182,7 @@
             this.SyncButton.TabIndex = 8;
             this.SyncButton.Text = "SINCRONIZAR";
             this.SyncButton.UseVisualStyleBackColor = false;
+            this.SyncButton.Click += new System.EventHandler(this.SyncButton_Click);
             // 
             // LastUpdate
             // 

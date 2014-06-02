@@ -27,6 +27,9 @@ namespace KMS.Desktop {
         private MainWindow() {
             InitializeComponent();
 
+            // Establecer la tipografía a utilizar en todo el UI.
+            Font = new Font("Open Sans", 8.3f);
+
             // Establecer un par de cosas que optimizan los procesos de dibujado.
             SetStyle(ControlStyles.UserPaint, true);
             SetStyle(ControlStyles.OptimizedDoubleBuffer, true);

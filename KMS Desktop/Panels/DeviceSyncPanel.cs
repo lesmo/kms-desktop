@@ -25,7 +25,7 @@ namespace KMS.Desktop.Panels {
 
         public void Initialize() {
             var loading       = MainWindow.Instance.ShowCancelableLoadingPanel();
-            loading.Title     = loading.TooLongTitle = Localization.LoadingPanelStrings.ConnectDevice;
+            loading.TooLongTitle = loading.Title = loading.TooLongTitle = Localization.LoadingPanelStrings.ConnectDevice;
             loading.OnCancel += loading_OnCancel;
 
             m_device = KmsUsbDevice.FindDeviceAsync(
@@ -77,12 +77,19 @@ namespace KMS.Desktop.Panels {
 
             lock ( m_device ) {
                 using ( m_device ) {
-                    for ( ; lastDate < DateTime.UtcNow; lastDate = lastDate.AddHours(3), deviceRequests++ ) {
+                    for ( ; lastDate - m_device.DeviceDateTimeUtcOffset < DateTime.UtcNow; lastDate = lastDate.AddHours(3), deviceRequests++ ) {
                         var tempData = m_device.Request<IEnumerable<Data>>(
-                            RequestCommands.GetData(lastDate, 3)
+                            RequestCommands.GetData(lastDate - m_device.DeviceDateTimeUtcOffset, 3)
                         );
-                        dataAggregated.AddRange(tempData);
 
+                        dataAggregated.AddRange(
+                            tempData.Select(d => new Data {
+                                Activity  = d.Activity,
+                                Steps     = d.Steps,
+                                Timestamp = d.Timestamp - m_device.DeviceDateTimeUtcOffset
+                            })
+                        );
+                        
                         DataSyncWorker.ReportProgress(
                             10 + (deviceRequests / totalDeviceRequests * 60)
                         );

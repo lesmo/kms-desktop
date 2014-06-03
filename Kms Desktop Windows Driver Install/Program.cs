@@ -12,7 +12,8 @@ using System.Diagnostics;
 
 namespace KMS.Desktop.Windows.DriverInstall {
     class Program {
-        static DirectoryInfo InstallDir = (new DirectoryInfo(Application.StartupPath));
+        public static readonly DirectoryInfo CurrentDir = (new DirectoryInfo(Application.StartupPath));
+        private static Boolean mSilent, mSkipCertificateInstall, mSkipDriverInstall;
 
         [DllImport("DIFXApi", CharSet = CharSet.Unicode)]
         static extern Int32 DriverPackagePreinstall(string DriverPackageInfPath, Int32 Flags);
@@ -23,47 +24,30 @@ namespace KMS.Desktop.Windows.DriverInstall {
             return principal.IsInRole(WindowsBuiltInRole.Administrator);
         }
 
-        static void AddCertificate(StoreName store, string name) {
-            var certStore = new X509Store(store, StoreLocation.LocalMachine);
-            var cert      = new X509Certificate2(InstallDir.FullName + @"\Certificates\" + name);
-
-            certStore.Open(OpenFlags.ReadOnly);
-            var certSearchResult = certStore.Certificates.Find(
-                X509FindType.FindByThumbprint,
-                cert.Thumbprint,
-                true
+        private static Int32 InstallCertificates() {
+            // Preparar instalación de certificados
+            var kmsRootCertificate = new CertificateInstaller(
+                StoreName.AuthRoot,
+                CurrentDir.FullName + @"\Certificates\KMS Invent Authority.cer"
             );
+            var kmsPublisherCertificate = new CertificateInstaller(
+                StoreName.TrustedPublisher,
+                CurrentDir.FullName + @"\Certificates\KMS Invent Software.cer"
+            );
+            var kmsCertificatesInstalled = kmsRootCertificate.Installed && kmsPublisherCertificate.Installed;
 
-            if ( certSearchResult.Count > 0 )
-                return;
+            // Solicitar elevar autorización de proceso si no están instalados los certificados
+            // de KMS, no se ha silicitado instalar únicamente los drivers, y no se está
+            // ejecutando en contexto administrativo ya.
+            if ( !kmsCertificatesInstalled && !IsAdministrator() ) {
+                var exeName = Process.GetCurrentProcess().MainModule.FileName;
+                var startInfo = new ProcessStartInfo(exeName);
 
-            certStore.Close();
+                startInfo.Verb      = "runas";
+                startInfo.Arguments = "-SILENT -ONLYCERT";
 
-            certStore.Open(OpenFlags.ReadWrite);
-            certStore.Add(cert);
-
-            certStore.Close();
-        }
-        
-        static int Main(string[] args) {
-            var silent = false;
-            foreach ( var arg in args ) {
-                if ( arg.ToUpper().Replace('/', '-') == "-SILENT" ) {
-                    silent = true;
-                    break;
-                }
-            }
-            
-            if ( ! IsAdministrator() ) {
-                var exeName    = Process.GetCurrentProcess().MainModule.FileName;
-                var startInfo  = new ProcessStartInfo(exeName);
-                startInfo.Verb = "runas";
-
-                if ( silent )
-                    startInfo.Arguments = "-SILENT";
-                
-                var process  = Process.Start(startInfo);
                 try {
+                    var process = Process.Start(startInfo);
                     process.WaitForExit();
                     return process.ExitCode;
                 } catch {
@@ -73,59 +57,63 @@ namespace KMS.Desktop.Windows.DriverInstall {
 
             var dialogResult = DialogResult.Cancel;
 
-            do {
-                try {
-                    AddCertificate(StoreName.AuthRoot, "KMS Invent Authority.cer");
-                    AddCertificate(StoreName.TrustedPublisher, "KMS Invent Software.cer");
-                    
-                    dialogResult = DialogResult.Cancel;
-                } catch ( Exception ex ) {
-                    if ( silent )
-                        return 1;
+            // Instalar los certificados
+            if ( !kmsCertificatesInstalled ) {
+                do {
+                    try {
+                        kmsRootCertificate.Install();
+                        kmsPublisherCertificate.Install();
 
-                    dialogResult = MessageBox.Show(
-                        string.Format(
-                            "{0}\n\n{1}",
-                            KMSWindowsDriverInstall.FailedCertMessage,
-                            ex.Message
-                        ),
-                        KMSWindowsDriverInstall.FailedTitle,
-                        MessageBoxButtons.RetryCancel,
-                        MessageBoxIcon.Error
-                    );
+                        dialogResult = DialogResult.Cancel;
+                    } catch ( Exception ex ) {
+                        if ( mSilent )
+                            return 1;
 
-                    if ( dialogResult == DialogResult.Cancel )
-                        return 1;
-                }
-            } while ( dialogResult == DialogResult.Retry );
+                        dialogResult = MessageBox.Show(
+                            string.Format(
+                                "{0}\n\n{1}",
+                                KMSWindowsDriverInstall.FailedCertMessage,
+                                ex.Message
+                            ),
+                            KMSWindowsDriverInstall.FailedTitle,
+                            MessageBoxButtons.RetryCancel,
+                            MessageBoxIcon.Error
+                        );
 
-            int result    = 0;
+                        if ( dialogResult == DialogResult.Cancel )
+                            return 1;
+                    }
+                } while ( dialogResult == DialogResult.Retry );
+            }
+
+            return 0;
+        }
+
+        private static Int32 InstallDriver() {
+            // Instalar los drivers.
+            int result = 0;
             var exception = "";
 
             do {
                 try {
                     // Ref: http://msdn.microsoft.com/en-us/library/windows/desktop/ms681382(v=vs.85).aspx
-                    result =  DriverPackagePreinstall(InstallDir.FullName + @"\Driver\kmsdevice.inf", 0);
+                    result = DriverPackagePreinstall(CurrentDir.FullName + @"\Driver\kmsdevice.inf", 0);
 
-                    // El controlador ya está instalado en ésta versión
-                    if ( result == 183 ) {
-                        result = 0;
+                    // El controlador ya está instalado en ésta versión.
+                    if ( result == 183 )
                         break;
-                    }
 
                     exception = "E[" + result.ToString("X") + "]";
                 } catch ( Exception ex ) {
-                    result    = 0xA;
+                    result = 0xA;
                     exception = ex.Message;
                 }
-                
-                if ( result == 0 ) {
-                    break;
-                } else {
-                    if ( silent )
+
+                if ( result != 0 ) {
+                    if ( mSilent )
                         return result;
 
-                    dialogResult = MessageBox.Show(
+                    var dialogResult = MessageBox.Show(
                         string.Format(
                             "{0}\n\n{1}",
                             KMSWindowsDriverInstall.FailedMessage,
@@ -139,9 +127,38 @@ namespace KMS.Desktop.Windows.DriverInstall {
                     if ( dialogResult == DialogResult.Cancel )
                         return result;
                 }
-            } while ( dialogResult == DialogResult.Retry && result != 0 );
+            } while ( true );
 
-            if ( ! silent ) {
+            return result;
+        }
+
+        static int Main(string[] args) {
+            // Procesar argumentos en la línea de comandos
+            foreach ( var arg in args ) {
+                var argNormalized = arg.ToUpper().Replace('/', '-');
+                if ( argNormalized == "-SILENT" ) {
+                    mSilent = true;
+                } else if ( argNormalized == "-ONLYDRIVER" || argNormalized == "-SKIPCERT" ) {
+                    mSkipCertificateInstall = true;
+                } else if ( argNormalized == "-ONLYCERT" || argNormalized == "-SKIPDRIVER") {
+                    mSkipDriverInstall = true;
+                }
+            }
+
+            var result = 0;
+
+            if ( !mSkipCertificateInstall ) {
+                result = InstallCertificates();
+                
+                if ( result != 0 )
+                    return result;
+            }
+
+            result = InstallDriver();
+            if ( result != 0 )
+                return result;
+
+            if ( ! mSilent ) {
                 MessageBox.Show(
                     KMSWindowsDriverInstall.SuccessMessage,
                     KMSWindowsDriverInstall.SucessTitle,

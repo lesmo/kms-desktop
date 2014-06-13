@@ -34,7 +34,8 @@ namespace KMS.Desktop.Windows.DriverInstall {
                 StoreName.TrustedPublisher,
                 CurrentDir.FullName + @"\Certificates\KMS Invent Software.cer"
             );
-            var kmsCertificatesInstalled = kmsRootCertificate.Installed && kmsPublisherCertificate.Installed;
+            var kmsCertificatesInstalled = 
+                kmsRootCertificate.Installed && kmsPublisherCertificate.Installed;
 
             // Solicitar elevar autorización de proceso si no están instalados los certificados
             // de KMS, no se ha silicitado instalar únicamente los drivers, y no se está
@@ -49,7 +50,9 @@ namespace KMS.Desktop.Windows.DriverInstall {
                 try {
                     var process = Process.Start(startInfo);
                     process.WaitForExit();
-                    return process.ExitCode;
+
+                    if ( process.ExitCode != 0 )
+                        return process.ExitCode;
                 } catch {
                     return 0xE00;
                 }

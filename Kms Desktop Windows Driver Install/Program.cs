@@ -38,8 +38,7 @@ namespace KMS.Desktop.Windows.DriverInstall {
                 kmsRootCertificate.Installed && kmsPublisherCertificate.Installed;
 
             // Solicitar elevar autorización de proceso si no están instalados los certificados
-            // de KMS, no se ha silicitado instalar únicamente los drivers, y no se está
-            // ejecutando en contexto administrativo ya.
+            // de KMS y no se está ejecutando en contexto administrativo ya.
             if ( !kmsCertificatesInstalled && !IsAdministrator() ) {
                 var exeName = Process.GetCurrentProcess().MainModule.FileName;
                 var startInfo = new ProcessStartInfo(exeName);
@@ -50,9 +49,7 @@ namespace KMS.Desktop.Windows.DriverInstall {
                 try {
                     var process = Process.Start(startInfo);
                     process.WaitForExit();
-
-                    if ( process.ExitCode != 0 )
-                        return process.ExitCode;
+                    return process.ExitCode;
                 } catch {
                     return 0xE00;
                 }
@@ -93,6 +90,26 @@ namespace KMS.Desktop.Windows.DriverInstall {
         }
 
         private static Int32 InstallDriver() {
+            // Solicitar elevar autorización de proceso si no están instalados los drivers
+            // de KMS y no se está ejecutando en contexto administrativo ya.
+            // TODO: Encontrar forma de determinar si drivers están instalados sin requerir
+            //       permisos de administración.
+            if ( !IsAdministrator() ) {
+                var exeName = Process.GetCurrentProcess().MainModule.FileName;
+                var startInfo = new ProcessStartInfo(exeName);
+
+                startInfo.Verb = "runas";
+                startInfo.Arguments = "-SILENT -ONLYDRIVER";
+
+                try {
+                    var process = Process.Start(startInfo);
+                    process.WaitForExit();
+                    return process.ExitCode;
+                } catch {
+                    return 0xE01;
+                }
+            }
+
             // Instalar los drivers.
             int result = 0;
             var exception = "";
@@ -103,8 +120,10 @@ namespace KMS.Desktop.Windows.DriverInstall {
                     result = DriverPackagePreinstall(CurrentDir.FullName + @"\Driver\kmsdevice.inf", 0);
 
                     // El controlador ya está instalado en ésta versión.
-                    if ( result == 183 )
+                    if ( result == 183 ) {
+                        result = 0;
                         break;
+                    }
 
                     exception = "E[" + result.ToString("X") + "]";
                 } catch ( Exception ex ) {

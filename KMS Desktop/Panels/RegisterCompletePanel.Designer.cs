@@ -70,6 +70,7 @@
             this.SkipButton.TabIndex = 17;
             this.SkipButton.Text = "AHORA NO >>";
             this.SkipButton.UseVisualStyleBackColor = false;
+            this.SkipButton.Click += new System.EventHandler(this.SkipButton_Click);
             // 
             // WelcomeTitle
             // 

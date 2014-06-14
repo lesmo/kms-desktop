@@ -21,11 +21,6 @@ namespace KMS.Desktop.Panels {
             loadingPanel.TooLongDescription = Localization.LoadingPanelStrings.MaybeNoInternet;
         }
 
-        public void CheckKmsOAuthToken() {
-            ShowLoginInProgressPanel();
-            KmsTokenLoginWorker.RunWorkerAsync();
-        }
-
         public void OnOAuthLoginCompleted(LoginFacebookPanel facebookPanel) {
             if ( facebookPanel.LoginSuccessful ) {
                 ShowLoginInProgressPanel();
@@ -73,16 +68,19 @@ namespace KMS.Desktop.Panels {
         private void LoginWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
             if ( e.Error == null ) {
                 if ( e.Result == null ) {
-                    MainWindow.Instance.HideLoadingPanel();
-
-                    if ( m_doingBasicLogin )
-                        WrongLoginCredentialsLabel.Show();
-
-                    m_doingBasicLogin = false;
-
                     Settings.Default.KmsCloudToken       = "";
                     Settings.Default.KmsCloudTokenSecret = "";
                     Settings.Default.Save();
+
+                    MainWindow.Instance.HideLoadingPanel();
+
+                    if ( m_doingBasicLogin ) {
+                        WrongLoginCredentialsLabel.Show();
+                    } else {
+                        // Go to Register Panel
+                    }
+
+                    m_doingBasicLogin = false;
                 } else {
                     Settings.Default.KmsCloudToken       = Program.KmsCloudApi.Token.Key;
                     Settings.Default.KmsCloudTokenSecret = Program.KmsCloudApi.Token.Secret;

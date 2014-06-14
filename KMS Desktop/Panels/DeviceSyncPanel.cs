@@ -15,7 +15,7 @@ using System.Linq;
 using System.Diagnostics;
 
 namespace KMS.Desktop.Panels {
-    public partial class DeviceSyncPanel : UserControl, IPanelInitialize, IPanelPreviousEvent, Exceptions.IRemovePanelOnException {
+    public partial class DeviceSyncPanel : UserControl, IPanelInitialize, Exceptions.IRemovePanelOnException {
         private volatile KmsUsbDevice m_device;
 
         public DeviceSyncPanel() {
@@ -36,8 +36,9 @@ namespace KMS.Desktop.Panels {
         }
 
         private void loading_OnCancel(object sender, EventArgs e) {
+            m_device.CancelDeviceFindAsync();
             DataSyncWorker.CancelAsync();
-            MainWindow.Instance.BackButtonVisible = false;
+            MainWindow.Instance.PreviousPanel();
         }
 
         private void m_device_DeviceFound(object sender, KmsUsbDeviceFoundEventArgs e) {
@@ -51,6 +52,7 @@ namespace KMS.Desktop.Panels {
                 return;
             }
 
+            // TODO: Make this request actually just do a If Modified Since last sync
             var lastDateResponse = Program.KmsCloudApi.RequestJson(
                 requestMethod: HttpRequestMethod.GET,
                 resource: "data/total",
@@ -204,16 +206,10 @@ namespace KMS.Desktop.Panels {
 
         private void DataSyncWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e) {
             if ( e.Error == null ) {
-                MainWindow.Instance.RemoveFromHistory<DeviceSyncPanel>();
                 MainWindow.Instance.PreviousPanel();
-            } else {
+            } else if ( ! e.Cancelled ) {
                 throw e.Error;
             }
-        }
-
-        public void OnPreviousPanelNavigation() {
-            MainWindow.Instance.RemoveFromHistory<DeviceSyncPanel>();
-            Dispose();
         }
 
         void DeviceSyncPanel_Disposed(object sender, EventArgs e) {

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 using Kms.Interop.CloudClient;
 
 namespace KMS.Desktop.Panels {
-    public partial class LoginRegisterPanel : UserControl, IOAuthLoginPanelHandler<LoginFacebookPanel>, IOAuthLoginPanelHandler<LoginTwitterPanel> {
+    public partial class LoginRegisterPanel : UserControl, IPanelNoBackButton, IOAuthLoginPanelHandler<LoginFacebookPanel>, IOAuthLoginPanelHandler<LoginTwitterPanel> {
         public LoginRegisterPanel() {
             InitializeComponent();
         }
@@ -63,7 +63,7 @@ namespace KMS.Desktop.Panels {
                 return;
             
             m_doingBasicLogin = true;
-            MainWindow.Instance.ShowLoadingPanel();
+            ShowLoginInProgressPanel();
             BasicLoginWorker.RunWorkerAsync(new Object[] { EmailTextbox.Text, PasswordTextbox.Text });
         }
     }

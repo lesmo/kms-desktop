@@ -83,7 +83,20 @@ namespace KMS.Desktop {
                     MainPanel.AnimateProperty<Animation.EaseInOutBack>("Width", nextPanel.Width);
                 
                 MainPanel.AnimateProperty<Animation.EaseInOutBack>("Height", nextPanel.Height).AnimationFinished +=
-                    (Object s2, EventArgs e2) => nextPanel.AnimateProperty<Animation.EaseInOutElastic>("Left", 0);
+                    (Object s2, EventArgs e2) => {
+                        nextPanel.AnimateProperty<Animation.EaseInOutElastic>("Left", 0).AnimationFinished +=
+                            (Object s3, EventArgs e3) => {
+                                // Inicializar el siguiente Panel si es necesario.
+                                if ( initializePanel )
+                                    nextPanel.SizeChanged += Panel_SizeChanged;
+                                if ( initializePanel && nextPanel is Panels.IPanelInitialize )
+                                    (nextPanel as Panels.IPanelInitialize).Initialize();
+
+                                // Ejecutar el evento de navegación en el Panel anterior.
+                                if ( currentPanel is Panels.IPanelNextEvent )
+                                    (currentPanel as Panels.IPanelNextEvent).OnNextPanelNavigation();
+                            };
+                    };
             });
 
             if ( currentPanel == null ) {
@@ -102,16 +115,6 @@ namespace KMS.Desktop {
                             animateNext;
                 }
             }
-            
-            // Inicializar el siguiente Panel si es necesario.
-            if ( initializePanel )
-                nextPanel.SizeChanged += Panel_SizeChanged;
-            if ( initializePanel && nextPanel is Panels.IPanelInitialize )
-                (nextPanel as Panels.IPanelInitialize).Initialize();
-
-            // Ejecutar el evento de navegación en el Panel anterior.
-            if ( currentPanel is Panels.IPanelNextEvent )
-                (currentPanel as Panels.IPanelNextEvent).OnNextPanelNavigation();
 
             return (T)nextPanel;
         }
@@ -192,7 +195,14 @@ namespace KMS.Desktop {
                 MainPanel.StopAnimation("Height", "Width");
                 MainPanel.AnimateProperty<Animation.EaseInOutBack>("Width", previousPanel.Width);
                 MainPanel.AnimateProperty<Animation.EaseInOutBack>("Height", previousPanel.Height).AnimationFinished +=
-                    (Object s2, EventArgs e2) => previousPanel.AnimateProperty<Animation.EaseInOutElastic>("Left", 0);
+                    (Object s2, EventArgs e2) => {
+                        previousPanel.AnimateProperty<Animation.EaseInOutElastic>("Left", 0).AnimationFinished +=
+                            (Object s3, EventArgs e3) => {
+                                // Ejecutar el evento de navegación en el Panel anterior.
+                                if ( currentPanel is Panels.IPanelPreviousEvent )
+                                    (currentPanel as Panels.IPanelPreviousEvent).OnPreviousPanelNavigation();
+                            };
+                    };
             });
 
             var animator = currentPanel.GetCurrentAnimator("Left");
@@ -206,10 +216,6 @@ namespace KMS.Desktop {
                     currentPanel.AnimateProperty<Animation.EaseInOutElastic>("Left", currentPanelOffset).AnimationFinished +=
                         animateNext;
             }
-
-            // Ejecutar el evento de navegación en el Panel anterior.
-            if ( currentPanel is Panels.IPanelPreviousEvent )
-                (currentPanel as Panels.IPanelPreviousEvent).OnPreviousPanelNavigation();
 
             return previousPanel;
         }

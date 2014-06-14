@@ -78,7 +78,7 @@ namespace KMS.Desktop.Panels {
         }
 
         private void SocialLinkWorker_DoWork(object sender, DoWorkEventArgs e) {
-            var socialApi = sender as IOAuthSocialClient;
+            var socialApi = e.Argument as IOAuthSocialClient;
             if ( socialApi == null || String.IsNullOrEmpty(socialApi.UserName) )
                 throw new OAuthUnexpectedRequest();
 
@@ -109,6 +109,10 @@ namespace KMS.Desktop.Panels {
                     throw e.Error;
                 }
             }
+        }
+
+        private void SkipButton_Click(object sender, EventArgs e) {
+            MainWindow.Instance.NextPanel<ProfilePanel>();
         }
     }
 }

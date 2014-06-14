@@ -23,7 +23,7 @@ namespace KMS.Desktop {
         /// </summary>
         [STAThread]
         private static int Main() {
-            // Inicializar el Mutex
+            // Inicializar el Mutex (evitar más de una instancia ejecutándose)
             Program.Mutex = new Mutex(true, Program.MutexString);
             if ( !Program.Mutex.WaitOne(0, true) ) {
                 MessageBox.Show(
@@ -36,25 +36,28 @@ namespace KMS.Desktop {
                 return 1;
             }
 
+            // Algo de UI necesario en Windows
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
+            // Suscribir eventos para cuando la App se muere
             Application.ThreadException += Application_ThreadException;
             AppDomain.CurrentDomain.UnhandledException += Application_FailsafeException;
 
+            // Cargar la tipografía y mostrar la ventana principal
             InitializeFontLoading();
-
             MainWindow.Instance.Show();
-
-            var loginRegisterPanel = MainWindow.Instance.NextPanel<Panels.LoginRegisterPanel>();
-
-            if ( ! String.IsNullOrEmpty(Settings.Default.KmsCloudToken) ) {
+            
+            // Validar Token de Sesión si es aplicable
+            if ( String.IsNullOrEmpty(Settings.Default.KmsCloudToken) ) {
+                MainWindow.Instance.NextPanel<Panels.LoginRegisterPanel>();
+            } else {
                 KmsCloudApi.Token = new Kms.Interop.OAuth.OAuthCryptoSet(
                     Settings.Default.KmsApiOAuthKey,
                     Settings.Default.KmsApiOAuthSecret
                 );
 
-                loginRegisterPanel.CheckKmsOAuthToken();
+                CheckKmsToken();
             }
             
             Application.Run(MainWindow.Instance);
